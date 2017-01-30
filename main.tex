@@ -14,7 +14,6 @@
 \usepackage{eurosym}
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
-%\usepackage{citesort}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{framed}
@@ -25,8 +24,9 @@
 \usepackage{epstopdf}
 \usepackage{url}
 \usepackage{etoolbox}
-\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}\makeatletter
-% \patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{\par}{}{}
 \makeatother
 
 %Stuff I have added
@@ -34,7 +34,10 @@
 %Reformat some spacing and sizing around titles
 \usepackage{titlesec}
 \titleformat{\chapter}[display]
-{\normalfont\Large\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\LARGE}
+  {\normalfont\Large\bfseries}
+  {\chaptertitlename\ \thechapter}
+  {20pt}
+  {\LARGE}
 \titlespacing{\chapter}{0pt}{0pt}{12pt}
 
 %New command to get rid of the "Chapter X" at the beginning of every chapter while maintaining
@@ -60,17 +63,8 @@
 
 %End of stuff I have added
 
-\renewcommand{\arraycolsep}{2pt}
-\newcommand{\eq}{Equation~}
-\newcommand{\eqs}{Equations~}
-\newcommand{\fig}{Figure~}
-\newcommand{\figs}{Figures~}
-\newcommand{\tab}{Table~}
-\newcommand{\tabs}{Tables~}
-\newcommand{\kwm}{k-\omega^2m}
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
-
 \begin{document}
 \begin{titlepage}
                 % \newgeometry{top=25mm,bottom=25mm,left=38mm,right=32mm}
@@ -100,18 +94,19 @@
                                 CID: & \textbf{00699092} \\[12pt]
                                 Course: & \textbf{EEE} \\[12pt]
                                 Project Supervisor: & \textbf{Dr. Thomas J. W. Clarke} \\[12pt]
-%                                Second Marker: & \textbf{Dr Moez Draief} \\
+                                % Second Marker: & \textbf{Dr Moez Draief} \\
                 \end{tabular}
 \end{titlepage}
 
+% For final report
 
-\begin{acknowledgments}
-  Acknowledgements will go here.
-\end{acknowledgments}
-
-\begin{abstract}
-   This is where it will go.
-\end{abstract}
+% \begin{acknowledgments}
+%   Acknowledgements will go here.
+% \end{acknowledgments}
+%
+% \begin{abstract}
+%    This is where it will go.
+% \end{abstract}
 
 \pagenumbering{roman}
 \tableofcontents
@@ -120,10 +115,23 @@
 \mychapter{1}{1. Introduction}
 \pagenumbering{arabic}
 \setcounter{page}{1}
-Spam calls are
+While the term ``spam'' first brings to mind junk emails, it can also mean any kind of unsolicited communications. Unwanted phone calls are no exception, and are a nuisance, as anyone who has received one can tell you. However, they become more than just an inconvenience, when they are scam calls. These calls are made by a malicious party with the express intention to defraud, whether in terms of stealing personal information, financial details, or just money.
+\\\\
+CA simple way to prevent these unwanted call from getting through is to filter incoming calls to a phone number. However, more that just a blacklist or whitelist, a more effective solution would be able to determine the legitimacy of each caller. The goal is to create a system with an effective filter to ensure only desirable calls get through.
+
 \mychapter{2}{2. Project Specification}
-\section{Blah}
-Yes \cite{infrared}.
+% \section{Primary Goals}
+\section{Audience}
+The inconvenience of scam and spam calls can affect anyone with a landline. In a survey conducted by Microsoft,almost 70\% of United Kingdom (UK) respondents reported encountering scam calls \cite{microsoft-survey}. Taking into account that this exclude marketing cold calls, the actual proportion of the population impacted by such calls is no doubt higher.
+\\\\
+However, certain segments of the population are more susceptible than others. The elderly are seen to be more vulnerable, particularly if the scam call deals with technology that they may be unfamiliar with. The primary audience of this project is therefore the elderly, which means that it must be easy to setup and use. That criteria however, is applicable to any consumer group, means that this project must be suitable for someone without a rigorous technical background.
+
+\section{Setup}
+The project specifically is aimed at landlines because that is the most commonly used form of home telephone. The use of Voice over Internet Protocol (VoIP) phones has not yet gain serious traction in UK. Statistics show that for the 65.1 million people in the UK \cite{ons-population}, there are still 25.6 million landlines \cite{ofcom}. Additionally, taking into account that this is aimed at the elderly, it makes more sense. Thus, the objective is to have something that will plug into the telephone socket on one end, and the telephone on the other.
+
+\section{Functionality}
+The filtration of calls is going to be most successful through a combination of methods. Black and whitelists are easy to generate, whether through open-sourced lists maintained by the community, or through simple rules, like no overseas cals. Known phone numbers from friends, family, or work can be added to ensure that
+
 \mychapter{3}{3. Background Research}
 \section{Telephone Systems}
 \subsection{Analogue}
@@ -132,11 +140,17 @@ Yes \cite{infrared}.
 \section{SIP Stream}
 
 \mychapter{4}{4. Implementation Plan}
+\section{}
 \section{Current Progress}
+At the time of this report writing,
 \section{Future Progress Plan}
+
 \mychapter{5}{5. Evaluation Plan}
+
+
 \mychapter{6}{6. Conclusion}
 
+% No need to touch this.
 \newpage
 \mychapter{7}{7. References}
 \begingroup
@@ -145,5 +159,10 @@ Yes \cite{infrared}.
 \bibliography{fyp_refs}
 \endgroup
 
+\newpage
+\appendix
+\chapter*{Appendices}
+\pagenumbering{roman}
+\section{One}
 
 \end{document}
