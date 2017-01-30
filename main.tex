@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{report}
+\documentclass[12pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{mathtools}
@@ -19,12 +19,14 @@
 \usepackage{multirow}
 \usepackage{framed}
 \usepackage{ulem}
+\usepackage{mystyle}
+
 \usepackage{wrapfig}
 \usepackage{epstopdf}
 \usepackage{url}
 \usepackage{etoolbox}
-\makeatletter
-\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}\makeatletter
+% \patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
 \makeatother
 
 %Stuff I have added
@@ -102,23 +104,46 @@
                 \end{tabular}
 \end{titlepage}
 
+
+\begin{acknowledgments}
+  Acknowledgements will go here.
+\end{acknowledgments}
+
+\begin{abstract}
+   This is where it will go.
+\end{abstract}
+
 \pagenumbering{roman}
 \tableofcontents
 \newpage
 
-\mychapter{1}{1. Random Signals \& Stochastic Processes}
+\mychapter{1}{1. Introduction}
 \pagenumbering{arabic}
 \setcounter{page}{1}
+Spam calls are
+\mychapter{2}{2. Project Specification}
+\section{Blah}
+Yes \cite{infrared}.
+\mychapter{3}{3. Background Research}
+\section{Telephone Systems}
+\subsection{Analogue}
+\subsection{VoIP}
+\section{Fraud and Spam}
+\section{SIP Stream}
 
-\section{Statistical Estimation}\label{sec:oneone}
-
-\subsection{Uniform Random Variable}\label{sec:urv}
-
-\subsection{Random Normal Variable}
-The same procedure from Section~\ref{sec:urv} was repeated with a different random variable. This means allows pairs of values to cancel each other out during the ACF calculation. The trends previously noticed are less prominent, particularly the peaks. However, it would be foolish to believe that there is absolutely no pattern as there are certainly is a periodic nature to the data. Nevertheless, it is challenging to identify the exact pattern from the observations of the ACF \cite{infrared}.
+\mychapter{4}{4. Implementation Plan}
+\section{Current Progress}
+\section{Future Progress Plan}
+\mychapter{5}{5. Evaluation Plan}
+\mychapter{6}{6. Conclusion}
 
 \newpage
-\bibliographystyle{unsrt}
+\mychapter{7}{7. References}
+\begingroup
+   \def\chapter*#1{}
+\bibliographystyle{plain}
 \bibliography{fyp_refs}
+\endgroup
+
 
 \end{document}
