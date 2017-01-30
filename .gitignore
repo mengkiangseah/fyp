@@ -1,0 +1,4 @@
+# Things to ignore
+main.pdf
+main.toc
+*.sh
