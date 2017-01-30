@@ -118,7 +118,7 @@
 While the term ``spam'' first brings to mind junk emails, it can also mean any kind of unsolicited communications. Unwanted phone calls are no exception, and are a nuisance, as anyone who has received one can tell you. However, they become more than just an inconvenience, when they are scam calls. These calls are made by a malicious party with the express intention to defraud, whether in terms of stealing personal information, financial details, or just money.
 \\\\
 CA simple way to prevent these unwanted call from getting through is to filter incoming calls to a phone number. However, more that just a blacklist or whitelist, a more effective solution would be able to determine the legitimacy of each caller. The goal is to create a system with an effective filter to ensure only desirable calls get through.
-
+\\\\
 \mychapter{2}{2. Project Specification}
 % \section{Primary Goals}
 \section{Audience}
@@ -129,8 +129,31 @@ However, certain segments of the population are more susceptible than others. Th
 \section{Setup}
 The project specifically is aimed at landlines because that is the most commonly used form of home telephone. The use of Voice over Internet Protocol (VoIP) phones has not yet gain serious traction in UK. Statistics show that for the 65.1 million people in the UK \cite{ons-population}, there are still 25.6 million landlines \cite{ofcom}. Additionally, taking into account that this is aimed at the elderly, it makes more sense. Thus, the objective is to have something that will plug into the telephone socket on one end, and the telephone on the other.
 
-\section{Functionality}
-The filtration of calls is going to be most successful through a combination of methods. Black and whitelists are easy to generate, whether through open-sourced lists maintained by the community, or through simple rules, like no overseas cals. Known phone numbers from friends, family, or work can be added to ensure that
+\section{Implementation}
+The implementation plan was guided by the idea that a piece of software known as Asterisk could be used. Asterisk is like a private branch exchange, or PBX. In simpler terms, it can act as a switch board, by answering, redirecting, and managing calls. This open-source software runs on Linux, and offers a range of options \cite{asterisk}.
+
+\subsection{Connections}
+Asterisk accepts and redirects calls, and its input and output format is known Session Initiation Protocol (SIP) \cite{sip}. This means that there needs to be a way to convert the calls from the landline into an SIP stream. Thus, there will need to be a form of landline-SIP adapting connection at the input. The advantage of this is that if and when VoIP becomes more common, the adapter can simply be bypassed.
+\\\\
+On the output, there are two options. If a normal landline phone is used, then the SIP needs to be converted back into an analogue signal. This can be done with devices known as Analog Telephone Adapters (ATAs) \cite{ata}. However, the alternative would be to use a VoIP phone directly, as the SIP format is the current standard for VoIP phones. It benefits from not needing a conversion step, but will require an additional phone.
+
+\subsection{Filtration}
+Between the input from the landline and the output phone will sit the filtration system. A computer will be needed, and given the criteria for a system to ``plug in'', it must also be small. The solution is therefore to use a Raspberry Pi. The Pi will run the Asterisk PBX, which will perform the various filtration steps.
+\\\\
+Naive filtration methods are simple ones, such as a prompt to press a key before continuing, or the use of blacklists. More involved methods are limited by the fact that for caller input, there are only two options: voice and keytones. For the identification as an unwanted call will require the use voice or speech analysis or more complex code-based challenges.
+\\\\
+The main difficulty with implementing these methods is not just their robustness or reliability, but how they appear to the caller. If they are too much of a hassle, they will no doubt discourage scammers, but may drive your friends away as well!
+
+\subsection{User Interface}
+The filtration of calls is going to be most successful through a combination of methods. Black and whitelists are easy to generate, whether through open-sourced lists maintained by the community, or through simple rules, like no calls from abroad. Known phone numbers from friends, family, or work can be added to ensure that they pass through. This means that there must be some interface which allows numbers to be added and removed. A monitor with a mouse, an app, or a web interface are all possibilities. However, some will require more work, and others may be suitable for younger users, rather than the elderly. This portion of the project will require more consideration.
+
+\section{Deliverables}
+There is one main large deliverable from this project, which is a working system that plugs into the landline on one side, and a phone on the other. The system must then prevent unwanted calls to the landline from reach the phone. Its three major components are as follows. While the output element is simply a matter of having a phone, it is included to show the flow of information through the system.
+\begin{itemize}
+  \item Landline - SIP Conversion
+  \item Asterisk-based Filtration System
+  \item Output into a phone
+\end{itemize}
 
 \mychapter{3}{3. Background Research}
 \section{Telephone Systems}
@@ -140,13 +163,27 @@ The filtration of calls is going to be most successful through a combination of 
 \section{SIP Stream}
 
 \mychapter{4}{4. Implementation Plan}
-\section{}
 \section{Current Progress}
-At the time of this report writing,
+\subsection{Landline-SIP Input}
+Originally, the idea of interfacing directly with the telephone line was considered. A series of relays, combined with Analogue to Digital Converters (ADCs) and Digital to Analogue (DAC) could conceivably interact with a normal landline phone to feed the information into the Raspberry Pi. The difficulty with this method is that to use the full range of Asterisk functionality, the inputs have to be in SIP format. The conversion process itself would be very time-consuming.
+\\\\
+A workaround considered was the Cisco SPA3102 \cite{spa3102-specs} as an adapter. However, this idea was quickly scrapped for a number of reasons. First, the device was no longer supported by Cisco as it had reached its end-of-sale dates. This also meant that prices were extremely high, in the order of hundreds of dollars \cite{spa3102-amazon}.
+\\\\
+Fortunately, an alternative was found. This was the Obi110, from Obihai \cite{obi110-specs}. This device also had the ability to interface with a PBX and a landline simultaneously. In fact, some users on blogs have written how they have combined the Obi110 with the Raspberry Pi running Asterisk. Discussion of the work of these hobbyists was considered material for the implementation section rather than the background research as none of them applied any non-naive call filtration methods.
+\\\\
+Approval for the purchase device was received from the Finance department and the device has since been obtained. However, it has yet to be configured.
+
+\subsection{Asterisk Based Filtering}
+On this front, the Raspberry Pi has had the
+
+\subsection{Output}
+Instead of buying a VoIP phone, spare one was obtained from the department.
+
 \section{Future Progress Plan}
 
 \mychapter{5}{5. Evaluation Plan}
-
+\section{Demonstration}
+The final demonstration for this project will not be able to involve the landline, as there are no landlines in the college. The current solution is to demonstrate the Landline - SIP Conversion independently, before using a VoIP input directly into Asterisk for the actual demo.
 
 \mychapter{6}{6. Conclusion}
 
@@ -158,11 +195,5 @@ At the time of this report writing,
 \bibliographystyle{plain}
 \bibliography{fyp_refs}
 \endgroup
-
-\newpage
-\appendix
-\chapter*{Appendices}
-\pagenumbering{roman}
-\section{One}
 
 \end{document}
