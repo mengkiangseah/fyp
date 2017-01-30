@@ -1,0 +1,124 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{upgreek}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage[font=footnotesize,labelfont=bf]{subcaption}
+\usepackage{lmodern}
+\usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{eurosym}
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+%\usepackage{citesort}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{framed}
+\usepackage{ulem}
+\usepackage{wrapfig}
+\usepackage{epstopdf}
+\usepackage{url}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+
+%Stuff I have added
+
+%Reformat some spacing and sizing around titles
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+{\normalfont\Large\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\LARGE}
+\titlespacing{\chapter}{0pt}{0pt}{12pt}
+
+%New command to get rid of the "Chapter X" at the beginning of every chapter while maintaining
+%a chapter count for the table of contents
+%1st input is the counter for the chapter, second is the chapter name
+\newcommand{\mychapter}[2]
+{
+    \setcounter{chapter}{#1}
+    \setcounter{section}{0}
+    \chapter*{#2}
+    \addcontentsline{toc}{chapter}{#2}
+}
+
+\usepackage{float}
+
+\usepackage{enumitem}
+
+%Get rid of auto indent for paragraphs
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%End of stuff I have added
+
+\renewcommand{\arraycolsep}{2pt}
+\newcommand{\eq}{Equation~}
+\newcommand{\eqs}{Equations~}
+\newcommand{\fig}{Figure~}
+\newcommand{\figs}{Figures~}
+\newcommand{\tab}{Table~}
+\newcommand{\tabs}{Tables~}
+\newcommand{\kwm}{k-\omega^2m}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+\begin{document}
+\begin{titlepage}
+                % \newgeometry{top=25mm,bottom=25mm,left=38mm,right=32mm}
+                \setlength{\parindent}{0pt}
+                \setlength{\parskip}{0pt}
+                % \fontfamily{phv}\selectfont
+
+                {
+                                \Large
+                                \raggedright
+                                Imperial College London\\[17pt]
+                                Department of Electrical and Electronic Engineering\\[17pt]
+                                Final Year Project Interim Report\\[17pt]
+
+                }
+
+                \rule{\columnwidth}{3pt}
+                \vfill
+                \centering
+                  \includegraphics[width=0.7\columnwidth,height=60mm,keepaspectratio]{icl.jpg}
+                \vfill
+                \setlength{\tabcolsep}{0pt}
+
+                \begin{tabular}{p{40mm}p{\dimexpr\columnwidth-40mm}}
+                                Project Title: & \textbf{Intelligent Telephone Interceptor} \\[12pt]
+                                Student: & \textbf{Meng Kiang Seah} \\[12pt]
+                                CID: & \textbf{00699092} \\[12pt]
+                                Course: & \textbf{EEE} \\[12pt]
+                                Project Supervisor: & \textbf{Dr. Thomas J. W. Clarke} \\[12pt]
+%                                Second Marker: & \textbf{Dr Moez Draief} \\
+                \end{tabular}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+\mychapter{1}{1. Random Signals \& Stochastic Processes}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Statistical Estimation}\label{sec:oneone}
+
+\subsection{Uniform Random Variable}\label{sec:urv}
+
+\subsection{Random Normal Variable}
+The same procedure from Section~\ref{sec:urv} was repeated with a different random variable. This means allows pairs of values to cancel each other out during the ACF calculation. The trends previously noticed are less prominent, particularly the peaks. However, it would be foolish to believe that there is absolutely no pattern as there are certainly is a periodic nature to the data. Nevertheless, it is challenging to identify the exact pattern from the observations of the ACF \cite{infrared}.
+
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{fyp_refs}
+
+\end{document}
