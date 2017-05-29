@@ -9,13 +9,13 @@ def main():
     path_to_watch = "/var/spool/asterisk/monitor"
 
     # Baseline
-    before = dict ([(f, None) for f in os.listdir (path_to_watch)])
+    before = dict ([(f, None) for f in os.walk (path_to_watch)])
     print(before)
 
     # Polling loop
     while 1:
         time.sleep (10)
-        after = dict ([(f, None) for f in os.listdir (path_to_watch)])
+        after = dict ([(f, None) for f in os.walk (path_to_watch)])
         added = [f for f in after if not f in before]
         if added:
             print("Added: ")
