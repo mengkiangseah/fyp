@@ -2,11 +2,14 @@
 
 # Startup script for kiosk mode
 
-sudo startx /usr/bin/chromium-browser --kiosk --no-sandbox --window-size=1280,1024 --window-position=0,0 --disable-session-crashed-bubble --disable-infobars file:///
+export DISPLAY=:0
 
-xset s off
-xset -dpms
-xset s noblank
+sudo startx /usr/bin/chromium-browser --kiosk --no-sandbox --window-size=5000,5000 --window-position=0,0 --disable-session-crashed-bubble --disable-infobars file:/// &
 
-unclutter &
+sudo xset q & 
+sudo xset s off &
+sudo xset -dpms &
+sudo xset s noblank &
+
+sudo unclutter &
 
