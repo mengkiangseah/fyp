@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Status Page</title>
+</head>
+<body>
+{% if the_state == 1 %}
+State 1.
+
+{% elif the_state == 2 %}
+State 2.
+
+{% elif the_state == 3 %}
+State 3.
+
+{% elif the_state == 4 %}
+State 4.
+
+{% elif the_state == 5 %}
+State 5.
+
+{% elif the_state == 6 %}
+State 6.
+
+{% elif the_state == 7 %}
+State 7.
+
+{% elif the_state == 8 %}
+State 8.
+
+{% endif %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+<script type=text/javascript>
+    var myVar;
+
+    function timingFunction() {
+        myVar = setInterval(updateFunc, 3000);
+    }
+
+    function updateFunc(){
+        $("#result").text(data.time);
+    }
+
+</script>
+
+<div id=time></div>
+
+<script type=text/javascript>
+  $(function() {
+    $('a#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/_add_numbers', {
+        a: $('input[name="a"]').val(),
+        b: $('input[name="b"]').val()
+      }, function(data) {
+        $("#result").text(data.state);
+      });
+      return false;
+    });
+  });
+</script>
+
+<h1>jQuery Example</h1>
+<p><input type=text size=5 name=a> +
+   <input type=text size=5 name=b> =
+   <span id=result>?</span>
+<p><a href=# id=calculate>calculate server side</a>
+
+<!-- <meta http-equiv="refresh" content="5" /> -->
+
+</body>
+</html>
