@@ -1,53 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Status Page</title>
+    <title> Status Page onended=""</title>
+    <style type="text/css">
+        body {
+
+            {% if the_state == 1 %}
+            background-color: blue;
+
+            {% elif the_state == 2 %}
+            background-color: white;
+
+            {% elif the_state == 3 %}
+            background-color: blue;
+
+            {% elif the_state == 4 %}
+            background-color: green;
+
+            {% elif the_state == 5 %}
+            background-color: orange;
+
+            {% elif the_state == 6 %}
+            background-color: red;
+
+            {% else %}
+            background-color: red;
+
+            {% endif %}
+        }
+
+        div {
+            text-align: center;
+            {% if the_state == 2 %}
+            color: black;
+            {% else %}
+            color: white;
+            {% endif %}
+            vertical-align: middle;
+            margin-top: 10%;
+            font-size: 1000%;
+        }
+    </style>
 </head>
-
-<style>
-    body {
-        {% if the_state%2 == 0 %}
-        background-color: yellow;
-        {% else %}
-        background-color: blue;
-        {% endif %}
-    }
-
-    div {
-        font-family: "Georgia";
-        font-size: 30px;
-    }
-
-</style>
 
 <body>
 
-    {% if the_state == 1 %}
-    <div>State 1.</div>
+    <div>
+        {% if the_state == 1 %}
+        System online.
 
-    {% elif the_state == 2 %}
-    <div>State 2.</div>
+        {% elif the_state == 2 %}
+        Known caller.
 
-    {% elif the_state == 3 %}
-    <div>State 3.</div>
+        {% elif the_state == 3 %}
+        Unknown caller. Analysing...
 
-    {% elif the_state == 4 %}
-    <div>State 4.</div>
+        {% elif the_state == 4 %}
+        Low risk.
 
-    {% elif the_state == 5 %}
-    <div>State 5.</div>
+        {% elif the_state == 5 %}
+        Possible threat.
 
-    {% elif the_state == 6 %}
-    <div>State 6.</div>
+        {% elif the_state == 6 %}
+        High Risk!
 
-    {% elif the_state == 7 %}
-    <div>State 7.</div>
+        {% else %}
+        Error! Please reboot device.
 
-    {% elif the_state == 8 %}
-    <div>State 8.</div>
+        {% endif %}
+    </div>
 
-    {% endif %}
     <!-- To force reload every 5 seconds -->
     <meta http-equiv="refresh" content="5" />
 
