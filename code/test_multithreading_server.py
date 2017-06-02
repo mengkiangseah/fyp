@@ -12,7 +12,6 @@ state = 0
 @app.route("/")
 def index():
     global state
-    print("State: " + str(state))
     return render_template('index.html', the_state=state)
 
 def serverFunction():
