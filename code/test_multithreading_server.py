@@ -27,7 +27,6 @@ def incrementFunction():
 if __name__ == "__main__":
     incrementThread = threading.Thread(target=incrementFunction)
     serverThread = threading.Thread(target=serverFunction)
-
     print("Running incrementThread.")
     incrementThread.start();
     print("Running serverThread.")
