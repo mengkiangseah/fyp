@@ -21,6 +21,7 @@ def incrementFunction():
     global state
     while(True):
         state = (state + 1) % 7
+        print("State: " + str(state))
         time.sleep(7)
 
 
