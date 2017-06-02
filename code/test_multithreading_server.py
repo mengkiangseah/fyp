@@ -20,7 +20,7 @@ def serverFunction():
 def incrementFunction():
     global state
     while(True):
-        state = state + 1
+        state = (state + 1) % 7
         time.sleep(7)
 
 
