@@ -8,7 +8,7 @@
 
 export DISPLAY=:0
 
-sudo startx /usr/bin/chromium-browser --kiosk --no-sandbox --window-size=5000,5000 --window-position=0,0 --disable-session-crashed-bubble --disable-infobars http://127.0.0.1:5000 &
+sudo startx /usr/bin/chromium-browser --kiosk --no-sandbox --window-size=1920,1080 --window-position=0,0 --disable-session-crashed-bubble --disable-infobars http://127.0.0.1:5000 &
 
 echo "Done."
 echo "Waiting."
