@@ -9,7 +9,7 @@
 \usepackage[font=footnotesize,labelfont=bf]{caption}
 \usepackage[font=footnotesize,labelfont=bf]{subcaption}
 \usepackage{lmodern}
-\usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{fancyhdr}
 \usepackage{eurosym}
 \usepackage{dcolumn}% Align table columns on decimal point
@@ -21,6 +21,8 @@
 \usepackage{mystyle}
 \usepackage{lipsum}
 
+\usepackage{xcolor}
+\usepackage{soul}
 
 \usepackage{wrapfig}
 \usepackage{epstopdf}
@@ -28,7 +30,7 @@
 \usepackage{etoolbox}
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 \makeatletter
-\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{\par}{}{}
+% \patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{\par}{}{}
 \makeatother
 
 %Stuff I have added
@@ -79,7 +81,7 @@
                                 \raggedright
                                 Imperial College London\\[17pt]
                                 Department of Electrical and Electronic Engineering\\[17pt]
-                                Final Year Project Interim Report\\[17pt]
+                                Final Year Project Report\\[17pt]
 
                 }
 
@@ -91,24 +93,30 @@
                 \setlength{\tabcolsep}{0pt}
 
                 \begin{tabular}{p{40mm}p{\dimexpr\columnwidth-40mm}}
-                                Project Title: & \textbf{Intelligent Telephone Interceptor} \\[12pt]
+                                Project Title: & \textbf{An Intelligent Telephone Interceptor for UK Landlines
+} \\[12pt]
                                 Student: & \textbf{Meng Kiang Seah} \\[12pt]
                                 CID: & \textbf{00699092} \\[12pt]
                                 Course: & \textbf{EEE} \\[12pt]
                                 Project Supervisor: & \textbf{Dr. Thomas J. W. Clarke} \\[12pt]
-                                % Second Marker: & \textbf{Dr Moez Draief} \\
+                                Second Marker: & \textbf{Dr. Jesus Rodriguez Manzano} \\
                 \end{tabular}
 \end{titlepage}
 
 % For final report
 
-% \begin{acknowledgments}
-%   Acknowledgements will go here.
-% \end{acknowledgments}
-%
-% \begin{abstract}
-%    This is where it will go.
-% \end{abstract}
+\begin{acknowledgments}
+  Acknowledgements will go here. Supervisor, lab people, and voice artist.
+\end{acknowledgments}
+
+\begin{abstract}
+This project was focused on creating a system that would intercept landline calls in the UK with the goal of eliminating, or reducing the number of unwanted spam, nuisance, or scam calls. The impact of these calls is greater in certain demographics who are more susceptible, notably the elderly.
+\\\\
+The system was designed to allow easy connection to an existing landline phone setup. To allow filtering and analysis with a computer, conversion from the analogue signals to a digital stream, and vice-versa was done by integrating commercially available products with free open-source software.
+\\\\
+A filtration method and flow were designed to remove cold calls, while running voice analysis on unknown callers to determine the likelihood of an illegitimate call. It sets up a challenge upon receiving a call to remove robot calls, separating unknown callers into three categories with voice analysis, and requesting irresponsive callers to redial. The system status was relayed through a simple colour-coded user interface.
+\\\\
+Overall, the setup showed its feasibility and functionality, while taking into account the limitations of an audience less familiar with technology for interfacing and setup.\end{abstract}
 
 \pagenumbering{roman}
 \tableofcontents
@@ -117,10 +125,32 @@
 \mychapter{1}{1. Introduction}
 \pagenumbering{arabic}
 \setcounter{page}{1}
-While the term ``spam'' first brings to mind junk emails, it can also mean any kind of unsolicited communications. Unwanted phone calls are no exception, and are a nuisance, as anyone who has received one can tell you. However, they become more than just an inconvenience, when they are scam calls. These calls are made by a malicious party with the express intention to defraud, whether in terms of stealing personal information, financial details, or just money.
+While the term ``spam'' first brings to mind junk emails, it can also mean any kind of unsolicited communications. Unwanted phone calls are no exception, and are a nuisance, as anyone who has received one can tell you. However, they become more than just an inconvenience when they are scam calls. These calls are made by a malicious party with the express intention to defraud, whether in terms of stealing personal information, financial details, or just money.
 \\\\
-CA simple way to prevent these unwanted call from getting through is to filter incoming calls to a phone number. However, more that just a blacklist or whitelist, a more effective solution would be able to determine the legitimacy of each caller. The goal is to create a system with an effective filter to ensure only desirable calls get through.
+A simple way to prevent these unwanted call from getting through is to filter incoming calls to a phone number. However, more that just a blacklist or whitelist, a more effective solution would be able to determine the legitimacy of each caller. The goal is to create a system with an effective filter to ensure only desirable calls get through.
 \\\\
+\hl{Content to be added: More about the problem and solution. Some additional context, particular a source to back up the impact and extent of fraudulent calls, both economically and maybe emotionally? Report structure to follow as well. This will lead up to the Introduction not exceeding a single page.}
+
+\mychapter{2}{2. Background Research}
+This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed.
+
+\todo{Testing.}
+
+\section{Telephone Systems}
+\subsection{Analogue}
+Telephones are deceptively simple systems. Examination of a landline plug in the UK will reveal that only 2 of the many pins are actually connected! The way this system works it that both the power and signal are carried on the same wires. In the UK, the voltage between the two is at 50V DC, although this can vary \cite{telephone}.
+\\\\
+For a telephone in a house to work, it must interact with the exchange, which is run by the telephone service provide. When the phone is picked up, the voltage across the line changes. Older systems used this as the basis of the pulse dialing method, but the current modern way is to use DTMF, or Dual Tone multifrequency. Instead of relying on voltage changes, each key when pressed generates a two-frequency tone that the exchange is able to interpret \cite{telephone}.
+\\\\
+When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}.
+
+\section{Existing Filtration Methods}
+\subsection{Consumer Level}
+There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee.
+
+\subsection{Academic Research}
+There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yieled as much information as desired.
+
 \mychapter{2}{2. Project Specification}
 % \section{Primary Goals}
 \section{Audience}
@@ -157,23 +187,7 @@ There is one main large deliverable from this project, which is a working system
   \item Output into a phone
 \end{itemize}
 
-\mychapter{3}{3. Initial Background Research}
-This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed. 
 
-\section{Telephone Systems}
-\subsection{Analogue}
-Telephones are deceptively simple systems. Examination of a landline plug in the UK will reveal that only 2 of the many pins are actually connected! The way this system works it that both the power and signal are carried on the same wires. In the UK, the voltage between the two is at 50V DC, although this can vary \cite{telephone}.
-\\\\
-For a telephone in a house to work, it must interact with the exchange, which is run by the telephone service provide. When the phone is picked up, the voltage across the line changes. Older systems used this as the basis of the pulse dialing method, but the current modern way is to use DTMF, or Dual Tone multifrequency. Instead of relying on voltage changes, each key when pressed generates a two-frequency tone that the exchange is able to interpret \cite{telephone}.
-\\\\
-When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}.
-
-\section{Existing Filtration Methods}
-\subsection{Consumer Level}
-There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee.
-
-\subsection{Academic Research}
-There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yieled as much information as desired.
 
 \newpage
 \mychapter{4}{4. Implementation Plan}
@@ -216,6 +230,7 @@ In planning the timeline, a number of dates were kept in mind. There are two exa
 
 \begin{table}[H]
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{Task}                             & \textbf{Start Date} & \textbf{Completion Date}  & \textbf{Time Required} \\ \hline
@@ -228,7 +243,7 @@ Complex methods and report writing        & 8th May             & 24th May      
 Report writing                            & 24th May            & 5th June                  & 1.5 weeks full-time \\
 Additional features and report editing    & 5th June            & 21st June                 & 2.5 weeks full-time \\
 Demonstration and final additions         & 21st June           & Presentation Day          & 1 week full-time \\ \hline
-\end{tabular}
+\end{tabular}}
 \caption{Project Timeline Planning}
 \label{tbl:plan}
 \end{table}
@@ -258,6 +273,10 @@ There must be a way for the user to interact with the system to input their own 
 There are other systems currently on the market that aim to reduce the number of unwanted calls. This system must be able to compete with these other alternatives in terms of cost, functionality, effectiveness and ease of use. Again, this criterion is very qualitative and can depend on what other services/devices are put onto the market between now and June.
 \section{Demonstration}
 The final demonstration for this project will not be able to involve the landline, as there are no landlines in the college. The current solution is to demonstrate the Landline - SIP Conversion independently, before using a VoIP input directly into Asterisk for the actual demo.
+
+
+the declining rates of landline usage in the UK, combined with the increased technological literacy in younger generations, the implementation’s direct usage may be less attractive in the future. However, the filtration methods and call evaluation flow may prove to be scalable and transferable to other cases, such as
+
 
 % No need to touch this.
 \newpage
