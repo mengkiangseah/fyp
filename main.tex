@@ -36,24 +36,27 @@
 %Stuff I have added
 
 %Reformat some spacing and sizing around titles
+
+
 \usepackage{titlesec}
-\titleformat{\chapter}[display]
-  {\normalfont\Large\bfseries}
-  {\chaptertitlename\ \thechapter}
-  {20pt}
-  {\LARGE}
+% \titleformat{\chapter}[display]
+%   {\normalfont\Large\bfseries}
+%   {\chaptertitlename\ \thechapter}
+%   {20pt}
+%   {\LARGE}
+\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter.}{20pt}{\LARGE}
 \titlespacing{\chapter}{0pt}{0pt}{12pt}
 
 %New command to get rid of the "Chapter X" at the beginning of every chapter while maintaining
 %a chapter count for the table of contents
 %1st input is the counter for the chapter, second is the chapter name
-\newcommand{\mychapter}[2]
-{
-    \setcounter{chapter}{#1}
-    \setcounter{section}{0}
-    \chapter*{#2}
-    \addcontentsline{toc}{chapter}{#2}
-}
+% \newcommand{\mychapter}[2]
+% {
+%     \setcounter{chapter}{#1}
+%     \setcounter{section}{0}
+%     \chapter*{#2}
+%     \addcontentsline{toc}{chapter}{#2}
+% }
 
 \usepackage{float}
 
@@ -122,19 +125,21 @@ Overall, the setup showed its feasibility and functionality, while taking into a
 \tableofcontents
 \newpage
 
-\mychapter{1}{1. Introduction}
+\chapter{Introduction}
 \pagenumbering{arabic}
 \setcounter{page}{1}
+
 While the term ``spam'' first brings to mind junk emails, it can also mean any kind of unsolicited communications. Unwanted phone calls are no exception, and are a nuisance, as anyone who has received one can tell you. However, they become more than just an inconvenience when they are scam calls. These calls are made by a malicious party with the express intention to defraud, whether in terms of stealing personal information, financial details, or just money.
 \\\\
 A simple way to prevent these unwanted call from getting through is to filter incoming calls to a phone number. However, more that just a blacklist or whitelist, a more effective solution would be able to determine the legitimacy of each caller. The goal is to create a system with an effective filter to ensure only desirable calls get through.
 \\\\
 \hl{Content to be added: More about the problem and solution. Some additional context, particular a source to back up the impact and extent of fraudulent calls, both economically and maybe emotionally? Report structure to follow as well. This will lead up to the Introduction not exceeding a single page.}
 
-\mychapter{2}{2. Background Research}
-This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed.
+\chapter{Background Research}
 
-\todo{Testing.}
+This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed.
+\\\\
+\hl{A brief discussion of the contents of the research. This section has been lifted from the Interim Report, but there are certain things I want to add. This includes more detail on analogue phone systems, and the SIP protocol. Additionally, a larger discussion on the types of scams, the financial and emotional costs, along with popular scam types will fill this part, particularly as the type of calls affects the voice portion of the method.}
 
 \section{Telephone Systems}
 \subsection{Analogue}
@@ -146,13 +151,19 @@ When the exchange has a call to send to a telephone, it transmits a AC (alternat
 
 \section{Existing Filtration Methods}
 \subsection{Consumer Level}
-There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee.
+There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee. \hl{Discussion of BT's approach, along with how hobbyists have attempted to do this.}
 
 \subsection{Academic Research}
 There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yieled as much information as desired.
+\\\\
+\hl{More information about the research. Although not all are applicable to this project, there was a lot of interesting relevant content that helps to position the methods into more context. }
+\\\\
+\hl{The total amount of background research is not expected to exceed 3-4 pages.}
 
-\mychapter{2}{2. Project Specification}
-% \section{Primary Goals}
+\chapter{Project Specification/Requirements Capture}
+
+\hl{This section was used to discuss the finer points of what I was aiming to do in the Interim Report, but this will be adapted to discuss the list of requirements for the setup. This ties in nicely with the specification, because flesh out the details of the system. The way this has evolved between the Interim Report and now will also be compared. Currently, this section is approximately 2 pages long. With the additional information, this will realistically be around 3-4 pages as well. }
+
 \section{Audience}
 The inconvenience of scam and spam calls can affect anyone with a landline. In a survey conducted by Microsoft, almost 70\% of United Kingdom (UK) respondents reported encountering scam calls \cite{microsoft-survey}. Taking into account that this exclude marketing cold calls, the actual proportion of the population impacted by such calls is no doubt higher.
 \\\\
@@ -187,10 +198,15 @@ There is one main large deliverable from this project, which is a working system
   \item Output into a phone
 \end{itemize}
 
-
+\chapter{Design and Analysis}
+\hl{This section will highlight the choices and progression of the design and features. While the actual method I used was a more agile-modular approach to the system, I will reorganise the material. This section will feature the choices, features, and justifications behind each element's final form.}
+\\\\
+\hl{There is also a particular paper on IEEE Xplore that evaluated and suggested a number of filtration algorithms, some of which I am using here. However, the paper did not attempt any of them practically, and they were more suitable to pure VoIP phones, along with not considering any of the intended audience. Combining their findings, with my analysis from a practical perspective, and knowing the more restricted audience, I will look at how my filtration flow stacks up. Their methods of evaluating forms of filtration will also be reconsidered, and I am planning on critically commenting it. All this means this chapter will be at least 5-6 pages, but may extend up to 10.}
 
 \newpage
-\mychapter{4}{4. Implementation Plan}
+\chapter{Implementation }
+\hl{What was considered the ``Implementation Plan'' in the Interim Report will be converted into the implementation itself, describing how the system works, with some diagrams of the call flow, the methods of filtration, and how the entire system is put together, from PSTN interface to UI. This section will go into the details of all the types. Any algorithms will be here, as well as the technical nitty-gritty. }
+
 \section{Current Progress}
 \subsection{Landline-SIP Input}
 Originally, the idea of interfacing directly with the telephone line was considered. A series of relays, combined with Analogue to Digital Converters (ADCs) and Digital to Analogue (DAC) could conceivably interact with a normal landline phone to feed the information into the Raspberry Pi. The difficulty with this method is that to use the full range of Asterisk functionality, the inputs have to be in SIP format. The conversion process itself would be very time-consuming.
@@ -256,7 +272,11 @@ The naive methods of passcode challenging, warnings, and lists are first attempt
 The exact implementations of the complex methods are given quite a long while because it is that segment which will set this system apart from existing solutions available on the market. This is also why it is given as much full-time work as is possible. The time allocated to this section goes on all the way until right before the final report is due. The ``exam break'' is taken into account because, as the project guide says \cite{guide}, neglecting exams for the final year project is a bad idea.
 \\\\
 
-\mychapter{5}{5. Evaluation Plan}
+
+\chapter{Evaluation Plan/ Testing}
+
+\hl{This section will be adapted to fit the section of testing. How I intended/intend to test the various parts of the system, and the filtration, and the entire user experience. The analysis section detailing the evaluation of the various filtration methods will also mentioned here as it affects the way the entire system is tested. This section is expected to cover between 4-5 pages. }
+
 \section{Criteria}
 The system can be evaluated in a number of ways.
 \subsection{Basic Functionality}
@@ -277,10 +297,21 @@ The final demonstration for this project will not be able to involve the landlin
 
 the declining rates of landline usage in the UK, combined with the increased technological literacy in younger generations, the implementation’s direct usage may be less attractive in the future. However, the filtration methods and call evaluation flow may prove to be scalable and transferable to other cases, such as
 
+\chapter{Results}
+\hl{Depending on how many features I manage to implement, the testing will vary. However, analysis of the results is relatively straightfoward, without needing too much manipulation. I expect this section to cover not more than 2 pages in total. }
+
+\chapter{Evaluation}
+\hl{This section assesses how well the objectives were achieved. This means looking at what was achieved, and comparing that to the requirements captured in the previous chapter. I will discuss why certain things were achieved, or why failures happened. I will also discuss how improvements could have been made with certain elements, or if the design choices were ultimately successful and why/why not. I expect this to take between 3-4 pages.}
+
+\chapter{Conclusion and Future Work}
+\hl{The ending portion will summarise the results from the testing and briefly restate the outcome of the evaluation section. I expect this to not exceed a page. As for the future work, depending on what I manage to complete, and what is left, this section will also not exceed a page. I am not sure how much of the results will be worth restating, or if any visual aids will be included (an overall setup picture, or something similar).}
+
+\section{Conclusion}
+\section{Future Work}
 
 % No need to touch this.
 \newpage
-\mychapter{7}{7. References}
+\chapter{Bibliography}
 \begingroup
    \def\chapter*#1{}
 \bibliographystyle{plain}
