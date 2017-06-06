@@ -6,7 +6,11 @@ def main():
 
     while True:
         GPIO.wait_for_edge(27, GPIO.RISING)
-        print("Detected.")
+        print("Connected.")
+        sleep(0.5)
+        GPIO.wait_for_edge(27, GPIO.FALLING)
+        print("Disconnected.")
+        sleep(0.5)
 
 if __name__ == '__main__':
     main()
