@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 
 def main():
     GPIO.setmode(GPIO.BCM)
@@ -7,10 +8,10 @@ def main():
     while True:
         GPIO.wait_for_edge(27, GPIO.RISING)
         print("Connected.")
-        sleep(0.5)
+        time.sleep(0.5)
         GPIO.wait_for_edge(27, GPIO.FALLING)
         print("Disconnected.")
-        sleep(0.5)
+        time.sleep(0.5)
 
 if __name__ == '__main__':
     main()
