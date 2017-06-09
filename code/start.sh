@@ -2,7 +2,7 @@
 
 # Launch monitoring server
 
-~/fyp/code/test_multithreading_server.py &
+~/fyp/code/test_change_switch.py &
 
 # Startup script for kiosk mode
 

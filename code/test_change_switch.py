@@ -5,6 +5,11 @@ import time
 import RPi.GPIO as GPIO
 import wave
 import speech_recognition as sr
+from flask import Flask, render_template
+import threading
+
+# Server object
+app = Flask(__name__)
 
 # Overall system state
 global state
@@ -33,21 +38,23 @@ def listDirectory(pathDirectory):
 	return outputList
 
 # Send to Bing
-def sendToBing(filename):
+def sendToBing():
 	r = sr.Recognizer()
-	with sr.AudioFile(AUDIO_FILE) as source:
+	with sr.AudioFile("/home/pi/output.wav") as source:
 	    audio = r.record(source)  # read the entire audio file
 
 	# Microsoft Bing Voice Recognition API keys 32-character lowercase hexadecimal strings
 	BING_KEY = "32b3404f7cc74d34b426a360515a298b"
 
 	try:
-	    print("Microsoft Bing Voice Recognition thinks you said " + r.recognize_bing(audio, key=BING_KEY))
+		detectedSpeech = r.recognize_bing(audio, key=BING_KEY)
 	except sr.UnknownValueError:
-	    print("Microsoft Bing Voice Recognition could not understand audio")
+		detectedSpeech = "Microsoft Bing Voice Recognition could not understand audio."
 	except sr.RequestError as e:
-	    print("Could not request results from Microsoft Bing Voice Recognition service; {0}".format(e))
-	return "Test file ouput. "
+		detectedSpeech = "Could not request results from Microsoft Bing Voice Recognition service; {0}".format(e)
+
+	print(detectedSpeech)
+	return detectedSpeech
 
 # Waits for the call status to change based on switch
 def waitCallChange(question):
@@ -59,12 +66,19 @@ def waitCallChange(question):
 		pass
 	return
 
+# Call danger metric
+def callMetric(wordsSpoken):
+	return 4
+
 
 # Polling function to check for new files
 def checkNewRecording():
+	# Length of analysed audio
+	lengthAudio = 14
 
-	# Define path to recordings
+	# Define path to recordings and output
 	pathDirectory = "/var/spool/asterisk/monitor"
+	outputFile = "/home/pi/outputFile.wav"
 
 	# Baseline
 	beforeList = listDirectory(pathDirectory)
@@ -85,17 +99,27 @@ def checkNewRecording():
 			# New file found, call is therefore incoming.
 			if addedFiles:
 				setState(3)
-				# Check length
+				# Open recording
 				audioFileIn = wave.open(addedFiles, mode='rb')
 
+				# Wait for call to start, then file size of file.
 				waitCallChange("START")
-				audioFileOut = wave.open(outputFile, mode= 'wb')
+				oldsizeData = audioFileIn.getnframes()
 
-				# Check size
-				# time.sleep(14.5)
-				# Select 13.5 after pickup
-				# Send query
+				# Wait for data to collect
+				time.sleep(lengthAudio + 0.5)
+
+				# Prepare file to be sent. Open output file, select data from recording, write.
+				audioFileOut = wave.open(outputFile, mode= 'wb')
+				audioFileOut.setparams((1, 2, 8000, 8000 * lengthAudio, 'NONE', 'not compressed'))
+				audioFileIn.readframes(oldsizeData)
+				audioFileOut.writeframes(audioFileIn.readframes(8000 * lengthAudio))
+
 				# Process text metric, set state
+				spokenText = sendToBing()
+				setState(callMetric(spokenText))
+
+				# Wait for call end
 				waitCallChange("END")
 
 			# No new files, carry one.
@@ -109,6 +133,20 @@ def checkNewRecording():
 		setState(1)
 		time.sleep(0.5)
 
+# Servers
+@app.route("/")
+def index():
+    global state
+    return render_template('index.html', the_state=state)
+
+def serverFunction():
+    app.run()
+
 
 if __name__ == '__main__':
-	checkNewRecording()
+    analysisThread = threading.Thread(target=checkNewRecording)
+    serverThread = threading.Thread(target=serverFunction)
+    print("Running analysisThread.")
+    analysisThread.start()
+    print("Running serverThread.")
+	serverThread.start()
