@@ -2,7 +2,7 @@
 
 # Launch monitoring server
 
-sudo ~/fyp/code/test_change_switch.py &
+sudo python3 ~/fyp/code/test_change_switch.py &
 
 # Startup script for kiosk mode
 
