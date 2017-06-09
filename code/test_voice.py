@@ -3,7 +3,6 @@
 import speech_recognition as sr
 
 # obtain path to "english.wav" in the same folder as this script
-from os import path
 AUDIO_FILE = "/Users/acrisne/git/fyp/trimmed.wav"
 
 # use the audio file as the audio source
