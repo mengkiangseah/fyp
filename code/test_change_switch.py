@@ -100,6 +100,7 @@ def checkNewRecording():
 			if addedFiles:
 				setState(3)
 				# Open recording
+				print(addedFiles[0])
 				audioFileIn = wave.open(addedFiles[0], mode='rb')
 
 				# Wait for call to start, then file size of file.
