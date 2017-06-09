@@ -41,7 +41,7 @@ def listDirectory(pathDirectory):
 def sendToBing():
 	r = sr.Recognizer()
 	with sr.AudioFile("/home/pi/output.wav") as source:
-	    audio = r.record(source)  # read the entire audio file
+		audio = r.record(source)  # read the entire audio file
 
 	# Microsoft Bing Voice Recognition API keys 32-character lowercase hexadecimal strings
 	BING_KEY = "32b3404f7cc74d34b426a360515a298b"
@@ -59,7 +59,7 @@ def sendToBing():
 # Waits for the call status to change based on switch
 def waitCallChange(question):
 	if question == "START":
-    	GPIO.wait_for_edge(27, GPIO.FALLING)
+		GPIO.wait_for_edge(27, GPIO.FALLING)
 	elif question == "END":
 		GPIO.wait_for_edge(27, GPIO.RISING)
 	else:
@@ -136,17 +136,17 @@ def checkNewRecording():
 # Servers
 @app.route("/")
 def index():
-    global state
-    return render_template('index.html', the_state=state)
+	global state
+	return render_template('index.html', the_state=state)
 
 def serverFunction():
-    app.run()
+	app.run()
 
 
 if __name__ == '__main__':
-    analysisThread = threading.Thread(target=checkNewRecording)
-    serverThread = threading.Thread(target=serverFunction)
-    print("Running analysisThread.")
-    analysisThread.start()
-    print("Running serverThread.")
-	serverThread.start()
+	analysisThread = threading.Thread(target=checkNewRecording)
+	serverThread = threading.Thread(target=serverFunction)
+	print("Running analysisThread.")
+	analysisThread.start();
+	print("Running serverThread.")
+	serverThread.start();
