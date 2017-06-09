@@ -100,7 +100,7 @@ def checkNewRecording():
 			if addedFiles:
 				setState(3)
 				# Open recording
-				audioFileIn = wave.open(addedFiles, mode='rb')
+				audioFileIn = wave.open(addedFiles[0], mode='rb')
 
 				# Wait for call to start, then file size of file.
 				waitCallChange("START")
@@ -142,8 +142,7 @@ def index():
 def serverFunction():
 	app.run()
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
 	analysisThread = threading.Thread(target=checkNewRecording)
 	serverThread = threading.Thread(target=serverFunction)
 	print("Running analysisThread.")
