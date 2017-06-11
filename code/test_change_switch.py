@@ -107,10 +107,11 @@ def checkNewRecording():
 				# Wait for call to start, then file size of file.
 				waitCallChange("START")
 				audioFileInSize = os.path.getsize(addedFiles[0])
+				setState(7)
 
 				# Wait for data to collect
 				time.sleep(lengthAudio + 0.5)
-
+				setState(3)
 				# Prepare file to be sent. Open output file, select data from recording, write.
 				audioFileOut = wave.open(outputFile, mode= 'wb')
 				audioFileOut.setparams((1, 2, 8000, 8000 * lengthAudio, 'NONE', 'not compressed'))
