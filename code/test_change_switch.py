@@ -40,7 +40,7 @@ def listDirectory(pathDirectory):
 # Send to Bing
 def sendToBing():
 	r = sr.Recognizer()
-	with sr.AudioFile("/home/pi/output.wav") as source:
+	with sr.AudioFile("/home/pi/outputFile.wav") as source:
 		audio = r.record(source)  # read the entire audio file
 
 	# Microsoft Bing Voice Recognition API keys 32-character lowercase hexadecimal strings
