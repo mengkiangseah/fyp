@@ -53,6 +53,7 @@ def sendToBing():
 	except sr.RequestError as e:
 		detectedSpeech = "Could not request results from Microsoft Bing Voice Recognition service; {0}".format(e)
 
+	print("Here is the output.")
 	print(detectedSpeech)
 	return detectedSpeech
 
@@ -101,11 +102,11 @@ def checkNewRecording():
 				setState(3)
 				# Open recording
 				print(addedFiles[0])
-				audioFileIn = wave.open(addedFiles[0], mode='rb')
+				audioFileIn = open(addedFiles[0], mode='rb')
 
 				# Wait for call to start, then file size of file.
 				waitCallChange("START")
-				oldsizeData = audioFileIn.getnframes()
+				audioFileInSize = os.path.getsize(addedFiles[0])
 
 				# Wait for data to collect
 				time.sleep(lengthAudio + 0.5)
@@ -113,8 +114,8 @@ def checkNewRecording():
 				# Prepare file to be sent. Open output file, select data from recording, write.
 				audioFileOut = wave.open(outputFile, mode= 'wb')
 				audioFileOut.setparams((1, 2, 8000, 8000 * lengthAudio, 'NONE', 'not compressed'))
-				audioFileIn.readframes(oldsizeData)
-				audioFileOut.writeframes(audioFileIn.readframes(8000 * lengthAudio))
+				audioFileIn.seek(audioFileInSize)
+				audioFileOut.writeframes(audioFileIn.read(2 * 8000 * lengthAudio))
 
 				# Process text metric, set state
 				spokenText = sendToBing()
