@@ -11,16 +11,16 @@
             {% elif the_state == 2 %}
             background-color: white;
 
-            {% elif the_state == 3 or the_state == 4%}
+			{% elif the_state == 3 or the_state == 4 or the_state == 5%}
 			background-color: #f2e6ff;
 
-            {% elif the_state == 5 %}
+            {% elif the_state == 6 %}
             background-color: green;
 
-            {% elif the_state == 6 %}
+            {% elif the_state == 7 %}
             background-color: orange;
 
-            {% elif the_state == 7 %}
+            {% elif the_state == 8 %}
             background-color: red;
 
             {% else %}
@@ -39,16 +39,16 @@
 			{% elif the_state == 2 %}
 			color: black;
 
-			{% elif the_state == 3 or the_state == 4%}
+			{% elif the_state == 3 or the_state == 4 or the_state == 5%}
 			color: #18414e;
 
-			{% elif the_state == 5 %}
+			{% elif the_state == 6 %}
 			color: chartreuse;
 
-			{% elif the_state == 6 %}
+			{% elif the_state == 7 %}
 			color: brown;
 
-			{% elif the_state == 7 %}
+			{% elif the_state == 8 %}
 			color: yellow;
 
 			{% else %}
@@ -78,13 +78,16 @@
 		{% elif the_state == 4 %}
 		Analysing Unknown Caller
 
-        {% elif the_state == 5 %}
-        Low Risk
+		{% elif the_state == 5 %}
+		Processing Unknown Caller
 
         {% elif the_state == 6 %}
-        Medium Risk
+        Low Risk
 
         {% elif the_state == 7 %}
+        Medium Risk
+
+        {% elif the_state == 8 %}
         High Risk!
 
         {% else %}

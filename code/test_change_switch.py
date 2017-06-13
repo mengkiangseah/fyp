@@ -2,6 +2,7 @@
 
 import os
 import time
+import math
 import RPi.GPIO as GPIO
 import wave
 import speech_recognition as sr
@@ -58,18 +59,25 @@ def sendToBing():
 	return detectedSpeech
 
 # Waits for the call status to change based on switch
-def waitCallChange(question):
-	if question == "START":
-		GPIO.wait_for_edge(27, GPIO.FALLING)
-	elif question == "END":
-		GPIO.wait_for_edge(27, GPIO.RISING)
-	else:
-		pass
-	return
+def waitCallChange(valueWaiting, wantTimeOut):
+	startTime = math.floor(time.time())
+	timeOut = False
+	changeDetected = False
+
+	while not (timeOut and wantTimeOut) and not changeDetected:
+		if GPIO.input(27) == valueWaiting:
+			time.sleep(0.25)
+			if GPIO.input(27) == valueWaiting:
+				changeDetected = True
+			else:
+				timeOut = math.floor(time.time()) - startTime > 35
+		else:
+			timeOut = math.floor(time.time()) - startTime > 35
+	return timeOut
 
 # Call danger metric
 def callMetric(wordsSpoken):
-	return 4
+	return 6
 
 
 # Polling function to check for new files
@@ -104,26 +112,31 @@ def checkNewRecording():
 				print(addedFiles[0])
 				audioFileIn = open(addedFiles[0], mode='rb')
 
-				# Wait for call to start, then file size of file.
-				waitCallChange("START")
-				audioFileInSize = os.path.getsize(addedFiles[0])
-				setState(7)
+				# Wait for call to start.
+				# Return true if call timeout.
+				if not waitCallChange(GPIO.LOW, True):
+					setState(4)
+					audioFileInSize = os.path.getsize(addedFiles[0])
 
-				# Wait for data to collect
-				time.sleep(lengthAudio + 0.5)
-				setState(3)
-				# Prepare file to be sent. Open output file, select data from recording, write.
-				audioFileOut = wave.open(outputFile, mode= 'wb')
-				audioFileOut.setparams((1, 2, 8000, 8000 * lengthAudio, 'NONE', 'not compressed'))
-				audioFileIn.seek(audioFileInSize)
-				audioFileOut.writeframes(audioFileIn.read(2 * 8000 * lengthAudio))
+					# Wait for data to collect
+					time.sleep(lengthAudio + 0.5)
+					setState(5)
+					# Prepare file to be sent. Open output file, select data from recording, write.
+					audioFileOut = wave.open(outputFile, mode= 'wb')
+					audioFileOut.setparams((1, 2, 8000, 8000 * lengthAudio, 'NONE', 'not compressed'))
+					audioFileIn.seek(audioFileInSize)
+					audioFileOut.writeframes(audioFileIn.read(2 * 8000 * lengthAudio))
 
-				# Process text metric, set state
-				spokenText = sendToBing()
-				setState(callMetric(spokenText))
+					# Process text metric, set state
+					spokenText = sendToBing()
+					setState(callMetric(spokenText))
 
-				# Wait for call end
-				waitCallChange("END")
+					# Wait for call to end.
+					callTimeout = waitCallChange(GPIO.HIGH, False)
+
+				# Call timeout
+				else:
+					pass
 
 			# No new files, carry one.
 			else:
