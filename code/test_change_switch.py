@@ -98,7 +98,7 @@ def checkNewRecording():
 		if GPIO.input(27) == GPIO.LOW:
 			# Set state, wait for call to end.
 			setState(2)
-			waitCallChange("END")
+			callTimeout = waitCallChange(GPIO.HIGH, False)
 
 		# Otherwise, check for change in files
 		else:
