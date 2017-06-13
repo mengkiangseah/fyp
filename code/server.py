@@ -6,7 +6,7 @@ global state
 @app.route("/")
 def index():
     global state
-    state = (state + 1) % 8
+    state = (state + 1) % 10
     return render_template('index.html', the_state=state)
 
 @app.route("/static/jquery.js")

@@ -11,32 +11,52 @@
             {% elif the_state == 2 %}
             background-color: white;
 
-            {% elif the_state == 3 %}
-            background-color: blue;
-
-            {% elif the_state == 4 %}
-            background-color: green;
+            {% elif the_state == 3 or the_state == 4%}
+			background-color: #f2e6ff;
 
             {% elif the_state == 5 %}
-            background-color: orange;
+            background-color: green;
 
             {% elif the_state == 6 %}
+            background-color: orange;
+
+            {% elif the_state == 7 %}
             background-color: red;
 
             {% else %}
-            background-color: red;
+            background-color: firebrick;
 
             {% endif %}
         }
 
         div {
             text-align: center;
-            {% if the_state == 2 %}
-            color: black;
-            {% else %}
-            color: white;
-            {% endif %}
-            vertical-align: middle;
+
+
+			{% if the_state == 1 %}
+			color: white;
+
+			{% elif the_state == 2 %}
+			color: black;
+
+			{% elif the_state == 3 or the_state == 4%}
+			color: #18414e;
+
+			{% elif the_state == 5 %}
+			color: chartreuse;
+
+			{% elif the_state == 6 %}
+			color: brown;
+
+			{% elif the_state == 7 %}
+			color: yellow;
+
+			{% else %}
+			color: white;
+
+			{% endif %}
+
+			vertical-align: middle;
             margin-top: 10%;
             font-size: 1000%;
         }
@@ -47,25 +67,28 @@
 
     <div>
         {% if the_state == 1 %}
-        System online.
+        System Online
 
         {% elif the_state == 2 %}
-        Known caller.
+        Known Caller
 
         {% elif the_state == 3 %}
-        Unknown caller. Analysing...
+        Incoming Unknown Caller
 
-        {% elif the_state == 4 %}
-        Low risk.
+		{% elif the_state == 4 %}
+		Analysing Unknown Caller
 
         {% elif the_state == 5 %}
-        Possible threat.
+        Low Risk
 
         {% elif the_state == 6 %}
+        Medium Risk
+
+        {% elif the_state == 7 %}
         High Risk!
 
         {% else %}
-        Error! Please reboot device.
+        Error! Reboot Device!
 
         {% endif %}
     </div>
