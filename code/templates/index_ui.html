@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Status Page</title>
+    <style type="text/css">
+        body {
+
+            {% if the_state == 1 %}
+            background-color: blue;
+
+            {% elif the_state == 2 %}
+            background-color: white;
+
+			{% elif the_state == 3 or the_state == 4 or the_state == 5%}
+			background-color: #f2e6ff;
+
+            {% elif the_state == 6 %}
+            background-color: green;
+
+            {% elif the_state == 7 %}
+            background-color: orange;
+
+            {% elif the_state == 8 %}
+            background-color: red;
+
+            {% else %}
+            background-color: firebrick;
+
+            {% endif %}
+        }
+
+        div {
+            text-align: center;
+
+			{% if the_state == 1 %}
+			color: white;
+
+			{% elif the_state == 2 %}
+			color: black;
+
+			{% elif the_state == 3 or the_state == 4 or the_state == 5%}
+			color: #18414e;
+
+			{% elif the_state == 6 %}
+			color: chartreuse;
+
+			{% elif the_state == 7 %}
+			color: brown;
+
+			{% elif the_state == 8 %}
+			color: yellow;
+
+			{% else %}
+			color: white;
+
+			{% endif %}
+
+			vertical-align: middle;
+            margin-top: 10%;
+            font-size: 1000%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        {% if the_state == 1 %}
+        System Online
+
+        {% elif the_state == 2 %}
+        Known Caller
+
+        {% elif the_state == 3 %}
+        Incoming Unknown Caller
+
+		{% elif the_state == 4 %}
+		Analysing Unknown Caller
+
+		{% elif the_state == 5 %}
+		Processing Unknown Caller
+
+        {% elif the_state == 6 %}
+        Low Risk
+
+        {% elif the_state == 7 %}
+        Medium Risk
+
+        {% elif the_state == 8 %}
+        High Risk!
+
+        {% else %}
+        Error! Reboot Device!
+
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
