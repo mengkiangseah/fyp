@@ -1,0 +1,29 @@
+%!TEX root = main.tex
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed.
+\\\\
+\hl{A brief discussion of the contents of the research. This section has been lifted from the Interim Report, but there are certain things I want to add. This includes more detail on analogue phone systems, and the SIP protocol. Additionally, a larger discussion on the types of scams, the financial and emotional costs, along with popular scam types will fill this part, particularly as the type of calls affects the voice portion of the method.}
+
+\section{Telephone Systems}
+\subsection{Analogue}
+Telephones are deceptively simple systems. Examination of a landline plug in the UK will reveal that only 2 of the many pins are actually connected! The way this system works it that both the power and signal are carried on the same wires. In the UK, the voltage between the two is at 50V DC, although this can vary \cite{telephone}.
+\\\\
+For a telephone in a house to work, it must interact with the exchange, which is run by the telephone service provide. When the phone is picked up, the voltage across the line changes. Older systems used this as the basis of the pulse dialing method, but the current modern way is to use DTMF, or Dual Tone multifrequency. Instead of relying on voltage changes, each key when pressed generates a two-frequency tone that the exchange is able to interpret \cite{telephone}.
+\\\\
+When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}.
+
+\section{Existing Filtration Methods}
+\subsection{Consumer Level}
+There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee. \hl{Discussion of BT's approach, along with how hobbyists have attempted to do this.}
+
+\subsection{Academic Research}
+There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yieled as much information as desired.
+\\\\
+\hl{More information about the research. Although not all are applicable to this project, there was a lot of interesting relevant content that helps to position the methods into more context. }
+\\\\
+\hl{The total amount of background research is not expected to exceed 3-4 pages.}
+
+\end{document}

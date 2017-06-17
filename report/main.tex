@@ -1,0 +1,140 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{upgreek}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage[font=footnotesize,labelfont=bf]{subcaption}
+\usepackage{lmodern}
+\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{eurosym}
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{framed}
+\usepackage{ulem}
+\usepackage{mystyle}
+\usepackage{lipsum}
+
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{subfiles}
+
+\usepackage{wrapfig}
+\usepackage{epstopdf}
+\usepackage{url}
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+\makeatletter
+\makeatother
+
+\usepackage{titlesec}
+\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter.}{20pt}{\LARGE}
+\titlespacing{\chapter}{0pt}{0pt}{12pt}
+
+\usepackage{float}
+
+\usepackage{enumitem}
+
+%Get rid of auto indent for paragraphs
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%End of stuff I have added
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\begin{document}
+\begin{titlepage}
+    % \newgeometry{top=25mm,bottom=25mm,left=38mm,right=32mm}
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{0pt}
+    % \fontfamily{phv}\selectfont
+
+    {
+    \Large
+    \raggedright
+    Imperial College London\\[17pt]
+    Department of Electrical and Electronic Engineering\\[17pt]
+    MEng Final Year Project Report 2017\\[17pt]
+    }
+
+    \rule{\columnwidth}{3pt}
+    \vfill
+    \centering
+      \includegraphics[width=0.7\columnwidth,height=60mm,keepaspectratio]{icl.jpg}
+    \vfill
+    \setlength{\tabcolsep}{0pt}
+
+    \begin{tabular}{p{40mm}p{\dimexpr\columnwidth-40mm}}
+	    Project Title: & \textbf{An Intelligent Telephone Interceptor for UK Landlines}\\[12pt]
+	    Student: & \textbf{Meng Kiang Seah} \\[12pt]
+	    CID: & \textbf{00699092} \\[12pt]
+	    Course: & \textbf{EEE4} \\[12pt]
+	    Project Supervisor: & \textbf{Dr. Thomas J. W. Clarke} \\[12pt]
+	    Second Marker: & \textbf{Dr. Jesus Rodriguez Manzano} \\
+    \end{tabular}
+\end{titlepage}
+
+% For final report
+
+\begin{acknowledgments}
+ 	Acknowledgements will go here. Supervisor, lab people (Halliwell, Salmon, Mabin, Root, Swiski, Engelbert, Booth, Akinola, Withers, Hartley), and voice artist (Root).
+\end{acknowledgments}
+
+\begin{abstract}
+This project was focused on creating a system that would intercept landline calls in the UK with the goal of eliminating, or reducing the number of unwanted spam, nuisance, or scam calls. The impact of these calls is greater in certain demographics who are more susceptible, notably the elderly.
+\\\\
+The system was designed to allow easy connection to an existing landline phone setup. To allow filtering and analysis with a computer, conversion from the analogue signals to a digital stream, and vice-versa was done by integrating commercially available products with free open-source software.
+\\\\
+A filtration method and flow were designed to remove cold calls, while running voice analysis on unknown callers to determine the likelihood of an illegitimate call. It sets up a challenge upon receiving a call to remove robot calls, separating unknown callers into three categories with voice analysis, and requesting irresponsive callers to redial. The system status was relayed through a simple colour-coded user interface.
+\\\\
+Overall, the setup showed its feasibility and functionality, while taking into account the limitations of an audience less familiar with technology for interfacing and setup.
+\end{abstract}
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+\subfile{introduction.tex}
+
+\chapter{Background Research}
+\subfile{background.tex}
+
+\chapter{Requirements Capture}
+\subfile{requirements.tex}
+
+\chapter{Design and Analysis}
+\subfile{design.tex}
+
+\chapter{Implementation}
+\subfile{implementation.tex}
+
+\chapter{Evaluation Plan/ Testing}
+\subfile{testing.tex}
+
+\chapter{Results}
+\subfile{results.tex}
+
+\chapter{Evaluation}
+\subfile{evaluation.tex}
+
+\chapter{Conclusion and Future Work}
+\subfile{conclusion.tex}
+
+\chapter{Bibliography}
+\begingroup
+	\def\chapter*#1{}
+\bibliographystyle{plain}
+\bibliography{fyp_refs}
+\endgroup
+
+\end{document}

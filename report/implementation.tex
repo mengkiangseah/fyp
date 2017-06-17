@@ -1,0 +1,73 @@
+%!TEX root = main.tex
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\hl{What was considered the ``Implementation Plan'' in the Interim Report will be converted into the implementation itself, describing how the system works, with some diagrams of the call flow, the methods of filtration, and how the entire system is put together, from PSTN interface to UI. This section will go into the details of all the types. Any algorithms will be here, as well as the technical nitty-gritty. }
+
+\section{Current Progress}
+\subsection{Landline-SIP Input}
+Originally, the idea of interfacing directly with the telephone line was considered. A series of relays, combined with Analogue to Digital Converters (ADCs) and Digital to Analogue (DAC) could conceivably interact with a normal landline phone to feed the information into the Raspberry Pi. The difficulty with this method is that to use the full range of Asterisk functionality, the inputs have to be in SIP format. The conversion process itself would be very time-consuming.
+\\\\
+A workaround considered was the Cisco SPA3102 \cite{spa3102-specs} as an adapter. However, this idea was quickly scrapped for a number of reasons. First, the device was no longer supported by Cisco as it had reached its end-of-sale dates. This also meant that prices were extremely high, in the order of hundreds of dollars \cite{spa3102-amazon}.
+\\\\
+Fortunately, an alternative was found. This was the Obi110, from Obihai \cite{obi110-specs}. This device also had the ability to interface with a PBX and a landline simultaneously. In fact, some users on blogs have written how they have combined the Obi110 with the Raspberry Pi running Asterisk \cite{freepbx} \cite{bryanross}. Discussion of the work of these hobbyists was considered material for the implementation section rather than the background research as none of them applied any non-naive call filtration methods.
+\\\\
+Approval for the purchase device was received from the Finance department and the device has since been obtained. However, it has yet to be configured.
+
+\subsection{Asterisk Based Filtering}
+The Asterisk for Raspberry Pi website, as cited previously, offers images for a complete Raspbian-based operating system (OS) with Asterisk configured on it. This was used and installed on a Raspberry Pi 3. The configuration experimentation on this platform is currently ongoing.
+
+\subsection{Output}
+Instead of buying a VoIP phone, spare one was obtained from the department, which solves this segment quite neatly. However, it will require some configuration for it to work.
+
+\section{Future Progress Plan}
+\subsection{Work Needed}
+The basic implementation, as a barebones setup, is a simple passthrough of calls from the landline through to the adapter, to the Raspberry Pi, and finally to the output phone. The remaining work needed for the basic requires the Obi110 to be configured, and the Asterisk on the Pi to be configured as well.
+\\\\
+The filtration systems in mind include a series of simple naive ones, such as a keypad button challenge, a blacklist and a firm warning for the caller that the system is monitored. Only if these are successfully implemented will more complex methods be used, such as a voice analysis.
+\\\\
+It is at this point that more qualitative methods can be explored. This includes analysing how quickly the caller answers the phone, or how fast they speak. These can be linked to the trustworthiness, and the system can return a confidence rating for the legitimacy of the call.
+
+\subsection{Additional Features}
+\subsubsection{Emergency Calls}
+A common issue with VoIP systems is their ability to process emergency calls. And as mentioned above, the phone line is a powered one that is independent of the electricity in a flat. In a blackout, if only the power fails, phone calls are still possible. With so many devices between the phone and the socket, not only can it not be powered from the phone line, but if any one device fails, the entire system goes down. The solution is to have a relay or a bypass that can be used in an emergency, a power failure, or a device malfunction.
+
+\subsubsection{User Interface}
+The method for the user interface will need to be determined. The current OS runs without an graphical user interface (GUI), meaning that an additional interface is necessary. This will need to be created, and how it will be presented (web interface or through the use of a screen) will require more experimentation.
+
+\subsubsection{Answering Machine and Caller ID}
+These two features are commonly found on conventional home phones. There should be an attempt to include them in the final system as the goal is to add the filtration to a landline, and not to compromise any existing functionality.
+
+\section{Timeline}
+In planning the timeline, a number of dates were kept in mind. There are two exams in May, on the 4th and the 8th. Thus the additional of exam studying time. The draft report is due on the 5th of June and the final report on the 21st of June. Thus, the project is broken down into segments and the estimate completion date, along with a rough outline of the time needed, as Table \ref{tbl:plan} shows.
+
+\begin{table}[H]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Task}                             & \textbf{Start Date} & \textbf{Completion Date}  & \textbf{Time Required} \\ \hline
+Inputs and outputs configured             & Immediately         & 12th Feb                  & 2 weeks part-time \\
+Passthrough system working                & 12th Feb            & 26th Feb                  & 2 weeks part-time \\
+Naive methods implemented                 & 26th Feb            & 31st Mar                  & 5 weeks part-time \\
+Complex methods                           & 31st Mar            & 16th Apr                  & 2 weeks full-time \\
+Exam studying                             & 16th Apr            & 8th May                   & 3 weeks full-time \\
+Complex methods and report writing        & 8th May             & 24th May                  & 2.5 weeks full-time \\
+Report writing                            & 24th May            & 5th June                  & 1.5 weeks full-time \\
+Additional features and report editing    & 5th June            & 21st June                 & 2.5 weeks full-time \\
+Demonstration and final additions         & 21st June           & Presentation Day          & 1 week full-time \\ \hline
+\end{tabular}}
+\caption{Project Timeline Planning}
+\label{tbl:plan}
+\end{table}
+
+\section{Fallbacks and Risks}
+Certain tasks in Table \ref{tbl:plan} are more guaranteed to succeed than others. For example, getting the passthrough system working is more likely that not to succeed, given the range of hobbyists who have already succeeded and posted proof of their successes. The uncertainty lies in the filtration methods. In fact, all the tasks are arranged in incremental order.
+\\\\
+The naive methods of passcode challenging, warnings, and lists are first attempted because they are easier to implement and help to determine if complex methods are possible. At the very worst, even if all further attempts fail, the very basic methods will remove robotic calls. However, the reason why it is allocated so much time is because it is the first attempt at configuring the Asterisk software beyond simple call routing, and means there is an additional level of complexity. This, combined with how crucial it is as a first step to filtration means it is given a high level of priority and time.
+\\\\
+The exact implementations of the complex methods are given quite a long while because it is that segment which will set this system apart from existing solutions available on the market. This is also why it is given as much full-time work as is possible. The time allocated to this section goes on all the way until right before the final report is due. The ``exam break'' is taken into account because, as the project guide says \cite{guide}, neglecting exams for the final year project is a bad idea.
+\\\\
+
+\end{document}
