@@ -21,9 +21,14 @@
 \usepackage{mystyle}
 \usepackage{lipsum}
 
+% For highlighting and for subfiles
 \usepackage{xcolor}
 \usepackage{soul}
 \usepackage{subfiles}
+
+% For diagrams
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
 
 \usepackage{wrapfig}
 \usepackage{epstopdf}
@@ -33,12 +38,13 @@
 \makeatletter
 \makeatother
 
+% Removes numbering from Chapter Title, while preserving it in the contents.
+% Also removes the annoying "CHAPTER" part at the start.
 \usepackage{titlesec}
-\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter.}{20pt}{\LARGE}
+\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter.}{24pt}{\LARGE}
 \titlespacing{\chapter}{0pt}{0pt}{12pt}
 
 \usepackage{float}
-
 \usepackage{enumitem}
 
 %Get rid of auto indent for paragraphs
@@ -46,12 +52,19 @@
 \setlength{\tindent}{\parindent}
 \setlength{\parindent}{0pt}
 \renewcommand{\indent}{\hspace*{\tindent}}
+%End of stuff from Conor%
 
-%End of stuff I have added
+% Something to ensure the tiles and numbers do not overlap.
+\usepackage{tocloft}
+\addtolength{\cftsecnumwidth}{5pt}
 
+% Configure contents page.
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
+
 \begin{document}
+
+% Title page from project website.
 \begin{titlepage}
     % \newgeometry{top=25mm,bottom=25mm,left=38mm,right=32mm}
     \setlength{\parindent}{0pt}
@@ -101,40 +114,45 @@ Overall, the setup showed its feasibility and functionality, while taking into a
 
 \pagenumbering{roman}
 \tableofcontents
-\newpage
 
-\chapter{Introduction}
+\chapter{Introduction}\label{chp:int}
 \subfile{introduction.tex}
 
-\chapter{Background Research}
+\chapter{Background Research}\label{chp:bac}
 \subfile{background.tex}
 
-\chapter{Requirements Capture}
+\chapter{Requirements Capture}\label{chp:req}
 \subfile{requirements.tex}
 
-\chapter{Design and Analysis}
+\chapter{Design and Analysis}\label{chp:des}
 \subfile{design.tex}
 
-\chapter{Implementation}
+\chapter{Implementation}\label{chp:imp}
 \subfile{implementation.tex}
 
-\chapter{Evaluation Plan/ Testing}
+\chapter{Evaluation Plan/ Testing}\label{chp:tes}
 \subfile{testing.tex}
 
-\chapter{Results}
+\chapter{Results}\label{chp:res}
 \subfile{results.tex}
 
-\chapter{Evaluation}
+\chapter{Evaluation}\label{chp:eva}
 \subfile{evaluation.tex}
 
-\chapter{Conclusion and Future Work}
+\chapter{Conclusion and Future Work}\label{chp:con}
 \subfile{conclusion.tex}
 
-\chapter{Bibliography}
+\chapter{Bibliography}\label{chp:bib}
 \begingroup
 	\def\chapter*#1{}
 \bibliographystyle{plain}
 \bibliography{fyp_refs}
 \endgroup
+
+\chapter{Appendices}\label{chp:app}
+\renewcommand{\thesection}{\Alph{section}}
+\section{Scripts}
+\section{Survey}
+
 
 \end{document}
