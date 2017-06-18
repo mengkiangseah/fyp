@@ -2,12 +2,9 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
-To properly understand the context of the project, background information is required. As this project was centered around UK landlines and spam call filtration, the main focus of the background was on analogue telephone lines. Additionally, 
-
-This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed.
+To properly understand the context of the project, background information is required. As this project was centered around UK landlines and spam call filtration, the main focus of the background was on analogue telephone lines. Additionally, having been pointed in the direction of Asterisk, a brief section on is included, as is the Session Initiation Protocol (SIP), which is a popular Voice over Internet Protocol (VoIP) that Asterisk supports.
 \\\\
-\hl{A brief discussion of the contents of the research. This section has been lifted from the Interim Report, but there are certain things I want to add. This includes more detail on analogue phone systems, and the SIP protocol. Additionally, a larger discussion on the types of scams, the financial and emotional costs, along with popular scam types will fill this part, particularly as the type of calls affects the voice portion of the method.}
-
+% This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed.
 \section{Telephone Systems}
 \subsection{Analogue}
 Telephones are deceptively simple systems. Examination of a landline plug in the UK will reveal that only 2 of the many pins are actually connected! The way this system works it that both the power and signal are carried on the same wires. In the UK, the voltage between the two is at 50V DC, although this can vary \cite{telephone}.
@@ -16,12 +13,23 @@ For a telephone in a house to work, it must interact with the exchange, which is
 \\\\
 When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}.
 
+\subsection{Session Initiation Protocol}
+
+\section{Phone Scams in the UK}
+As mentioned in the
+
 \section{Existing Filtration Methods}
 \subsection{Consumer Level}
-There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee. \hl{Discussion of BT's approach, along with how hobbyists have attempted to do this.}
+There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee. \hl{BT here}
+
+\subsection{Related Hobby Projects}
+
+\hl{Nomorobo: reroute to them. VOIP and Mobiles only. Not discuss about it, mostly likely a listing and maybe prompt.}
+\hl{Ross: Acutally using hte Freepbx and the Obihai, but uses a time based thing, then if not caller Id. If not, then type in then reroute. }
+\hl{Murphy using a modem instead. Modem not avaialble, also 56K modems in this age, very difficult to find/drivers/compatible with the modern VOIP.}
 
 \subsection{Academic Research}
-There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yieled as much information as desired.
+There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yielded as much information as desired.
 \\\\
 \hl{More information about the research. Although not all are applicable to this project, there was a lot of interesting relevant content that helps to position the methods into more context. }
 \\\\
