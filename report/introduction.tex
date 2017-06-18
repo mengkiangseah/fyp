@@ -1,16 +1,26 @@
 %!TEX root = main.tex
-\documentclass[main.tex]{subfiles}
+% \documentclass[main.tex]{subfiles}
 
-\begin{document}
+% \begin{document}
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-While the term ``spam'' first brings to mind junk emails, it can also mean any other kind of unsolicited communications. Unwanted phone calls are no exception, and are a nuisance, as anyone who has received one can tell you. However, they become more than just an inconvenience when they are scam calls. These calls are made by a malicious party with the express intention to defraud, whether in terms of stealing personal information, financial details, or just money.
-\\\\
-A simple way to prevent these unwanted call from getting through is to filter incoming calls to a phone number. However, more that just a blacklist or whitelist, a more effective solution would be able to determine the legitimacy of each caller. The goal is to create a system with an effective filter to ensure only desirable calls get through.
-\\\\
-This report outlines what exactly such a system would require, which governs the philosophy behind its design. The implementation discuss the practical aspects of creating the system, and chronicles the challenges encountered and solutions found. The testing and results sections demonstrate the performance of all parts of the implementation, both individually and as a whole. This is then critically evaluated before the conclusion of the report.  
-\\\\
-\hl{Content to be added: More about the problem and solution. Some additional context, particular a source to back up the impact and extent of fraudulent calls, both economically and maybe emotionally? Report structure to follow as well. This will lead up to the Introduction not exceeding a single page.}
+The term ``spam'' can evoke a wide range of feelings. Famously featuring in one of Monty Python's sketches, the brand name of canned luncheon meat is now most commonly associated with unwanted junk emails about unspent fortunes, cheap prescription drugs, and get-rich-quick schemes. But it can also mean any other kind of unsolicited communications.
+\vspace{-0.5cm}
+\\
+\begin{wrapfigure}{r}{0.35\textwidth}
+	\centering
+	\captionsetup{width=0.3\textwidth}
+	\includegraphics[width=0.25\textwidth]{pics/spam}
+	\caption{The infamous Spam brand luncheon meat \cite{spamlogo}. }
+	\label{fig:spam}
+\end{wrapfigure}
 
-\end{document}
+Unwanted phone calls are no exception, and are a nuisance, as anyone who has received one can tell you. Cold calls for marketing, queries about Payment Protection Insurance (PPI), or recent car accidents are just some of the variations. Hundreds of people lodge complaints about these calls daily \cite{bbc-coldcalls}. However, they become more than just an inconvenience when they can cause financial loss.
+\\\\
+These dangerous calls are made by a malicious party with the express intention to defraud, whether in terms of stealing personal information, financial details, and money. The size of cybercrime is immense, with millions of cases annually in the UK \cite{bbc-number}, with some call scams defrauding over £113 million from their victims \cite{guardian-cost}. The cost of this fraud to the economy has already hit £1 billion, and is expected to increase in the coming years \cite{guardian-cost}.
+\\\\
+A solution to prevent fraud would be to make sure that all nuisance calls are blocked, which also prevents telephone users from time-wasting frustrations. These unwanted call can be stopped from getting through by filtering incoming calls to a phone number. However, more that just a blacklist or whitelist, an effective solution would be able to determine the legitimacy of each caller. The goal is to create a system with an effective identification and filtration system to ensure only desirable calls get through. This would be highly beneficial to anyone wanting to reduce the risk of a fraudulent call.
+\\\\
+This report outlines what exactly such a system would require, which governs the philosophy behind its design. The implementation discuss the practical aspects of creating the system, and chronicles the challenges encountered and solutions found. The testing and results sections demonstrate the performance of all parts of the implementation, both individually and as a whole. This is then critically evaluated before the conclusion of the report.
+% \end{document}

@@ -59,8 +59,10 @@
 \addtolength{\cftsecnumwidth}{5pt}
 
 % Configure contents page.
-\setcounter{tocdepth}{2}
-\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+
+\usepackage{setspace}
 
 \begin{document}
 
@@ -98,6 +100,8 @@
 
 % For final report
 
+\setstretch{1.15}
+
 \begin{acknowledgments}
  	Acknowledgements will go here. Supervisor, lab people (Halliwell, Salmon, Mabin, Root, Swiski, Engelbert, Booth, Akinola, Withers, Hartley), and voice artist (Root).
 \end{acknowledgments}
@@ -112,11 +116,14 @@ A filtration method and flow were designed to remove cold calls, while running v
 Overall, the setup showed its feasibility and functionality, while taking into account the limitations of an audience less familiar with technology for interfacing and setup.
 \end{abstract}
 
+\setstretch{1}
+
 \pagenumbering{roman}
 \tableofcontents
 
+\setstretch{1.15}
 \chapter{Introduction}\label{chp:int}
-\subfile{introduction.tex}
+\input{introduction.tex}
 
 \chapter{Background Research}\label{chp:bac}
 \subfile{background.tex}
@@ -145,7 +152,7 @@ Overall, the setup showed its feasibility and functionality, while taking into a
 \chapter{Bibliography}\label{chp:bib}
 \begingroup
 	\def\chapter*#1{}
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{fyp_refs}
 \endgroup
 

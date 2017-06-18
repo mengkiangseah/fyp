@@ -8,8 +8,14 @@ Colour vs. black and white.
 
 Demo? Video. Volunteering.
 
-
-
+Introduction
 Requirements
+
+
+Background
 Design and Analysis
 Implementation
+Testing
+Results
+Evaluation
+Conclusion
