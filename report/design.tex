@@ -11,7 +11,7 @@ In working on the design of this system, the requirements as discussed in Chapte
 	\item Not too difficult for a genuine caller to get through
 \end{enumerate}
 
-Firstly, the entire system must fit into existing setups. There should be no need for additional equipment apart from the system requiring power, and plug the phone and landline into it. This leads on to the second point: it should be as self-contained as possible. There is no guarantee of any other features available at the landline. Finally, for simplicity, given the audience in mind, the system should work without any input from the user.
+Firstly, the entire system must fit into existing setups. There should be no need for additional equipment apart from the system requiring power, and plug the phone and landline into it. This leads on to the second point: it should be as self-contained as possible. There is no guarantee of any other features available at the landline. Finally, for simplicity, given the audience in mind, the system should work without any input from the user. These Design Aims are referenced repeatedly through this section as they guided the system design process.
 
 \section{Landline and Telephone Interface}
 Three options presented themselves in this section. First, the idea of interfacing directly with the telephone line was considered. A series of relays, combined with Analogue to Digital Converters (ADCs) and Digital to Analogue (DAC) could conceivably interact with a normal landline phone to feed the information into the Raspberry Pi. The difficulty with this method is that to use the full range of Asterisk functionality, the inputs have to be in SIP format. The conversion process itself would be very time-consuming.
@@ -56,16 +56,102 @@ While a router could be used, the Raspberry Pi can be configured to perform as a
 	\label{fig:connections}
 \end{figure}
 
-\section{Core System and Identification Methods}
-Of the various ideas found through research, the work of Tu et al. \cite{cisco} offered an excellent summary of methods that would work best in the context of this project. The commercially available methods in Section \ref{sec:methods} all relied on a large database of blacklisted numbers, with the option of adding approved numbers to a whitelist. However, creating, maintaining, and sharing this list goes against Design Aim 2, which was to keep the system self-contained. In fact, it also affects the Design Aim 1 because they all require Caller ID. While a user \textit{might} either already have Caller ID or consider getting Caller ID, those methods \textit{need} Caller ID.
+\section{Identification Methods}
+\subsection{Analysis of Academic Methods}
+Of the various ideas found through research, as seen in section \ref{sec:methods}, the work of Tu et al. \cite{cisco} offered an excellent summary of methods that would work best in the context of this project. The commercially available methods in Section \ref{sec:methods} all relied on a large database of blacklisted numbers, with the option of adding approved numbers to a whitelist. However, creating, maintaining, and sharing this list goes against Design Aim 2, which was to keep the system self-contained. In fact, it also affects the Design Aim 1 because they all require Caller ID. While a user \textit{might} either already have Caller ID or consider getting Caller ID, those methods \textit{need} Caller ID.
 \\\\
 The other ideas from Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo} were not considered because they were not meant for deployment on an individual level, or meant for a purely VoIP system. This was against Design Aim 1. Finally, the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl} were not considered because of three reasons. One, the clustering methods used in their systems included call-origination details, which like Caller ID is not viable. Secondly, the audio fingerprinting relied on the infrastructure used by the scammers, which included the line characteristics. In receiving the call through VoIP, the receiver's infrastructure does not introduce any additional line characteristics. But if a user is receiving the call through a landline, then the receiving line might be adding its own characteristics to the call and would affect the identification process. And three, the clustering system ran on a 6-core server with 16GB of RAM, which puts it at odds with Design Aim 2 through its size.
 \\\\
-Thus, the ideas of Tu et al. \cite{cisco} were considered. It is worth also nothing that they is no mention of the practical aspects of their ideas, as they did not implement any of their ideas. Their ideas were split into 3 broad groups: Call Request Header Analysis, Voice Interactive Screening and Caller Compliance. Immediately, the first category of methods were eliminated, as they rely on information from the call that is not guaranteed to be available to the user.
-\\\\
-In the Voice Interactive Screen section, the methods detailed include audio fingerprinting, speech content analysis, acoustic pattern analysis, and a Turing test \cite{cisco}. The option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A Turing test was an interactive prompt which would be easy for a human caller to pass, but difficult for a computer.
-\\\\
+Thus, the ideas of Tu et al. were considered. It is worth also nothing that they is no mention of the practical aspects of their ideas, as they did not implement any of their ideas. Their ideas were split into 3 broad groups: \begin{enumerate}
+	\item Call Request Header Analysis
+	\item Voice Interactive Screening
+	\item Caller Compliance
+\end{enumerate}
 
+Immediately, the first category of methods was eliminated, as they all rely on information from the call that is not guaranteed to be available to the user \cite{cisco}.
+\\\\
+In the Voice Interactive Screen section, the methods all involve analysing the audio data from the call. They include \cite{cisco}:
+\begin{enumerate}
+	\item Audio fingerprinting
+	\item Speech content analysis
+	\item Acoustic pattern analysis
+	\item Turing test
+\end{enumerate}
+
+The first option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A Turing test was an interactive prompt which would be easy for a human caller to pass, but difficult for a computer. All of them present the challenge of real-time processing of the audio \cite{cisco}.
+\\\\
+This leaves the group of methods known as Caller Compliance, which are methods that involves callers, prior to the call, to establish their legitimacy. The methods are \cite{cisco}:
+\begin{enumerate}
+	\item Do Not Call registry
+	\item Graylisting
+	\item Consent-based communication
+	\item Callback verification
+	\item Weakly secret information
+	\item Payment at risk
+	\item Proof of work/identity
+\end{enumerate}
+
+Option 1 is identical to the TPS \cite{tps}, which already exists, and can be done independently of this system. Hence, it was not considered. Options 6 and 7 are not suitable for personal use, directly against Design Aim 4. They involve the caller putting a monetary deposit at risk, spending time performing calculations to prove motivation of calling, or proving their identify. Some of these are not possible over the landline, and some are only viable over VoIP systems. Additionally, they work to discourage large groups of spam calls by increasing the cost to the spam caller, but only show their advantage when employed in a large group.
+\\\\
+Graylisting is the method of rejecting the first call, and accepting the second call from the user. However, this requires Caller ID. Consent-based communication is like the BT method of a virtual assistant screening calls, as mentioned in Section \ref{sec:methods}. Callback verification involves the caller leaving their number, and other details, so that the user can choose to call them back. This is not always suitable as it means that the user is paying for every call. Weakly secret information consists of having a code pre-communicated to legitimate callers, allowing their call to proceed.
+
+\subsection{Methods Chosen and Call Flow}
+Of all the methods mentioned, the ones that were not immediately discarded and are deemed possible are as follows:
+
+\begin{enumerate}
+	\item Speech content analysis
+	\item Acoustic content analysis
+	\item Turing test
+	\item Consent-based communication
+	\item Callback verification
+	\item Weakly secret information
+\end{enumerate}
+
+But before refining this, the kinds of classification needs to be refined. The types of calls that a user can received as are follows:
+
+However, this list is too long. There is the problem of chaining too many methods as that will cause the overall time taken for a legitimate caller to reach the user to be too long. This is directly in conflict with Design Aim 4. As Option 4 was already implemented by BT, it was decided that other methods would be more worthwhile, as they would not be currently available to consumers. Option 5 was, while possible, not sustainable, as it required every call to be made by the user, meaning that the financial implications were considerable. This left Options 1, 2, 3, and 7.
+\\\\
+As Options 1 and 2 were similar in nature, it would more suitable to choose one over the other. Both posed a challenge in terms of processing power. The Raspberry Pi 3, while more capable than its predecessors, is still not such a powerful computer. Combined with the requirements of running the Asterisk server, doing high-levels of voice processing were challenging. Speech content analysis, which is essentially voice recognition, has the advantage of being existing libraries
+
+\begin{enumerate}
+	\item Human known callers
+	\item Human unknown callers
+	\begin{enumerate}
+		\item Legitimate callers
+		\item Scam callers
+	\end{enumerate}
+	\item Robotic callers
+\end{enumerate}
+
+\begin{figure}[htb]
+\centering
+	\begin{tikzpicture}[node distance=3cm]
+	    % We start by placing the blocks
+	    \node [input, align=center] (input) {Incoming\\Call};
+		\node [block, align=center, right of=input] (message) {Welcome\\Message};
+		\node [block, align=center, below of=message] (weakly) {Weakly\\Secret\\Code\\Used};
+		\node [block, align=center, right of=message] (turing) {Turing\\Test};
+		\node [block, align=center, right of=turing] (pass) {Pass\\Test};
+		\node [block, align=center, above of=turing] (fail) {Fail\\Test};
+		\node [block, align=center, right of=fail] (goodbye) {Goodbye\\Message};
+		\node [block, align=center, right of=pass] (voice) {Voice\\Analysis};
+		\node [output, align=center, right of=voice] (output) {User\\with\\Results};
+
+	    % Once the nodes are placed, connecting them is easy.
+	    \draw [draw,->] (input) -- node[align=center] {} (message);
+	    \draw [->] (message) -- node[align=center]  {} (turing);
+		\draw [->] (message) -- node[align=center]  {} (weakly);
+		\draw [->] (weakly) -| node[align=center]  {} (output);
+		\draw [->] (turing) -- node[align=center]  {} (fail);
+		\draw [->] (turing) -- node[align=center]  {} (pass);
+		\draw [->] (fail) -- node[align=center]  {} (goodbye);
+		\draw [->] (pass) -- node[align=center]  {} (voice);
+		\draw [->] (voice) -- node[align=center]  {} (output);
+
+	\end{tikzpicture}
+	\caption{Overall Call Flow}
+	\label{fig:callflow}
+\end{figure}
 
 \section{User Interface}
 In line with the Design Aim 3, the decision was made to have to have a
@@ -124,9 +210,6 @@ The Obi110 suffers from a drawback in that it is powered from the mains. In a po
 	\label{fig:bypass}
 \end{figure}
 
-
-\hl{This section will highlight the choices and progression of the design and features. While the actual method I used was a more agile-modular approach to the system, I will reorganise the material. This section will feature the choices, features, and justifications behind each element's final form.}
-\\\\
-\hl{There is also a particular paper on IEEE Xplore that evaluated and suggested a number of filtration algorithms, some of which I am using here. However, the paper did not attempt any of them practically, and they were more suitable to pure VoIP phones, along with not considering any of the intended audience. Combining their findings, with my analysis from a practical perspective, and knowing the more restricted audience, I will look at how my filtration flow stacks up. Their methods of evaluating forms of filtration will also be reconsidered, and I am planning on critically commenting it. All this means this chapter will be at least 5-6 pages, but may extend up to 10.}
+% \hl{There is also a particular paper on IEEE Xplore that evaluated and suggested a number of filtration algorithms, some of which I am using here. However, the paper did not attempt any of them practically, and they were more suitable to pure VoIP phones, along with not considering any of the intended audience. Combining their findings, with my analysis from a practical perspective, and knowing the more restricted audience, I will look at how my filtration flow stacks up. Their methods of evaluating forms of filtration will also be reconsidered, and I am planning on critically commenting it. All this means this chapter will be at least 5-6 pages, but may extend up to 10.}
 
 \end{document}
