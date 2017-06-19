@@ -75,10 +75,10 @@ In the Voice Interactive Screen section, the methods all involve analysing the a
 	\item Audio fingerprinting
 	\item Speech content analysis
 	\item Acoustic pattern analysis
-	\item Turing test
+	\item Reverse Turing test
 \end{enumerate}
 
-The first option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A Turing test was an interactive prompt which would be easy for a human caller to pass, but difficult for a computer. All of them present the challenge of real-time processing of the audio \cite{cisco}.
+The first option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A reverse Turing test would be something easy for a human caller to pass, but difficult for a computer. All of them present the challenge of real-time processing of the audio \cite{cisco}.
 \\\\
 This leaves the group of methods known as Caller Compliance, which are methods that involves callers, prior to the call, to establish their legitimacy. The methods are \cite{cisco}:
 \begin{enumerate}
@@ -96,32 +96,35 @@ Option 1 is identical to the TPS \cite{tps}, which already exists, and can be do
 Graylisting is the method of rejecting the first call, and accepting the second call from the user. However, this requires Caller ID. Consent-based communication is like the BT method of a virtual assistant screening calls, as mentioned in Section \ref{sec:methods}. Callback verification involves the caller leaving their number, and other details, so that the user can choose to call them back. This is not always suitable as it means that the user is paying for every call. Weakly secret information consists of having a code pre-communicated to legitimate callers, allowing their call to proceed.
 
 \subsection{Methods Chosen and Call Flow}
-Of all the methods mentioned, the ones that were not immediately discarded and are deemed possible are as follows:
+
+But before deciding on the methods, the kinds of classification needs to be refined. The types of calls that a user can received as are follows:
 
 \begin{enumerate}
-	\item Speech content analysis
-	\item Acoustic content analysis
-	\item Turing test
-	\item Consent-based communication
-	\item Callback verification
-	\item Weakly secret information
-\end{enumerate}
-
-But before refining this, the kinds of classification needs to be refined. The types of calls that a user can received as are follows:
-
-However, this list is too long. There is the problem of chaining too many methods as that will cause the overall time taken for a legitimate caller to reach the user to be too long. This is directly in conflict with Design Aim 4. As Option 4 was already implemented by BT, it was decided that other methods would be more worthwhile, as they would not be currently available to consumers. Option 5 was, while possible, not sustainable, as it required every call to be made by the user, meaning that the financial implications were considerable. This left Options 1, 2, 3, and 7.
-\\\\
-As Options 1 and 2 were similar in nature, it would more suitable to choose one over the other. Both posed a challenge in terms of processing power. The Raspberry Pi 3, while more capable than its predecessors, is still not such a powerful computer. Combined with the requirements of running the Asterisk server, doing high-levels of voice processing were challenging. Speech content analysis, which is essentially voice recognition, has the advantage of being existing libraries
-
-\begin{enumerate}
-	\item Human known callers
-	\item Human unknown callers
+	\item Known human callers
+	\item Unknown human callers
 	\begin{enumerate}
 		\item Legitimate callers
 		\item Scam callers
 	\end{enumerate}
 	\item Robotic callers
 \end{enumerate}
+
+Thus, the methods must be able to discern between those 4 categories. Of all the methods mentioned, the ones that were not immediately discarded and are deemed possible are as follows:
+
+\begin{enumerate}
+	\item Speech content analysis
+	\item Acoustic content analysis
+	\item Reverse Turing test
+	\item Consent-based communication
+	\item Callback verification
+	\item Weakly secret information
+\end{enumerate}
+
+However, this list is too long. There is the problem of chaining too many methods as that will cause the overall time taken for a legitimate caller to reach the user to be too long. This is directly in conflict with Design Aim 4. As Option 4 was already implemented by BT, it was decided that other methods would be more worthwhile, as they would not be currently available to consumers. Option 5 was, while possible, not sustainable, as it required every call to be made by the user, meaning that the financial implications were considerable. This left Options 1, 2, 3, and 7.
+\\\\
+Option 3, the reverse Turing test, is ideal for identifying the Robotic Callers. Thus, it was a chosen method. The weakly secret information method, Option 7, is ideal for identifying the Known Human Callers. Thus, it was another chosen method. This leaves the identification of the unknown human scam callers from the unknown human legitimate callers. Options 1 and 2 were similar in nature and both posed a challenge in terms of processing power. The Raspberry Pi 3, while more capable than its predecessors, is still not such a powerful computer. Combined with the requirements of running the Asterisk server, doing high-levels of voice processing were challenging.
+\\\\
+As a compromise, speech content recognition was ultimately chosen as it offers the ease of developping a metric from the words detected. There is also an additional method not mentioned in the academic research. Having a firm warning at the beginning of the call as a welcome message could potentially deter would-be scammers. Thus, the overall call flow is shown in Figure \ref{fig:callflow}.
 
 \begin{figure}[htb]
 \centering
@@ -135,7 +138,7 @@ As Options 1 and 2 were similar in nature, it would more suitable to choose one 
 		\node [block, align=center, above of=turing] (fail) {Fail\\Test};
 		\node [block, align=center, right of=fail] (goodbye) {Goodbye\\Message};
 		\node [block, align=center, right of=pass] (voice) {Voice\\Analysis};
-		\node [output, align=center, right of=voice] (output) {User\\with\\Results};
+		\node [output, align=center, right of=voice] (output) {User};
 
 	    % Once the nodes are placed, connecting them is easy.
 	    \draw [draw,->] (input) -- node[align=center] {} (message);
@@ -152,6 +155,11 @@ As Options 1 and 2 were similar in nature, it would more suitable to choose one 
 	\caption{Overall Call Flow}
 	\label{fig:callflow}
 \end{figure}
+
+The system is designed to allow the known caller to bypass the Turing test by entering the weakly secret information during the welcome message. This could be a simple code. If the Turing test is failed, there is a goodbye message. This is to advise the caller on how to proceed should be human, but accidentally failed the Turing test. The way this test was constructed should be easy for a human to pass, but difficult for a computer. Thus, a simple ``Press 1 to continue'' would suffice. The number could be chosen randomly, and randomised each time.
+Extracting the speech content of the call raises two points. Firstly, how exactly are the words spoken turned into a classification? And secondly, how exactly is this relayed to the user?
+
+\subsection{Voice Metric}
 
 \section{User Interface}
 In line with the Design Aim 3, the decision was made to have to have a
