@@ -13,8 +13,11 @@ Telephones are deceptively simple systems. Examination of a landline plug in the
 For a telephone in a house to work, it must interact with the exchange, which is run by the telephone service provide. When the phone is picked up, the voltage across the line changes. Older systems used this as the basis of the pulse dialing method, but the current modern way is to use DTMF, or Dual Tone multifrequency. Instead of relying on voltage changes, each key when pressed generates a two-frequency tone that the exchange is able to interpret \cite{telephone}.
 \\\\
 When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}.
+\\\\
+\hl{More about telephones.}
 
-\subsection{Session Initiation Protocol}
+\subsection{Session Initiation Protocol and Asterisk}
+\hl{Paragraph about Asterisk. Paragraph about SIP.}
 
 \section{Phone Scams in the UK}
 As mentioned in the Chapter \ref{chp:int}, there are a different types of nuisance calls. However, there are two groups of such calls: annoyances and scams. Scam call will be the term used to refer exclusively to calls that are made with criminal intent. This is in contrast to marketing calls, which may be irritating, but not aimed at defrauding. While the two groups overlap in certain cases (a scam call is an annoyance as well), this section is aimed specifically at the fraudulent calls that result in financial loss.
@@ -27,20 +30,24 @@ Compensation calls may genuinely be companies looking for clients to represent i
 
 \section{Existing Filtration Methods}
 \subsection{Consumer Level}
-There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee. \hl{BT here, the which list. }
-
+There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee.
+\\\\
 A very successful one is Nomorobo \cite{nomorobo}, which claims to prevent robot cold calls from reaching the user. Operating on VoIP lines and smartphones, it works by diverting calls to their lines, and only allowing legitimate callers to access the phone. While this is a commercially available product, it is mentioned here as it came out of a competition run in America by the Federal Trade Commission (FTC) \cite{wired-nomorobo}. The company claims to use white and blacklists, with interactive prompts to remove callers.
+\\\\
+\hl{BT here, the which list. }
 
 \subsection{Related Hobby Projects}
 Hobbyists have explored methods to prevent unwanted calls. Chris Murphy on his blog \cite{murphy} details how he connected his Raspberry Pi to a 56K USB modem, which he used to manipulate his phone line. This system relied on white and blacklists that he created himself, onto which the Caller ID is checked. In the world of broadband penetration, the venerable 56K modem appears to still have some clout.
-
-\hl{Ross: Acutally using hte Freepbx and the Obihai, but uses a time based thing, then if not caller Id. If not, then type in then reroute. }
+\\\\
+Bryan Ross actually achieved a system where he was able to use the Obihai 110\cite{obihai110}, combined with FreePBX on a Raspberry Pi, to filter calls coming to his landline. His system was time-based, allowing calls to be routed straight to his analogue phone during the day. At night, the Caller ID was checked. If it was visible, the call was routed to the analogue phone as per usual. However, if the Caller ID was not visible, then the caller had to enter their number before the call would proceed any further.
 
 \subsection{Academic Research}
 There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yielded as much information as desired.
 \\\\
-\hl{More information about the research. Although not all are applicable to this project, there was a lot of interesting relevant content that helps to position the methods into more context. }
-\\\\
-\hl{The total amount of background research is not expected to exceed 3-4 pages.}
+Cisco stuff and more about various methods, SVM line signature.
+% \\\\
+% \hl{More information about the research. Although not all are applicable to this project, there was a lot of interesting relevant content that helps to position the methods into more context. }
+% \\\\
+% \hl{The total amount of background research is not expected to exceed 3-4 pages.}
 
 \end{document}
