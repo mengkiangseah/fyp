@@ -24,8 +24,10 @@ However, the SPA3102 was quickly abandoned for a number of reasons. First, the d
 \\\\
 This device also had the ability to interface with a PBX and a landline simultaneously. In fact, some users on blogs have written how they have combined the Obi110 with the Raspberry Pi running Asterisk \cite{bryanross}. Knowing that this could be done, this was the chosen method. The advantage of the Obi110 is also that it can operate as an Analogue Telephone Adapter, which reduces the amount of hardware needed. This means that the landline and existing phone can plug into the system directly, satisfying Design Aim 1.
 
-\section{Connections and Hardware}
+\section{Connections, Hardware and Core System}
 The Raspberry Pi was chosen as the computer due to its small size, and portability, which ties in with the Design Aims 1 and 2. In fact, RasPBX \cite{raspbx}, which Bryan Ross used \cite{bryanross} is a distribution of Asterisk on the Raspberry Pi. Given the feasibility shown by hobbyists, the Pi was chosen as the computer.
+\\\\
+As mentioned before, Asterisk as the core system was an idea that was seen in hobbyists, offers a viable starting option. In fact, RasPBX \cite{raspbx} is specifically a distribution of the popular Raspbian Operating System (OS) with Asterisk included, along with the FreePBX GUI for administration, all specifically designed to work with the Raspberry Pi. This allows interfacing with the Obi110, and also offers features such as prompts, call-rerouting, and administration. Additionally, it also has the ability to include modules from third-parties, which gave the option of creating software for anything that was not already included.
 \\\\
 The connections inside a VoIP system that Asterisk would manipulate are all through a Local Area Network (LAN). For this reason, a router was considered in this system, as there would be a number of components to connect, such as the Landline-SIP adapter, the ATA, and the computer. With the choice of the Landline-SIP adapter and ATA combined into one, this still leaves the computer and Obi110.
 \\\\
@@ -55,18 +57,18 @@ While a router could be used, the Raspberry Pi can be configured to perform as a
 \end{figure}
 
 \section{Core System and Identification Methods}
-As mentioned before, Asterisk as the core system was an idea that was seen in hobbyists, offers a viable
-\\\\
 Of the various ideas found through research, the work of Tu et al. \cite{cisco} offered an excellent summary of methods that would work best in the context of this project. The commercially available methods in Section \ref{sec:methods} all relied on a large database of blacklisted numbers, with the option of adding approved numbers to a whitelist. However, creating, maintaining, and sharing this list goes against Design Aim 2, which was to keep the system self-contained. In fact, it also affects the Design Aim 1 because they all require Caller ID. While a user \textit{might} either already have Caller ID or consider getting Caller ID, those methods \textit{need} Caller ID.
 \\\\
 The other ideas from Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo} were not considered because they were not meant for deployment on an individual level, or meant for a purely VoIP system. This was against Design Aim 1. Finally, the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl} were not considered because of three reasons. One, the clustering methods used in their systems included call-origination details, which like Caller ID is not viable. Secondly, the audio fingerprinting relied on the infrastructure used by the scammers, which included the line characteristics. In receiving the call through VoIP, the receiver's infrastructure does not introduce any additional line characteristics. But if a user is receiving the call through a landline, then the receiving line might be adding its own characteristics to the call and would affect the identification process. And three, the clustering system ran on a 6-core server with 16GB of RAM, which puts it at odds with Design Aim 2 through its size.
 \\\\
 Thus, the ideas of Tu et al. \cite{cisco} were considered. It is worth also nothing that they is no mention of the practical aspects of their ideas, as they did not implement any of their ideas. Their ideas were split into 3 broad groups: Call Request Header Analysis, Voice Interactive Screening and Caller Compliance. Immediately, the first category of methods were eliminated, as they rely on information from the call that is not guaranteed to be available to the user.
 \\\\
-In the Voice Interactive Screen section, the methods detailed include audio fingerprinting, speech content analysis, acoustic pattern analysis, and a Turing test \cite{cisco}. The option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A Turing test was an interactive prompt which would be easy for a human caller to
+In the Voice Interactive Screen section, the methods detailed include audio fingerprinting, speech content analysis, acoustic pattern analysis, and a Turing test \cite{cisco}. The option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A Turing test was an interactive prompt which would be easy for a human caller to pass, but difficult for a computer.
+\\\\
+
 
 \section{User Interface}
-For this case, the
+In line with the Design Aim 3, the decision was made to have to have a
 
 \section{Additional Components}
 \subsection{Switch}
@@ -126,10 +128,5 @@ The Obi110 suffers from a drawback in that it is powered from the mains. In a po
 \hl{This section will highlight the choices and progression of the design and features. While the actual method I used was a more agile-modular approach to the system, I will reorganise the material. This section will feature the choices, features, and justifications behind each element's final form.}
 \\\\
 \hl{There is also a particular paper on IEEE Xplore that evaluated and suggested a number of filtration algorithms, some of which I am using here. However, the paper did not attempt any of them practically, and they were more suitable to pure VoIP phones, along with not considering any of the intended audience. Combining their findings, with my analysis from a practical perspective, and knowing the more restricted audience, I will look at how my filtration flow stacks up. Their methods of evaluating forms of filtration will also be reconsidered, and I am planning on critically commenting it. All this means this chapter will be at least 5-6 pages, but may extend up to 10.}
-
-\hl{The solution is therefore to use a Raspberry Pi. The Pi will run the Asterisk PBX, which will perform the various filtration steps {\cite{raspbx}}.
-
-
-This method is not suitable for this application as the system must function independently, with only the call itself as a source of information.}
 
 \end{document}
