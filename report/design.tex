@@ -2,14 +2,134 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
+In working on the design of this system, the requirements as discussed in Chapter \ref{chp:req} were taken and converted into a series of design aims.
 
-In working on the design of this system, the requirements as discussed in Chapter \ref{chp:req} were taken and converted into a series of design aims. 
+\begin{enumerate}
+	\item Fits into existing setups
+	\item Self contained
+	\item Functioning without needing input
+	\item Not too difficult for a genuine caller to get through
+\end{enumerate}
+
+Firstly, the entire system must fit into existing setups. There should be no need for additional equipment apart from the system requiring power, and plug the phone and landline into it. This leads on to the second point: it should be as self-contained as possible. There is no guarantee of any other features available at the landline. Finally, for simplicity, given the audience in mind, the system should work without any input from the user.
+
+\section{Landline and Telephone Interface}
+Three options presented themselves in this section. First, the idea of interfacing directly with the telephone line was considered. A series of relays, combined with Analogue to Digital Converters (ADCs) and Digital to Analogue (DAC) could conceivably interact with a normal landline phone to feed the information into the Raspberry Pi. The difficulty with this method is that to use the full range of Asterisk functionality, the inputs have to be in SIP format. The conversion process itself would be very time-consuming.
+\\\\
+Second, from Murphy \cite{murphy}, was the USB 56K modem option. However, this created the same problem as before: converting the audio into SIP for Asterisk to handle. While the black and whitelist methods worked correctly in Murphy's project, the hope was to go beyond that in this project.
+\\\\
+The third option was what was chosen ultimately. This was the idea of using commercially available products to ``convert'' the phoneline into a format that Asterisk could manipulate. Initially, the first item considered was the Cisco SPA3102 \cite{spa3102-specs} as an adapter. This was one of the few products mentioned on the various user forums. It was difficult to find an affordable and simple solution because most forum users looking for help were simply told to use a VoIP service. It was concluded that the sentiment was that a hobbyist clever enough to manipulate their phone line would be resourceful enough to consider the benefits of a VoIP line.
+\\\\
+However, the SPA3102 was quickly abandoned for a number of reasons. First, the device was no longer supported by Cisco as it had reached its end-of-sale dates. This also meant that prices were extremely high, in the order of hundreds of dollars \cite{spa3102-amazon}. The alternative, the Obihai Obi110 \cite{obi110-specs} came from the research done \cite{bryanross}.
+\\\\
+This device also had the ability to interface with a PBX and a landline simultaneously. In fact, some users on blogs have written how they have combined the Obi110 with the Raspberry Pi running Asterisk \cite{bryanross}. Knowing that this could be done, this was the chosen method. The advantage of the Obi110 is also that it can operate as an Analogue Telephone Adapter, which reduces the amount of hardware needed. This means that the landline and existing phone can plug into the system directly, satisfying Design Aim 1.
+
+\section{Connections and Hardware}
+The Raspberry Pi was chosen as the computer due to its small size, and portability, which ties in with the Design Aims 1 and 2. In fact, RasPBX \cite{raspbx}, which Bryan Ross used \cite{bryanross} is a distribution of Asterisk on the Raspberry Pi. Given the feasibility shown by hobbyists, the Pi was chosen as the computer.
+\\\\
+The connections inside a VoIP system that Asterisk would manipulate are all through a Local Area Network (LAN). For this reason, a router was considered in this system, as there would be a number of components to connect, such as the Landline-SIP adapter, the ATA, and the computer. With the choice of the Landline-SIP adapter and ATA combined into one, this still leaves the computer and Obi110.
+\\\\
+While a router could be used, the Raspberry Pi can be configured to perform as an Dynamic Host Configuration Protocol server \cite{pi-dhcp}. This reduces the total amount of hardware, as it then doubles as the Asterisk server and manages the network. And to allow additional connections, mostly for debugging and analysis, a switch allows multiple devices to Figure \ref{fig:connections} illustrates the overall setup.
+
+\begin{figure}[htb]
+\centering
+	\begin{tikzpicture}[node distance=4cm]
+	    % We start by placing the blocks
+	    \node [input, align=center] (input) {Input\\from\\Landline};
+		\node [output, align=center, below of=input] (output) {To\\Phone};
+	    \node [block, align=center, right of=input] (converter1) {Landline\\to\\SIP\\Conversion};
+		\node [block, align=center, right of=output] (converter2) {SIP\\to\\Landline\\Conversion};
+		\node [block, align=center, fit=(converter1)(converter2),right=of converter1.north east,anchor=north west] (switch) {Switch};
+		\node[draw,thick,fit=(converter1) (converter2)] (obi) {Obi110};
+	    \node [block, align=center, right of=switch] (pi) {DHCP\\and\\Asterisk\\Server};
+
+	    % Once the nodes are placed, connecting them is easy.
+	    \draw [draw,->] (input) -- node[align=center] {} (converter1);
+	    \draw [<-] (output) -- node[align=center] {} (converter2);
+	    \draw [<->] (switch) -- node {} (pi);
+	    \draw [<->] (obi) -- node[align=center] {} (switch);
+
+	\end{tikzpicture}
+	\caption{Connectivity Diagram}
+	\label{fig:connections}
+\end{figure}
+
+\section{Core System and Identification Methods}
+As mentioned before, Asterisk as the core system was an idea that was seen in hobbyists, offers a viable
+\\\\
+Of the various ideas found through research, the work of Tu et al. \cite{cisco} offered an excellent summary of methods that would work best in the context of this project. The commercially available methods in Section \ref{sec:methods} all relied on a large database of blacklisted numbers, with the option of adding approved numbers to a whitelist. However, creating, maintaining, and sharing this list goes against Design Aim 2, which was to keep the system self-contained. In fact, it also affects the Design Aim 1 because they all require Caller ID. While a user \textit{might} either already have Caller ID or consider getting Caller ID, those methods \textit{need} Caller ID.
+\\\\
+The other ideas from Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo} were not considered because they were not meant for deployment on an individual level, or meant for a purely VoIP system. This was against Design Aim 1. Finally, the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl} were not considered because of three reasons. One, the clustering methods used in their systems included call-origination details, which like Caller ID is not viable. Secondly, the audio fingerprinting relied on the infrastructure used by the scammers, which included the line characteristics. In receiving the call through VoIP, the receiver's infrastructure does not introduce any additional line characteristics. But if a user is receiving the call through a landline, then the receiving line might be adding its own characteristics to the call and would affect the identification process. And three, the clustering system ran on a 6-core server with 16GB of RAM, which puts it at odds with Design Aim 2 through its size.
+\\\\
+Thus, the ideas of Tu et al. \cite{cisco} were considered. It is worth also nothing that they is no mention of the practical aspects of their ideas, as they did not implement any of their ideas. Their ideas were split into 3 broad groups: Call Request Header Analysis, Voice Interactive Screening and Caller Compliance. Immediately, the first category of methods were eliminated, as they rely on information from the call that is not guaranteed to be available to the user.
+\\\\
+In the Voice Interactive Screen section, the methods detailed include audio fingerprinting, speech content analysis, acoustic pattern analysis, and a Turing test \cite{cisco}. The option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A Turing test was an interactive prompt which would be easy for a human caller to
+
+\section{User Interface}
+For this case, the
+
+\section{Additional Components}
+\subsection{Switch}
+A switch was needed to determine the start and end of the call from the user's perspective. Introducing a bypass into the wires of the phone was not a good idea, as asking the user to make additional modifications was seen as undesirable. Instead, a physical switch was chosen, and it was one that was actuated by the handset being lifted off.
+\\\\
+The Raspberry Pi 3 offers GPIO inputs which allow digital inputs. To ensure that this was within the tolerances, a circuit powered by the Raspberry Pi's 3.3V output was designed. In Figure \ref{fig:initial-circuit} shows the layout. When the switch is closed, the GPIO pin reads the 3.3V from rail. When it is opened, the pin reads the voltage across the resistor.
+\\\\
+The Light Emitting Diode (LED) was used both as a debugging signal, and as a check for the user to ensure that installing the switch on their phone was done correctly. The LED was generously donated by Thomas Akinola, and was rated as having a 2V drop and recommended at 10mA. Knowing this, Equation \ref{eq:circuit} calculates the ideal resistor value. However, this caused the LED to be too bright, and a greater resistor value was chosen, $300\Omega$.
+
+\begin{align}
+	\text{Resistor Value} &= \frac{\text{Voltage across Resistor}}{\text{Amperage needed}}\notag\\
+	&= \frac{3.3\text{V} - 2\text{V}}{10\text{mA}}\notag\\
+	&= \frac{1.3\text{V}}{10\text{mA}}\notag\\
+	&\approx 130\Omega\label{eq:circuit}
+\end{align}
+
+\begin{figure}
+	\centering
+	\begin{circuitikz} \draw
+		 (0, 0) -- (8, 0)
+		 (5, 0) to [R, l_=$300\Omega$] (5, 4)
+		 (1, 4) node[label={above:To GPIO}] {} -- (5, 4)
+		 (5, 6) to [led] (5, 4)
+		 (3, 6) to [push button] (3, 4)
+		 (0, 6) node[label={above:3.3V}] {} -- (8, 6)
+		 (7, 0) node[ground]{} -- (7, 0)
+		;
+	\end{circuitikz}
+	\caption{Initial switch circuit.} \label{fig:initial-circuit}
+\end{figure}
+
+\subsection{Emergency Bypass}
+The Obi110 suffers from a drawback in that it is powered from the mains. In a power cut, or emergency, the entire system would fail, and the phone would not be able to work. This is despite the fact that the phone lines are powered independently \cite{telephone}. Also, in an emergency, the system could be a serious liability. To prevent this, ideally, there should be an emergency bypass that can connect the phone directly to the landline. It would look like the setup in Figure \ref{fig:bypass}.
+
+\begin{figure}[htb]
+\centering
+	\begin{tikzpicture}[node distance=4cm]
+	    % We start by placing the blocks
+	    \node [input, align=center] (input) {Input\\from\\Landline};
+		\node [block, align=center, right of=input] (system) {The\\System};
+		\node [output, align=center, right of=system] (output) {To\\Phone};
+		\node [block, align=center, below of=system] (bypass) {Override\\Bypass};
+
+	    % Once the nodes are placed, connecting them is easy.
+	    \draw [draw,->] (input) -- node[align=center, name=in] {} (system);
+	    \draw [->] (system) -- node[align=center, name=out]  {} (output);
+		\draw [->] (input) |- node[align=center] {} (bypass);
+		\draw [->] (bypass) -| node[align=center] {} (output);
+
+
+	\end{tikzpicture}
+	\caption{Emergency Bypass Visualisation}
+	\label{fig:bypass}
+\end{figure}
+
 
 \hl{This section will highlight the choices and progression of the design and features. While the actual method I used was a more agile-modular approach to the system, I will reorganise the material. This section will feature the choices, features, and justifications behind each element's final form.}
 \\\\
 \hl{There is also a particular paper on IEEE Xplore that evaluated and suggested a number of filtration algorithms, some of which I am using here. However, the paper did not attempt any of them practically, and they were more suitable to pure VoIP phones, along with not considering any of the intended audience. Combining their findings, with my analysis from a practical perspective, and knowing the more restricted audience, I will look at how my filtration flow stacks up. Their methods of evaluating forms of filtration will also be reconsidered, and I am planning on critically commenting it. All this means this chapter will be at least 5-6 pages, but may extend up to 10.}
 
+\hl{The solution is therefore to use a Raspberry Pi. The Pi will run the Asterisk PBX, which will perform the various filtration steps {\cite{raspbx}}.
 
-\hl{The solution is therefore to use a Raspberry Pi. The Pi will run the Asterisk PBX, which will perform the various filtration steps {\cite{raspbx}}.}
+
+This method is not suitable for this application as the system must function independently, with only the call itself as a source of information.}
 
 \end{document}

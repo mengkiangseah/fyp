@@ -11,12 +11,26 @@ First thing: setup with Obihai and switch and rasbpbx and asterisk and freepbx a
 
 \section{Current Progress}
 \subsection{Landline-SIP Input}
-Originally, the idea of interfacing directly with the telephone line was considered. A series of relays, combined with Analogue to Digital Converters (ADCs) and Digital to Analogue (DAC) could conceivably interact with a normal landline phone to feed the information into the Raspberry Pi. The difficulty with this method is that to use the full range of Asterisk functionality, the inputs have to be in SIP format. The conversion process itself would be very time-consuming.
+Originally,
 \\\\
-A workaround considered was the Cisco SPA3102 \cite{spa3102-specs} as an adapter. However, this idea was quickly scrapped for a number of reasons. First, the device was no longer supported by Cisco as it had reached its end-of-sale dates. This also meant that prices were extremely high, in the order of hundreds of dollars \cite{spa3102-amazon}.
-\\\\
-Fortunately, an alternative was found. This was the Obi110, from Obihai \cite{obi110-specs}. This device also had the ability to interface with a PBX and a landline simultaneously. In fact, some users on blogs have written how they have combined the Obi110 with the Raspberry Pi running Asterisk \cite{freepbx} \cite{bryanross}. Discussion of the work of these hobbyists was considered material for the implementation section rather than the background research as none of them applied any non-naive call filtration methods.
-\\\\
+Unfortunately, during the implementation, this was
+
+\begin{figure}
+	\centering
+	\begin{circuitikz} \draw
+		 (0, 0) -- (8, 0)
+		 (5, 0) to [R, l_=$150\Omega$] (5, 2)
+		 (5, 2) to [R, l_=$150\Omega$] (5, 4)
+		 (1, 2) node[label={above:To GPIO}] {} -- (5, 2)
+		 (5, 6) to [led] (5, 4)
+		 (3, 6) to [push button] (3, 2)
+		 (0, 6) node[label={above:3.3V}] {} -- (8, 6)
+		 (7, 0) node[ground]{} -- (7, 0)
+		;
+	\end{circuitikz}
+	\caption{Modified switch circuit.} \label{fig:initial-circuit}
+\end{figure}
+
 Approval for the purchase device was received from the Finance department and the device has since been obtained. However, it has yet to be configured.
 
 \subsection{Asterisk Based Filtering}

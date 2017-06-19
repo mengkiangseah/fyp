@@ -20,6 +20,9 @@
 \usepackage{ulem}
 \usepackage{mystyle}
 \usepackage{lipsum}
+\usepackage{enumitem}
+\usepackage{amsthm}
+\newtheorem*{aims*}{Design Aims}
 
 % For highlighting and for subfiles
 \usepackage{xcolor}
@@ -28,12 +31,16 @@
 
 % For diagrams
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{shapes,arrows, fit}
+\tikzstyle{block} = [rectangle, minimum width=2cm, minimum height=3cm, text centered, draw=black]
+\tikzstyle{input} = [rectangle, minimum width=2cm, minimum height=3cm, text centered, draw=white]
+\tikzstyle{output} = [rectangle, minimum width=2cm, minimum height=3cm, text centered, draw=white]
 
 \usepackage{wrapfig}
 \usepackage{epstopdf}
 \usepackage{url}
 \usepackage{etoolbox}
+\usepackage[colorinlistoftodos]{todonotes}
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 \makeatletter
 \makeatother
@@ -63,6 +70,7 @@
 \setcounter{secnumdepth}{2}
 
 \usepackage{setspace}
+\usepackage[european]{circuitikz}
 
 \begin{document}
 

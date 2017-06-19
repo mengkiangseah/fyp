@@ -4,8 +4,6 @@
 \begin{document}
 To properly understand the context of the project, background information is required. As this project was centered around UK landlines and spam call filtration, the main focus of the background was on analogue telephone lines. Additionally, having been pointed in the direction of Asterisk, a brief section on is included, as is the Session Initiation Protocol (SIP), which is a popular Voice over Internet Protocol (VoIP) that Asterisk supports. Finally, the types of scams, and the protection methods are explored, both on a consumer level, and in the context of academic research.
 
-% This background research section is an initial outline. A lot of the research done on this project stemmed from the implementation phases as a requirement for certain configuration issues. In terms of academic level sources, these were difficult to find given the consumer-oriented nature of the system. Additionally, with the use of the Obi110, the need for a in-depth understanding has not been needed.
-
 \section{Telephone Systems}
 \subsection{Analogue}
 Telephones are deceptively simple systems. Examination of a landline plug in the UK will reveal that only 2 of the many pins are actually connected! The way this system works it that both the power and signal are carried on the same wires. In the UK, the voltage between the two is at 50V DC, although this can vary \cite{telephone}.
@@ -14,40 +12,41 @@ For a telephone in a house to work, it must interact with the exchange, which is
 \\\\
 When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}.
 \\\\
-\hl{More about telephones.}
+\todo{More about telephones.}
 
 \subsection{Session Initiation Protocol and Asterisk}
-\hl{Paragraph about Asterisk. Paragraph about SIP.}
+\todo{Paragraph about Asterisk. Paragraph about SIP.}
 
 \section{Phone Scams in the UK}
 As mentioned in the Chapter \ref{chp:int}, there are a different types of nuisance calls. However, there are two groups of such calls: annoyances and scams. Scam call will be the term used to refer exclusively to calls that are made with criminal intent. This is in contrast to marketing calls, which may be irritating, but not aimed at defrauding. While the two groups overlap in certain cases (a scam call is an annoyance as well), this section is aimed specifically at the fraudulent calls that result in financial loss.
 \\\\
-From a British Telecom \cite{bt-types} article, along with information from Age UK \cite{ageuk-types}, there appear to be approximately 6 broad types of scam calls: investment, pension, computer help, bank account, compensation, and anti-scam scams. The investment scam call is aimed at convincing the victim to invest in shares, a business opportunity, or real estate. However, the returns and the opportunity itself are all false. The pension scam call works by the scammers convincing the victim to grant them access to an elderly person's pension under the guise of transferring it to a more lucrative pension scheme. The scammer then absconds with the money \cite{bt-types}.
+From a British Telecom \cite{bt-types} article, along with information from Age UK \cite{ageuk}, there appear to be approximately 6 broad types of scam calls: investment, pension, computer help, bank account, compensation, and anti-scam scams. The investment scam call is aimed at convincing the victim to invest in shares, a business opportunity, or real estate. However, the returns and the opportunity itself are all false. The pension scam call works by the scammers convincing the victim to grant them access to an elderly person's pension under the guise of transferring it to a more lucrative pension scheme. The scammer then absconds with the money \cite{bt-types}.
 \\\\
 The computer scam call hopes to trap those unfamiliar with technology. A scammer claims to be from the tech support centre of a well-known company, such as Microsoft or Apple, and tells the victim that their computer is infected with a virus. They then make the victim download an ``anti-virus'' which allows the scammers to remotely access the computer. Then, personal details are stolen. Finally, the bank account scammers pretend to be your bank calling. They claim to be confirming your account details, like your PIN number, but instead steal them. Alternatively, they send a courier to collect your card and issue you a ``replacement'', all of which is fake \cite{bt-types}.
 \\\\
-Compensation calls may genuinely be companies looking for clients to represent in compensation claims, and request a portion of the compensation payout as payment. However, they may also be aiming to obtain personal details to steal money. And curiously enough, anti-scam scammers pretend to be anti-scammers requesting for a ``small fee'' to prevent scam calls from reaching the victim. This is entirely false, and the victim is out of their money with no benefit \cite{ageuk-types}.
+Compensation calls may genuinely be companies looking for clients to represent in compensation claims, and request a portion of the compensation payout as payment. However, they may also be aiming to obtain personal details to steal money. And curiously enough, anti-scam scammers pretend to be anti-scammers requesting for a ``small fee'' to prevent scam calls from reaching the victim. This is entirely false, and the victim is out of their money with no benefit \cite{ageuk}.
 
-\section{Existing Filtration Methods}
+\section{Existing Filtration Methods}\label{sec:methods}
 \subsection{Consumer Level}
-There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact, consumer rights groups, such as Which? \cite{which} also offer such services. Most telephone service provides also offer call filtration services, usually for an additional fee.
+There are a number of existing methods available. The Telephone Preference Service (TPS) \cite{tps} is a opt-out service that registers official desires not to be contact. The consumer rights group Which? UK \cite{which-methods} documents a number of choices available on the market.
+\\\\
+For example, British Telecom (BT) offers a number of options \cite{bt-block}. One is to use their \textit{BT Call} Protect, which checks incoming calls through a database of known scammers, and only allows ``good calls'' through. There is also a way to create a personal blacklist. There is also the \textit{BT 8600 Advanced Call Blocker}. This is a special phone that gives users the option to block certain types of numbers, and offers a single-button blocking option. There is also time conditions, a screen for Caller ID. Unknown callers are asked to enter their number, state their name a purpose, and a virtual assistant relays this to the user who can choose to accept or refuse the call \cite{bt-block}.
+\\\\
+Which? UK \cite{which-methods} also documents other standalone and speciality phone blocking systems. However, most private call blocking phones and devices work through the blacklist method, but they all require Caller ID.
+\\\\
+These are all landline phone options. For mobile phones, there are simple call blocking apps, such as Hiya \cite{macworld}, which also works on Caller ID white and blacklists. The concept of identifying suspicious callers thorugh their Caller ID is a popular method and features quite a lot among the various options.
 \\\\
 A very successful one is Nomorobo \cite{nomorobo}, which claims to prevent robot cold calls from reaching the user. Operating on VoIP lines and smartphones, it works by diverting calls to their lines, and only allowing legitimate callers to access the phone. While this is a commercially available product, it is mentioned here as it came out of a competition run in America by the Federal Trade Commission (FTC) \cite{wired-nomorobo}. The company claims to use white and blacklists, with interactive prompts to remove callers.
-\\\\
-\hl{BT here, the which list. }
 
 \subsection{Related Hobby Projects}
 Hobbyists have explored methods to prevent unwanted calls. Chris Murphy on his blog \cite{murphy} details how he connected his Raspberry Pi to a 56K USB modem, which he used to manipulate his phone line. This system relied on white and blacklists that he created himself, onto which the Caller ID is checked. In the world of broadband penetration, the venerable 56K modem appears to still have some clout.
 \\\\
-Bryan Ross actually achieved a system where he was able to use the Obihai 110\cite{obihai110}, combined with FreePBX on a Raspberry Pi, to filter calls coming to his landline. His system was time-based, allowing calls to be routed straight to his analogue phone during the day. At night, the Caller ID was checked. If it was visible, the call was routed to the analogue phone as per usual. However, if the Caller ID was not visible, then the caller had to enter their number before the call would proceed any further.
+Bryan Ross actually achieved a system where he was able to use the Obihai 110 \cite{obi110-specs}, combined with FreePBX on a Raspberry Pi, to filter calls coming to his landline. His system was time-based, allowing calls to be routed straight to his analogue phone during the day. At night, the Caller ID was checked. If it was visible, the call was routed to the analogue phone as per usual. However, if the Caller ID was not visible, then the caller had to enter their number before the call would proceed any further \cite{bryanross}.
 
 \subsection{Academic Research}
-There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, a lot of them look at the management side of things. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. This method is not suitable for this application as the system must function independently, with only the call itself as a source of information. Looking through IEEE Xplore unfortunately has not yielded as much information as desired.
+There are a number of papers that have been published regarding the spam calls, such as the work of Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo}. However, they all look at the problem from the top down. Their filtration systems analyse data at an exchange level to determine fraudulent numbers. It seems like a lot of research is devoted to detecting at the network level the spam calls that are being made. Wang et al. \cite{wang} look at the possibility of identifying call sources based on the frequency and duration of calls made and achieve positive results.
 \\\\
-Cisco stuff and more about various methods, SVM line signature.
-% \\\\
-% \hl{More information about the research. Although not all are applicable to this project, there was a lot of interesting relevant content that helps to position the methods into more context. }
-% \\\\
-% \hl{The total amount of background research is not expected to exceed 3-4 pages.}
-
+In Marzuoli et al. \cite{marzuoli} discuss a method for detecting spam callers through their distinct audio signature which comes from the infrastructure at their end. Analysing a large amount of data, they discovered that the majority of spam calls come from a very small list of numbers. They were able to cluster those calls using those voice signatures. Strobl et al. \cite{strobl} also use audio fingerprinting combined with SIP data. Both methods were applied to VoIP calls.
+\\\\
+An interesting article from Tu et al. \cite{cisco} covered a great deal of the challenges, environment, and possible solutions of removing spam calls. A great number of their methods were used, analysed, and considered in the Design section of this report. As their research is most meaningful directly in the context in which it was used, this is further referenced in the Design, Analysis, and Evaluation segments of this report.
 \end{document}

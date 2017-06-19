@@ -12,7 +12,7 @@ Introduction
 Requirements
 
 
-Background
+Background - Just the Phone+SIP+Asterisk
 Design and Analysis
 Implementation
 Testing
