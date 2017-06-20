@@ -124,7 +124,7 @@ However, this list is too long. There is the problem of chaining too many method
 \\\\
 Option 3, the reverse Turing test, is ideal for identifying the Robotic Callers. Thus, it was a chosen method. The weakly secret information method, Option 7, is ideal for identifying the Known Human Callers. Thus, it was another chosen method. This leaves the identification of the unknown human scam callers from the unknown human legitimate callers. Options 1 and 2 were similar in nature and both posed a challenge in terms of processing power. The Raspberry Pi 3, while more capable than its predecessors, is still not such a powerful computer. Combined with the requirements of running the Asterisk server, doing high-levels of voice processing were challenging.
 \\\\
-As a compromise, speech content recognition was ultimately chosen as it offers the ease of developping a metric from the words detected. There is also an additional method not mentioned in the academic research. Having a firm warning at the beginning of the call as a welcome message could potentially deter would-be scammers. Thus, the overall call flow is shown in Figure \ref{fig:callflow}.
+As a compromise, speech content recognition was ultimately chosen as it offers the ease of developping a metric from the words detected. However, this does mean the user has to engage with the caller in the case of any human caller. There is also an additional method not mentioned in the academic research. Having a firm warning at the beginning of the call as a welcome message could potentially deter would-be scammers. Thus, the overall call flow is shown in Figure \ref{fig:callflow}.
 
 \begin{figure}[htb]
 \centering
@@ -157,10 +157,16 @@ As a compromise, speech content recognition was ultimately chosen as it offers t
 \end{figure}
 
 The system is designed to allow the known caller to bypass the Turing test by entering the weakly secret information during the welcome message. This could be a simple code. If the Turing test is failed, there is a goodbye message. This is to advise the caller on how to proceed should be human, but accidentally failed the Turing test. The way this test was constructed should be easy for a human to pass, but difficult for a computer. Thus, a simple ``Press 1 to continue'' would suffice. The number could be chosen randomly, and randomised each time.
-Extracting the speech content of the call raises two points. Firstly, how exactly are the words spoken turned into a classification? And secondly, how exactly is this relayed to the user?
+\\\\
+When looking at classifying a call as spam, there are two cases of incorrect classification. The first is a false negative. This is when a call is incorrectly assumed to legitimate, when it is in fact spam. In such a case, while the system has failed, it is not the end of the world. However, when a false positive, this can be dangerous, depending on the outcome of the decision. If when a call is classified as spam, the action taken is to end the call, then there is the risk that a genuine call will be lost. This could be serious if the caller is trying to reach the user to convey important information.
+\\\\
+To prevent this, the call flow is designed to always allow a human caller to reach the user. The fallback is the goodbye message, which clearly requests a redial and restates the instructions. However, this explains all parts of the design except the voice analysis. Extracting the speech content of the call raises two points. Firstly, how exactly are the words spoken turned into a classification? And secondly, how exactly is this relayed to the user?
 
 \subsection{Voice Metric}
-A genuine caller
+If the voice analysis results do not result in any impact on the call, the results need to reach the user. The result should then be the likelihood of the call being spam. But rather than classify between the two extremes, spam and real, there is also the need for fuzzy logic, or a third option. This is the ``maybe'' option. In looking that what results a user would want, they do not need to see the calculations or the percentage likelihood. They need to know if a call is probably spam, maybe spam, or unlikely to be spam. The metric must classify the call into one of the three categories. This keeps things easy and straightforward, as Design Aim 3 states.
+\\\\
+To move from the words to a metric, Tu et al. \cite{cisco} suggest using keywords. There are two lists of words that need to be made: words that are definitely in a spam call and words that might be a spam call but could also in a legitimate call. To construct these lists, the 6 types of calls as mentioned in Section \ref{sec:scams}
+
 
 \section{User Interface}
 In line with the Design Aim 3, the decision was made to have to have a
