@@ -18,3 +18,50 @@ Testing - Add references and Done
 Results - Survey
 Evaluation - Write
 Conclusion - BLANK
+
+
+% \begin{figure}[H]
+% 	\captionsetup[subfigure]{position=b}
+%         \centering
+%         \begin{subfigure}{\textwidth}
+% 			\begin{tikzpicture}[node distance=4cm]
+% 			    % We start by placing the blocks
+% 				\node [input, align=center] (call) {Call\\From\\Landline};
+% 				\node [block, align=center, right of=call] (obi1) {Obi110\\SIP\\Conversion};
+% 				\node [block, align=center, right of=obi1] (ast) {Asterisk};
+% 				\node [block, align=center, right of=ast] (ext) {Obi110\\Extension\\Conversion};
+% 				\node [output, align=center, right of=ext] (phone) {Analogue\\Phone};
+%
+% 			    % Once the nodes are placed, connecting them is easy.
+% 			    \draw [->] (call) -- node[align=center] {} (obi1);
+% 			    \draw [->] (obi1) -- node[align=center, above] {Trunk} (ast);
+% 				\draw [->] (ast) -- node[align=center, above] {Inbound\\route} (ext);
+% 				\draw [->] (ext) -- node[align=center] {} (phone);
+%
+% 			\end{tikzpicture}
+% 			\caption{Internal Asterisk call routing setup for incoming calls.}
+% 			\label{fig:asterisk-callflow-in}
+%         \end{subfigure}
+%         \\
+%         \begin{subfigure}{\textwidth}
+% 			\begin{tikzpicture}[node distance=4cm]
+% 			    % We start by placing the blocks
+% 				\node [input, align=center] (call) {Call\\to\\Landline};
+% 				\node [block, align=center, right of=call] (obi1) {Obi110\\SIP\\Conversion};
+% 				\node [block, align=center, right of=obi1] (ast) {Asterisk};
+% 				\node [block, align=center, right of=ast] (ext) {Obi110\\Extension\\Conversion};
+% 				\node [output, align=center, right of=ext] (phone) {Analogue\\Phone};
+%
+% 			    % Once the nodes are placed, connecting them is easy.
+% 			    \draw [<-] (call) -- node[align=center] {} (obi1);
+% 			    \draw [<-] (obi1) -- node[align=center, above] {Trunk} (ast);
+% 				\draw [<-] (ast) -- node[align=center, above] {Outbound\\route} (ext);
+% 				\draw [<-] (ext) -- node[align=center] {} (phone);
+%
+% 			\end{tikzpicture}
+% 			\caption{Internal Asterisk call routing setup for outgoing calls.}
+% 			\label{fig:asterisk-callflow-out}
+%         \end{subfigure}
+% 	\caption{Visualisations of the call flows in and out of the system.}
+% 	\label{fig:asterisk-callflow}
+% \end{figure}

@@ -25,6 +25,52 @@ Once this is done, the Asterisk server was configured through the FreePBX GUI. T
 \\\\
 At this point, all the connections to the outside are configured and set. While an additional VoIP phone was obtained from the department, the proprietary nature of the phone meant that it was not possible to use it with the open-source software that was running on the Raspberry Pi. The configuration flow inside is shown in Figure \ref{fig:asterisk-conf}
 
+\begin{figure}[H]
+	\captionsetup[subfigure]{position=b}
+        \centering
+        \begin{subfigure}{\textwidth}
+			\begin{tikzpicture}[node distance=4cm]
+			    % We start by placing the blocks
+				\node [input, align=center] (call) {Call\\From\\Landline};
+				\node [block, align=center, right of=call] (obi1) {Obi110\\SIP\\Conversion};
+				\node [block, align=center, right of=obi1] (ast) {Asterisk};
+				\node [block, align=center, right of=ast] (ext) {Obi110\\Extension\\Conversion};
+				\node [output, align=center, right of=ext] (phone) {Analogue\\Phone};
+
+			    % Once the nodes are placed, connecting them is easy.
+			    \draw [->] (call) -- node[align=center] {} (obi1);
+			    \draw [->] (obi1) -- node[align=center, above] {Trunk} (ast);
+				\draw [->] (ast) -- node[align=center, above] {Inbound\\route} (ext);
+				\draw [->] (ext) -- node[align=center] {} (phone);
+
+			\end{tikzpicture}
+			\caption{Internal Asterisk call routing setup for incoming calls.}
+			\label{fig:asterisk-callflow-in}
+        \end{subfigure}
+        \\
+        \begin{subfigure}{\textwidth}
+			\begin{tikzpicture}[node distance=4cm]
+			    % We start by placing the blocks
+				\node [input, align=center] (call) {Call\\to\\Landline};
+				\node [block, align=center, right of=call] (obi1) {Obi110\\SIP\\Conversion};
+				\node [block, align=center, right of=obi1] (ast) {Asterisk};
+				\node [block, align=center, right of=ast] (ext) {Obi110\\Extension\\Conversion};
+				\node [output, align=center, right of=ext] (phone) {Analogue\\Phone};
+
+			    % Once the nodes are placed, connecting them is easy.
+			    \draw [<-] (call) -- node[align=center] {} (obi1);
+			    \draw [<-] (obi1) -- node[align=center, above] {Trunk} (ast);
+				\draw [<-] (ast) -- node[align=center, above] {Outbound\\route} (ext);
+				\draw [<-] (ext) -- node[align=center] {} (phone);
+
+			\end{tikzpicture}
+			\caption{Internal Asterisk call routing setup for outgoing calls.}
+			\label{fig:asterisk-callflow-out}
+        \end{subfigure}
+	\caption{Visualisations of the call flows in and out of the system.}
+	\label{fig:asterisk-callflow-both}
+\end{figure}
+
 \begin{figure}[h]
 \centering
 	\begin{tikzpicture}[node distance=4cm]
@@ -68,24 +114,6 @@ If the reverse Turing test is passed (i.e. ``1'' is pressed), then the IVR direc
 All of this is seen in Figure \ref{fig:asterisk-callflow}, which shows the call flow inside the server.
 
 \begin{figure}[H]
-	\captionsetup[subfigure]{position=b}
-        \centering
-        \begin{subfigure}{\textwidth}
-                \includegraphics[width=\textwidth]{pics/wave1}
-                \caption{Incoming call path.}
-                \label{fig:wave1}
-        \end{subfigure}
-        \\
-        \begin{subfigure}{\textwidth}
-                \includegraphics[width=\textwidth]{pics/wave2}
-                \caption{Zoomed into the ringing signal.}
-                \label{fig:wave2}
-        \end{subfigure}
-	\caption{Visualisations of the call flow.}
-	\label{fig:asterisk-callflow}
-\end{figure}
-
-\begin{figure}[htb]
 \centering
 	\begin{tikzpicture}[node distance=4cm]
 	    % We start by placing the blocks
@@ -116,8 +144,6 @@ In this section, the voice analysis method is implemented. This was done primari
 
 \subsubsection{Extraction of Voice}
 The reason for the recording of the call is that it is a pre-existing feature that uses the available infrastructure to obtain the audio from the call. The addition of recording devices that need to be plugged-in to the phone worked against the Design Aims previous discussed in the Chapter \ref{chp:deg}. The voice data is stored on the server, which allows for processing on the server itself. By polling the directory for new files, a Python script is able to locate the newly created file.
-\\\\
-It was at this point that the need for a switch was noticed. It was obvious that the recording would start the minute the call was put through. However, the recording included the initial ringing, and started before the user had picked up the phone. There was thus no way to determine how long since the user had picked up the phone. Looking at the waveform of the audio in Figure \ref{fig:wave}, it was seen that the ringing had a distinctive pattern, which could be easily identified. With the ringing happening at regular intervals, one method considered was to use a matched filter to the ringing and note its last instance. However, this was not just very involved, but also very computationally intensive.
 
 \begin{figure}[H]
 	\captionsetup[subfigure]{position=b}
@@ -137,9 +163,12 @@ It was at this point that the need for a switch was noticed. It was obvious that
 	\label{fig:wave}
 \end{figure}
 
+
+It was at this point that the need for a switch was noticed. It was obvious that the recording would start the minute the call was put through. However, the recording included the initial ringing, and started before the user had picked up the phone. There was thus no way to determine how long since the user had picked up the phone. Looking at the waveform of the audio in Figure \ref{fig:wave}, it was seen that the ringing had a distinctive pattern, which could be easily identified. With the ringing happening at regular intervals, one method considered was to use a matched filter to the ringing and note its last instance. However, this was not just very involved, but also very computationally intensive.
+\\\\
 The switch as previous mentioned in the Design chapter was used. Conductive tape was connected to the receiver of the analogue phone, and two conductive pads were placed on the housing. When the phone was down, the tape closed the circuit, and when it was lifted off, the connection was broken. However, it was found that the voltage drop when the handset was removed was insufficient for the Pi to detect as a \texttt{LOW} value. Thus, a modification to the circuit was made by changing the $300\Omega$ resistor into 2 $150\Omega$ resistors in parallel. The switch then was made to short both the LED and one of the resistors, lowering the voltage detected by the Pi when it was open. This was found to be successful. The new circuit diagram is shown in Figure \ref{fig:newcircuit}.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{circuitikz} \draw
 		 (0, 0) -- (8, 0)
@@ -166,7 +195,7 @@ The metric that was used is shown through the simple function called \texttt{cal
 \section{Total Filtration System}
 Combining all the above together gave the \texttt{checkNewRecording()} function. This infinite looping function has a flow as Figure \ref{fig:flow} shows.
 
-\begin{figure}[htb]
+\begin{figure}[H]
 \centering
 	\begin{tikzpicture}[node distance=3cm]
 	    % We start by placing the blocks
@@ -258,8 +287,5 @@ Running both the \texttt{checkNewRecording()} function and the Flask server func
 To ensure that the display only included the information, the kiosk mode of Chromium was considered. Tom Hartley of the Imperial College Robotics Society (ICRS) had experience in setting up a similar display system to manage equipment purchases in the society's lab space. Kiosk mode forces the display to fullscreen the webpage, with no address bar. Combining this with a disappearing mouse, and no peripherals bar the monitor, the user is only engaged with the material on the monitor.
 \\\\
 Writing a Bash script that runs at boot means 3 things can be done. First, the script that contains the monitoring function and the server can run automatically. Second, Chromium can be launched in Kiosk mode, and be pointed to the server. The auto page reload means the window will continue to remain updated. Third, it gives a change to set the power settings so the monitor does not sleep. All this means that the user does not need to do anything to the system at boot.
-
-\section{Unimplemented Features}
-The main feature that was not
 
 \end{document}
