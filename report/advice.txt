@@ -13,8 +13,8 @@ Introduction - DONE
 Background - Just the Phone+SIP+Asterisk
 Requirements - DONE
 Design and Analysis - DONE
-Implementation - Script, diagrams, pictures.
-Testing
-Results
-Evaluation
+Implementation - Scripts, diagrams, pictures.
+Testing - Add references and Done
+Results - Survey
+Evaluation - Write
 Conclusion - BLANK

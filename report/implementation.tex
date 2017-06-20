@@ -4,10 +4,6 @@
 \begin{document}
 \todo{Introductory paragraph to the chapter.}
 
-\todo{What was considered the ``Implementation Plan'' in the Interim Report will be converted into the implementation itself, describing how the system works, with some diagrams of the call flow, the methods of filtration, and how the entire system is put together, from PSTN interface to UI. This section will go into the details of all the types. Any algorithms will be here, as well as the technical nitty-gritty.
-
-First thing: setup with Obihai and switch and rasbpbx and asterisk and freepbx and router. THen comes the configuration of in/out. Then rerouting to form the "filtration". Then the output side of things. Then the output communicating with the input.
-}
 \section{Raspberry Pi}
 \subsection{OS}
 After acquiring the Raspberry Pi 3, the first step was to install an operating system (OS). The research on RasPBX \cite{raspbx} mean that it was the chosen OS. The image was flashed to an SD card for the Raspberry Pi. There is no need for further details of this step.
@@ -16,18 +12,41 @@ After acquiring the Raspberry Pi 3, the first step was to install an operating s
 The next step was to configure the Raspberry Pi 3 to act as a DHCP server \cite{pi-dhcp}, as the online resource suggested. Again, no further details are included as the instructions were followed. The Pi has created its own LAN, and assigns itself the address $192.168.3.1$. This allowed the Obi110 to be connected to the network through the switch.
 
 \section{ObiHai Obi110 and the Phone}
-As there is no landline in College to use, the Obi110 was brought home. Combined with a simple standard analogue phone, everything was connected to show that without any additional configuration, the normal phone with the Obi110 works normally.
+As there is no landline in College to use, the Obi110 was brought home. Combined with a simple standard analogue phone, everything was connected to show that without any additional configuration, the normal phone with the Obi110 works normally. The only trouble was that the Obi110 was designed for American phone sockets, which meant a UK-US and a UK-US adapter was needed.
 
 \section{Asterisk, FreePBX, and the Obi110}
 This segment was done using a combination of materials from Bryan Ross \cite{bryanross}, and a little bit from Phil's Blog \cite{obihaiuk}. Ross's tutorial \cite{bryanross} allows RasPBX to interface with the phone line, and the analogue phone. The manipulation of the Obi110 settings was done through its web interface. RasPBX has an Asterisk server running, but has the FreePBX GUI that is accessible through the web as well. Although the steps that were followed were quite similar, they were only followed until the Obi110 and the RasPBX were linked. Ross's material continues to show how he did his time-based system, which is not relevant in this case.
 \\\\
 To briefly summarise the settings, the first thing is that the Obi110 is able to ``convert'' the landline into an SIP trunk. This trunk is what Asterisk can use to send and receive calls from the outside. This ensures that calls going to the trunk from Asterisk are converted into something the landline can handle, while calls coming in are sent to the trunk.
 \\\\
-Next, the Obi110's interface with the analogue telephone is configured as an extension. An extension in this context is an endpoint in a VoIP system. In other words, by configuring it as an extension, it can receive calls sent to it from Asterisk, and will convert it into a form that the phone can handle. Phil's Blog contained some important configuration values that were used to ensure a smoother calling process \cite{obihaiuk}. The entire Obi110 configuration is stored as an XML file, which is included in the Appendix \todo{Reference} as it is relevant, but not necessary in the main body.
+Next, the Obi110's interface with the analogue telephone is configured as an extension. An extension in this context is an endpoint in a VoIP system. In other words, by configuring it as an extension, it can receive calls sent to it from Asterisk, and will convert it into a form that the phone can handle. Phil's Blog contained some important configuration values that were used to ensure a smoother calling process \cite{obihaiuk}. The entire Obi110 configuration is stored as an XML file, which is included in the repository, a link to which can be found in Appendix \ref{sec:appendix-repo} as it is relevant, but not necessary in the main body.
 \\\\
 Once this is done, the Asterisk server was configured through the FreePBX GUI. The server was set to interact with the trunk from the Obi110. This would be where all outbound calls are headed. Next, all inbound calls would be routed to the analogue phone extension in the Obi110. This means that calls headed out go through the SIP trunk to the landline, and incoming calls go straight to the phone.
 \\\\
-At this point, all the connections to the outside are configured and set. While an additional VoIP phone was obtained from the department, the proprietary nature of the phone meant that it was not possible to use it with the open-source software that was running on the Raspberry Pi.
+At this point, all the connections to the outside are configured and set. While an additional VoIP phone was obtained from the department, the proprietary nature of the phone meant that it was not possible to use it with the open-source software that was running on the Raspberry Pi. The configuration flow inside is shown in Figure \ref{fig:asterisk-conf}
+
+\begin{figure}[h]
+\centering
+	\begin{tikzpicture}[node distance=4cm]
+	    % We start by placing the blocks
+	    \node [input, align=center] (input) {Input\\from\\Landline};
+		\node [output, align=center, below of=input] (output) {To\\Phone};
+	    \node [block, align=center, right of=input] (converter1) {Landline\\to\\SIP\\Conversion};
+		\node [block, align=center, right of=output] (converter2) {SIP\\to\\Landline\\Conversion};
+		\node [block, align=center, fit=(converter1)(converter2),right=of converter1.north east,anchor=north west] (switch) {Switch};
+		\node[draw,thick,fit=(converter1) (converter2)] (obi) {Obi110};
+	    \node [block, align=center, right of=switch] (pi) {DHCP\\and\\Asterisk\\Server};
+
+	    % Once the nodes are placed, connecting them is easy.
+	    \draw [draw,->] (input) -- node[align=center] {} (converter1);
+	    \draw [<-] (output) -- node[align=center] {} (converter2);
+	    \draw [<->] (switch) -- node {} (pi);
+	    \draw [<->] (obi) -- node[align=center] {} (switch);
+
+	\end{tikzpicture}
+	\caption{Linking of trunks, extensions, outbound and inbound rules}
+	\label{fig:asterisk-conf}
+\end{figure}
 
 \todo{Maybe a picture of the Asterisk setup? And some diagrams. }
 
@@ -44,15 +63,56 @@ If the caller knows the weakly secret code (another number, such as 4 or 9), the
 	\textit{Unfortunately, there was an incorrect response. Please redial this number and press 1 at the prompt. Thank you!}
 \end{quote}
 
-If the reverse Turing test is passed (i.e. ``1'' is pressed), then the IVR directs the call to a Call Recording module. While the neither the caller or the user sees this, the Call Recording module, which takes in a call and redirects to an extension, has begun recording the call.
+If the reverse Turing test is passed (i.e. ``1'' is pressed), then the IVR directs the call to a Call Recording module. While the neither the caller or the user sees this, the Call Recording module, which takes in a call and redirects to an extension, has begun recording the call. This is for the voice extraction, which is explained later.
 \\\\
-All of this is seen in Figure \ref{fig:asterisk}, which shows the call flow inside the server.
-\todo{Diagram}
+All of this is seen in Figure \ref{fig:asterisk-callflow}, which shows the call flow inside the server.
+
+\begin{figure}[H]
+	\captionsetup[subfigure]{position=b}
+        \centering
+        \begin{subfigure}{\textwidth}
+                \includegraphics[width=\textwidth]{pics/wave1}
+                \caption{Incoming call path.}
+                \label{fig:wave1}
+        \end{subfigure}
+        \\
+        \begin{subfigure}{\textwidth}
+                \includegraphics[width=\textwidth]{pics/wave2}
+                \caption{Zoomed into the ringing signal.}
+                \label{fig:wave2}
+        \end{subfigure}
+	\caption{Visualisations of the call flow.}
+	\label{fig:asterisk-callflow}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+	\begin{tikzpicture}[node distance=4cm]
+	    % We start by placing the blocks
+		\node [input, align=center] (call) {Incoming\\Call};
+		\node [block, align=center, right of=call] (ivr) {Welcome\\Message\\and IVR};
+		\node [block, align=center, right of=ivr] (record) {Call\\Recording};
+		\node [block, align=center, below of=record] (goodbye) {Goodbye\\Message};
+		\node [block, align=center, right of=record] (ext) {Analogue\\Extension};
+		\node [block, align=center, below of=ext] (end) {Call\\Ends};
+		\node [output, align=center, right of=ext] (user) {User};
+
+	    % Once the nodes are placed, connecting them is easy.
+	    \draw [->] (call) -- node[align=center] {} (ivr);
+	    \draw [->] (ivr) -- node[align=center, above] {Test\\passed} (record);
+		\draw [->] (record) -- node[align=center] {} (ext);
+		\draw [->] (ivr.south) |- node[align=center, left] {Test failed} (goodbye.west);
+		\draw [->] (ext) -- node[align=center] {} (user);
+		\draw [->] (goodbye) -- node[align=center] {} (end);
+		\draw [->] (ivr) to [bend left=90] node[align=center, above] {Secret Code} (ext);
+
+	\end{tikzpicture}
+	\caption{Internal Asterisk call routing setup.}
+	\label{fig:asterisk-callflow}
+\end{figure}
 
 \subsection{Voice Analysis}
 In this section, the voice analysis method is implemented. This was done primarily in Python3 for the reason that it allows rapid development, and is extremely versatile. The versatility is highly valuable because it means the different components in this system can be manipulated with a single language, which allows information to be shared more easily. Prior familiarity with the language was also taken into account.
-
-\todo{Include just functions! Script at the back.}
 
 \subsubsection{Extraction of Voice}
 The reason for the recording of the call is that it is a pre-existing feature that uses the available infrastructure to obtain the audio from the call. The addition of recording devices that need to be plugged-in to the phone worked against the Design Aims previous discussed in the Chapter \ref{chp:deg}. The voice data is stored on the server, which allows for processing on the server itself. By polling the directory for new files, a Python script is able to locate the newly created file.
@@ -62,13 +122,13 @@ It was at this point that the need for a switch was noticed. It was obvious that
 \begin{figure}[H]
 	\captionsetup[subfigure]{position=b}
         \centering
-        \begin{subfigure}{0.45\textwidth}
+        \begin{subfigure}{\textwidth}
                 \includegraphics[width=\textwidth]{pics/wave1}
                 \caption{Sample call recording visualised.}
                 \label{fig:wave1}
         \end{subfigure}
-        ~
-        \begin{subfigure}{0.45\textwidth}
+        \\
+        \begin{subfigure}{\textwidth}
                 \includegraphics[width=\textwidth]{pics/wave2}
                 \caption{Zoomed into the ringing signal.}
                 \label{fig:wave2}
@@ -105,27 +165,38 @@ The metric that was used is shown through the simple function called \texttt{cal
 
 \section{Total Filtration System}
 Combining all the above together gave the \texttt{checkNewRecording()} function. This infinite looping function has a flow as Figure \ref{fig:flow} shows.
-\todo{COMPLETE!}
+
 \begin{figure}[htb]
 \centering
-	\begin{tikzpicture}[node distance=4cm]
+	\begin{tikzpicture}[node distance=3cm]
 	    % We start by placing the blocks
-	    \node [block, align=center] (lift) {Phone\\Lifted?};
+		\node [block, align=center] (start) {Start};
+	    \node [block, align=center, below of=start] (lift) {Phone\\Lifted?};
 		\node [block, align=center, right of=lift] (known) {Known\\Caller\\or\\Outbound};
 		\node [block, align=center, below of=lift] (new) {New\\Call?};
+		\node [block, align=center, left of=new] (back) {Back\\to\\Start};
 		\node [block, align=center, below of=new] (wait) {Wait\\for\\Pickup};
-		\node [block, align=center, below of=wait] (note) {Note\\filesize};
-		\node [block, align=center, below of=note] (Collect) {Collect\\audio};
+		\node [block, align=center, below of=wait] (note) {Extract\\data\\Perform\\analysis};
+		\node [block, align=center, left of=note] (risk) {Display\\risk};
 
 	    % Once the nodes are placed, connecting them is easy.
+		\draw [draw,->] (start) -- node[align=center, right] {Yes} (lift);
 	    \draw [draw,->] (lift) -- node[align=center, below] {Yes} (known);
-	    \draw [->] (lift) -- node[align=center, left]  {No} (new);
-		\draw [->] (known.north) |- node[align=center] {} (lift.north);
-		% \draw [->] (bypass) -| node[align=center] {} (output);
-
+	    % \draw [->] (lift) to [bend right=45] node[align=center, left] {No} (new);
+		\draw [->] (lift) to node[align=center, right] {No} (new);
+		\draw [->] (new) to node[align=center, above] {No} (back);
+		\draw [->] (new) to node[align=center, left] {Yes} (wait);
+		\draw [->] (back.north) |- node[align=center] {} (start.west);
+		\draw [->] (wait) to node[align=center, left] {Yes} (note);
+		\draw [->] (wait) -| node[align=center, left] {Timeout} (back);
+		\draw [->] (note) to node[align=center, above] {Yes} (risk);
+		\draw [->] (known) to [in=-50,out=-130,loop, distance=3cm] node[align=center, below] {Phone in use} (known);
+		\draw [->] (risk) to [in=-50,out=-130,loop, distance=3cm] node[align=center, below] {Phone in use} (risk);
+		\draw [->] (known.north) |- node[align=center, right] {Call ends} (start.east);
+		\draw [->] (risk) to [bend left=90] node[align=center, left] {Call ends} (back);
 
 	\end{tikzpicture}
-	\caption{\texttt{checkNewRecording()} function.}
+	\caption{\texttt{checkNewRecording()} function flow.}
 	\label{fig:flow}
 \end{figure}
 
@@ -183,10 +254,12 @@ The \texttt{checkNewRecording()} function was the one in charge of setting the s
 \\\\
 Running both the \texttt{checkNewRecording()} function and the Flask server function in the same script required some threading, with each function having its own thread. This allowed a single script to run both functions, which was easier to track, and also allowed the \texttt{checkNewRecording()} function to communicate the current state to the server. While there are considerations with threading, as the information flow was strictly one-way (function to server), there was no risk of data disruption.
 
-
 \subsection{Kiosk Mode and Boot}
 To ensure that the display only included the information, the kiosk mode of Chromium was considered. Tom Hartley of the Imperial College Robotics Society (ICRS) had experience in setting up a similar display system to manage equipment purchases in the society's lab space. Kiosk mode forces the display to fullscreen the webpage, with no address bar. Combining this with a disappearing mouse, and no peripherals bar the monitor, the user is only engaged with the material on the monitor.
 \\\\
 Writing a Bash script that runs at boot means 3 things can be done. First, the script that contains the monitoring function and the server can run automatically. Second, Chromium can be launched in Kiosk mode, and be pointed to the server. The auto page reload means the window will continue to remain updated. Third, it gives a change to set the power settings so the monitor does not sleep. All this means that the user does not need to do anything to the system at boot.
+
+\section{Unimplemented Features}
+The main feature that was not
 
 \end{document}

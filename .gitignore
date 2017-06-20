@@ -1,3 +1,5 @@
 # Things to ignore
-main.pdf
+*.pdf
+*.aux
+*.log
 main.toc
