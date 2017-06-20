@@ -2,7 +2,7 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
-\todo{Introductory paragraph to the chapter.}
+This implementation was done in different phases. First came the purchasing of parts, then came their configuration, and then their connection. After this, the implementation of the filtration methods. Finally, all the information was configured to be displayed after the implementation of a UI.
 
 \section{Raspberry Pi}
 \subsection{OS}
@@ -17,84 +17,109 @@ As there is no landline in College to use, the Obi110 was brought home. Combined
 \section{Asterisk, FreePBX, and the Obi110}
 This segment was done using a combination of materials from Bryan Ross \cite{bryanross}, and a little bit from Phil's Blog \cite{obihaiuk}. Ross's tutorial \cite{bryanross} allows RasPBX to interface with the phone line, and the analogue phone. The manipulation of the Obi110 settings was done through its web interface. RasPBX has an Asterisk server running, but has the FreePBX GUI that is accessible through the web as well. Although the steps that were followed were quite similar, they were only followed until the Obi110 and the RasPBX were linked. Ross's material continues to show how he did his time-based system, which is not relevant in this case.
 \\\\
+Before looking at the configuration, Figure \ref{fig:physical} shows how the components are laid out and how they are physically connected.
+
+\begin{figure}[H]
+\centering
+\captionsetup[subfigure]{position=b}
+	\centering
+	\begin{subfigure}{\textwidth}
+	\begin{tikzpicture}[node distance=4cm]
+	    % We start by placing the blocks
+		\node [input, align=center] (line) {Landline};
+		\node [block, align=center, right of=line] (obi) {Obi110};
+		\node [block, align=center, right of=obi] (phone) {Analogue\\Phone};
+		\node [block, align=center, below of=obi] (power) {Power\\Source};
+		\node [block, align=center, right of=power] (button) {Handset\\Button};
+		\node [block, align=center, below of=button] (pi) {Raspberry\\Pi};
+		\node [block, align=center, below of=power] (switch) {Switch};
+
+	    % Once the nodes are placed, connecting them is easy.
+	    \draw [<->] (line) -- node[align=center] {} (obi);
+		\draw [<->] (obi) -- node[align=center] {} (phone);
+		\draw [<->] (phone) -- node[align=center] {} (button);
+		\draw [<->] (button) -- node[align=center] {} (pi);
+		\draw [->] (power) -- node[align=center] {} (obi);
+		\draw [->] (power) -- node[align=center] {} (pi);
+		\draw [->] (power) -- node[align=center] {} (switch);
+		\draw [<->] (pi) -- node[align=center] {} (switch);
+		\draw [<->] (obi.south west) to [bend right=90] node[align=center, above] {} (switch.west);
+
+	\end{tikzpicture}
+	\caption{Physical connections of the system.}
+	\label{fig:physical-diagram}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+	\includegraphics[width=\textwidth]{pics/meng/setup}
+	\caption{A picture of everything.}
+	\label{fig:physical-picture}
+\end{subfigure}
+\caption{The layout of the implementation, both in block diagram, and with a picture. }
+\label{fig:physical}
+\end{figure}
+
 To briefly summarise the settings, the first thing is that the Obi110 is able to ``convert'' the landline into an SIP trunk. This trunk is what Asterisk can use to send and receive calls from the outside. This ensures that calls going to the trunk from Asterisk are converted into something the landline can handle, while calls coming in are sent to the trunk.
 \\\\
 Next, the Obi110's interface with the analogue telephone is configured as an extension. An extension in this context is an endpoint in a VoIP system. In other words, by configuring it as an extension, it can receive calls sent to it from Asterisk, and will convert it into a form that the phone can handle. Phil's Blog contained some important configuration values that were used to ensure a smoother calling process \cite{obihaiuk}. The entire Obi110 configuration is stored as an XML file, which is included in the repository, a link to which can be found in Appendix \ref{sec:appendix-repo} as it is relevant, but not necessary in the main body.
 \\\\
 Once this is done, the Asterisk server was configured through the FreePBX GUI. The server was set to interact with the trunk from the Obi110. This would be where all outbound calls are headed. Next, all inbound calls would be routed to the analogue phone extension in the Obi110. This means that calls headed out go through the SIP trunk to the landline, and incoming calls go straight to the phone.
 \\\\
-At this point, all the connections to the outside are configured and set. While an additional VoIP phone was obtained from the department, the proprietary nature of the phone meant that it was not possible to use it with the open-source software that was running on the Raspberry Pi. The configuration flow inside is shown in Figure \ref{fig:asterisk-conf}
+At this point, all the connections to the outside are configured and set. While an additional VoIP phone was obtained from the department, the proprietary nature of the phone meant that it was not possible to use it with the open-source software that was running on the Raspberry Pi. The configuration flow inside is shown in Figure \ref{fig:asterisk-conf}.
 
 \begin{figure}[H]
 	\captionsetup[subfigure]{position=b}
         \centering
         \begin{subfigure}{\textwidth}
-			\begin{tikzpicture}[node distance=4cm]
-			    % We start by placing the blocks
-				\node [input, align=center] (call) {Call\\From\\Landline};
-				\node [block, align=center, right of=call] (obi1) {Obi110\\SIP\\Conversion};
-				\node [block, align=center, right of=obi1] (ast) {Asterisk};
-				\node [block, align=center, right of=ast] (ext) {Obi110\\Extension\\Conversion};
-				\node [output, align=center, right of=ext] (phone) {Analogue\\Phone};
+			\begin{tikzpicture}[node distance=5cm]
+			% We start by placing the blocks
+			\node [input, align=center] (input) {Output\\to\\Landline};
+			\node [output, align=center, below of=input] (output) {From\\Phone};
+			\node [block, align=center, right of=input] (converter1) {Landline\\to\\SIP\\Conversion};
+			\node [block, align=center, right of=output] (converter2) {SIP\\to\\Landline\\Conversion};
+			\node [inner sep=7pt, draw,thick,fit=(converter1) (converter2)] (obi) {Obi110};
+			\node [block, align=center, right of=converter1] (inboundrules) {Outbound\\Rules};
+			\node [block, align=center, right of=converter2] (ext) {Origin\\Extension};
+			\node [inner sep=15pt, draw,thick,fit=(inboundrules) (ext), label={Asterisk}] (ast) {};
 
-			    % Once the nodes are placed, connecting them is easy.
-			    \draw [->] (call) -- node[align=center] {} (obi1);
-			    \draw [->] (obi1) -- node[align=center, above] {Trunk} (ast);
-				\draw [->] (ast) -- node[align=center, above] {Inbound\\route} (ext);
-				\draw [->] (ext) -- node[align=center] {} (phone);
+			% Once the nodes are placed, connecting them is easy.
+			\draw [draw,<-] (input) -- node[align=center] {} (converter1);
+			\draw [->] (output) -- node[align=center] {} (converter2);
+			\draw [<-] (converter1) -- node[align=center, above] {Trunk} (inboundrules);
+			\draw [<-] (inboundrules) -- node[align=center, right] {Call\\Routing} (ext);
+			\draw [<-] (ext) -- node[align=center] {} (converter2);
 
-			\end{tikzpicture}
-			\caption{Internal Asterisk call routing setup for incoming calls.}
-			\label{fig:asterisk-callflow-in}
+		\end{tikzpicture}
+		\caption{Internal Asterisk call routing setup for outgoing calls.}
+		\label{fig:asterisk-conf-out}
         \end{subfigure}
         \\
         \begin{subfigure}{\textwidth}
-			\begin{tikzpicture}[node distance=4cm]
+			\begin{tikzpicture}[node distance=5cm]
 			    % We start by placing the blocks
-				\node [input, align=center] (call) {Call\\to\\Landline};
-				\node [block, align=center, right of=call] (obi1) {Obi110\\SIP\\Conversion};
-				\node [block, align=center, right of=obi1] (ast) {Asterisk};
-				\node [block, align=center, right of=ast] (ext) {Obi110\\Extension\\Conversion};
-				\node [output, align=center, right of=ext] (phone) {Analogue\\Phone};
+			    \node [input, align=center] (input) {Input\\from\\Landline};
+				\node [output, align=center, below of=input] (output) {To\\Phone};
+			    \node [block, align=center, right of=input] (converter1) {Landline\\to\\SIP\\Conversion};
+				\node [block, align=center, right of=output] (converter2) {SIP\\to\\Landline\\Conversion};
+				\node [inner sep=7pt, draw,thick,fit=(converter1) (converter2)] (obi) {Obi110};
+			    \node [block, align=center, right of=converter1] (inboundrules) {Inbound\\Rules};
+				\node [block, align=center, right of=converter2] (ext) {Destination\\Extension};
+				\node [inner sep=15pt, draw,thick,fit=(inboundrules) (ext), label={Asterisk}] (ast) {};
 
 			    % Once the nodes are placed, connecting them is easy.
-			    \draw [<-] (call) -- node[align=center] {} (obi1);
-			    \draw [<-] (obi1) -- node[align=center, above] {Trunk} (ast);
-				\draw [<-] (ast) -- node[align=center, above] {Outbound\\route} (ext);
-				\draw [<-] (ext) -- node[align=center] {} (phone);
+			    \draw [draw,->] (input) -- node[align=center] {} (converter1);
+			    \draw [<-] (output) -- node[align=center] {} (converter2);
+				\draw [->] (converter1) -- node[align=center, above] {Trunk} (inboundrules);
+				\draw [->] (inboundrules) -- node[align=center, right] {Call\\Routing} (ext);
+				\draw [->] (ext) -- node[align=center] {} (converter2);
 
 			\end{tikzpicture}
-			\caption{Internal Asterisk call routing setup for outgoing calls.}
-			\label{fig:asterisk-callflow-out}
+			\caption{Internal Asterisk call routing setup for incoming calls.}
+			\label{fig:asterisk-conf-in}
         \end{subfigure}
-	\caption{Visualisations of the call flows in and out of the system.}
-	\label{fig:asterisk-callflow-both}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-	\begin{tikzpicture}[node distance=4cm]
-	    % We start by placing the blocks
-	    \node [input, align=center] (input) {Input\\from\\Landline};
-		\node [output, align=center, below of=input] (output) {To\\Phone};
-	    \node [block, align=center, right of=input] (converter1) {Landline\\to\\SIP\\Conversion};
-		\node [block, align=center, right of=output] (converter2) {SIP\\to\\Landline\\Conversion};
-		\node [block, align=center, fit=(converter1)(converter2),right=of converter1.north east,anchor=north west] (switch) {Switch};
-		\node[draw,thick,fit=(converter1) (converter2)] (obi) {Obi110};
-	    \node [block, align=center, right of=switch] (pi) {DHCP\\and\\Asterisk\\Server};
-
-	    % Once the nodes are placed, connecting them is easy.
-	    \draw [draw,->] (input) -- node[align=center] {} (converter1);
-	    \draw [<-] (output) -- node[align=center] {} (converter2);
-	    \draw [<->] (switch) -- node {} (pi);
-	    \draw [<->] (obi) -- node[align=center] {} (switch);
-
-	\end{tikzpicture}
-	\caption{Linking of trunks, extensions, outbound and inbound rules}
+	\caption{Visualisations of the call flows in and out of the system by linking trunks, extensions, outbound rules, and inbound rules}
 	\label{fig:asterisk-conf}
 \end{figure}
-
-\todo{Maybe a picture of the Asterisk setup? And some diagrams. }
 
 \subsection{Message, Prompt, and Code}
 However, according to Figure \ref{fig:callflow}, the incoming call must go to a Welcome message. This is what the Interactive Voice Response (IVR) was used. The incoming calls are routed to an instance of it. This instance contains a message, and reacts according to the input from the caller. By combining the Welcome message with the reverse Turing test, the process is simplified. The message that the caller hears is as follows.
@@ -143,7 +168,7 @@ All of this is seen in Figure \ref{fig:asterisk-callflow}, which shows the call 
 In this section, the voice analysis method is implemented. This was done primarily in Python3 for the reason that it allows rapid development, and is extremely versatile. The versatility is highly valuable because it means the different components in this system can be manipulated with a single language, which allows information to be shared more easily. Prior familiarity with the language was also taken into account.
 
 \subsubsection{Extraction of Voice}
-The reason for the recording of the call is that it is a pre-existing feature that uses the available infrastructure to obtain the audio from the call. The addition of recording devices that need to be plugged-in to the phone worked against the Design Aims previous discussed in the Chapter \ref{chp:deg}. The voice data is stored on the server, which allows for processing on the server itself. By polling the directory for new files, a Python script is able to locate the newly created file.
+The reason for the recording of the call is that it is a pre-existing feature that uses the available infrastructure to obtain the audio from the call. The addition of recording devices that need to be plugged-in to the phone worked against the Design Aims previous discussed in the Chapter \ref{chp:des}. The voice data is stored on the server, which allows for processing on the server itself. By polling the directory for new files, a Python script is able to locate the newly created file.
 
 \begin{figure}[H]
 	\captionsetup[subfigure]{position=b}
@@ -163,10 +188,9 @@ The reason for the recording of the call is that it is a pre-existing feature th
 	\label{fig:wave}
 \end{figure}
 
-
 It was at this point that the need for a switch was noticed. It was obvious that the recording would start the minute the call was put through. However, the recording included the initial ringing, and started before the user had picked up the phone. There was thus no way to determine how long since the user had picked up the phone. Looking at the waveform of the audio in Figure \ref{fig:wave}, it was seen that the ringing had a distinctive pattern, which could be easily identified. With the ringing happening at regular intervals, one method considered was to use a matched filter to the ringing and note its last instance. However, this was not just very involved, but also very computationally intensive.
 \\\\
-The switch as previous mentioned in the Design chapter was used. Conductive tape was connected to the receiver of the analogue phone, and two conductive pads were placed on the housing. When the phone was down, the tape closed the circuit, and when it was lifted off, the connection was broken. However, it was found that the voltage drop when the handset was removed was insufficient for the Pi to detect as a \texttt{LOW} value. Thus, a modification to the circuit was made by changing the $300\Omega$ resistor into 2 $150\Omega$ resistors in parallel. The switch then was made to short both the LED and one of the resistors, lowering the voltage detected by the Pi when it was open. This was found to be successful. The new circuit diagram is shown in Figure \ref{fig:newcircuit}.
+The switch as previous mentioned in the Design chapter was used. Conductive tape was connected to the receiver of the analogue phone, and two conductive pads were placed on the housing. When the phone was down, the tape closed the circuit, and when it was lifted off, the connection was broken. However, it was found that the voltage drop when the handset was removed was insufficient for the Pi to detect as a \texttt{LOW} value. Thus, a modification to the circuit was made by changing the $300\Omega$ resistor into 2 $150\Omega$ resistors in parallel. The switch then was made to short both the LED and one of the resistors, lowering the voltage detected by the Pi when it was open. This was found to be successful. The new circuit diagram is shown in Figure \ref{fig:newcircuit}, and Figure \ref{fig:button} contains pictures of the circuit connected to the Raspberry Pi, and the conductive tape layout on the handset.
 
 \begin{figure}[H]
 	\centering
@@ -182,6 +206,24 @@ The switch as previous mentioned in the Design chapter was used. Conductive tape
 		;
 	\end{circuitikz}
 	\caption{Modified switch circuit.} \label{fig:newcircuit}
+\end{figure}
+
+\begin{figure}[H]
+	\captionsetup[subfigure]{position=b}
+        \centering
+        \begin{subfigure}{0.47\textwidth}
+                \includegraphics[width=\textwidth]{pics/meng/switch}
+                \caption{Normal operation.}
+                \label{fig:switch}
+        \end{subfigure}
+        ~
+		\begin{subfigure}{0.47\textwidth}
+                \includegraphics[width=\textwidth]{pics/meng/circuit}
+                \caption{Safe caller.}
+                \label{fig:circuit}
+        \end{subfigure}
+	\caption{Pictures of the User Interface on a monitor.}
+	\label{fig:button}
 \end{figure}
 
 \subsubsection{Speech Recognition}
@@ -236,7 +278,25 @@ To get around this, the raw binary data was extracted from the file and placed i
 Only 14.5 seconds of data are sent to Bing for two reasons. Firstly, it was a limitation of the free service that only 15 second sound clips are processed. Secondly, the call metric needs to be returned before too much of the call has passed.
 
 \section{Display}
-All the information from the voice analysis and reverse Turing test needs to be conveyed to the user somehow. From the Design section, the simple solution of large text on colourful backgrounds was selected. To do this, an HTML-based solution was used.
+All the information from the voice analysis and reverse Turing test needs to be conveyed to the user somehow. From the Design section, the simple solution of large text on colourful backgrounds was selected. To do this, an HTML-based solution was used. Figure \ref{fig:displays} shows the final outcome.
+
+\begin{figure}[H]
+	\captionsetup[subfigure]{position=b}
+        \centering
+        \begin{subfigure}{0.47\textwidth}
+                \includegraphics[width=\textwidth]{pics/meng/monitor1}
+                \caption{Normal operation.}
+                \label{fig:display1}
+        \end{subfigure}
+        ~
+		\begin{subfigure}{0.47\textwidth}
+                \includegraphics[width=\textwidth]{pics/meng/monitor2}
+                \caption{Safe caller.}
+                \label{fig:display2}
+        \end{subfigure}
+	\caption{Pictures of the User Interface on a monitor.}
+	\label{fig:displays}
+\end{figure}
 
 \subsection{Webpage and Server}
 Exploring some simple Python3 options for a website yielded the \texttt{Flask} package. This simple server system runs in Python3 with the advantage of integrating with \texttt{Jinja2}. This package allowed templates of webpages to be completed at the point of transmission, integrating conditionals, and being able to receive variables from the script. To convert the information into webpages, the concept of states was used. The full list of states chosen were as follows:

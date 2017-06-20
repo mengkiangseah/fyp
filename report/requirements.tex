@@ -18,7 +18,7 @@ The project specifically is aimed at landlines because that is the most commonly
 Thus, the objective is to have something that will plug into the conventional telephone socket on one end, and the standard telephone on the other. Combining this with the intended audience, the setup must therefore be able to work with the UK standards of telephony. The exact way this was done is therefore in the Design and Implementation Sections.
 
 \section{Implementation}
-The implementation plan was guided by the idea that a piece of software known as Asterisk could be used. Asterisk is like a private branch exchange, or PBX. In simpler terms, it can act as a switch board, by answering, redirecting, and managing calls. This open-source software runs on Linux, and offers a range of options \cite{asterisk}. However, for this to work the aims of the setup, the implementation also has objectives.
+The implementation plan was guided by the idea that a piece of software known as Asterisk could be used. Asterisk is like a private branch exchange, or PBX. In simpler terms, it can act as a switch board, by answering, redirecting, and managing calls. This open-source software runs on Linux, and offers a range of options \cite{asterisk-story}. However, for this to work the aims of the setup, the implementation also has objectives.
 
 \subsection{Connections}
 Asterisk accepts and redirects calls, and one of its many input and output formats is the Session Initiation Protocol (SIP) \cite{sip} which was discussed in the Chapter \ref{chp:bac}. This means that there needs to be a way to convert the calls from the landline into an SIP stream. Thus, there will need to be a form of landline-SIP adapting connection at the input.
