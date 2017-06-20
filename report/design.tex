@@ -33,7 +33,7 @@ The connections inside a VoIP system that Asterisk would manipulate are all thro
 \\\\
 While a router could be used, the Raspberry Pi can be configured to perform as an Dynamic Host Configuration Protocol server \cite{pi-dhcp}. This reduces the total amount of hardware, as it then doubles as the Asterisk server and manages the network. And to allow additional connections, mostly for debugging and analysis, a switch allows multiple devices to Figure \ref{fig:connections} illustrates the overall setup.
 
-\begin{figure}[htb]
+\begin{figure}[h]
 \centering
 	\begin{tikzpicture}[node distance=4cm]
 	    % We start by placing the blocks
@@ -126,7 +126,7 @@ Option 3, the reverse Turing test, is ideal for identifying the Robotic Callers.
 \\\\
 As a compromise, speech content recognition was ultimately chosen as it offers the ease of developping a metric from the words detected. However, this does mean the user has to engage with the caller in the case of any human caller. There is also an additional method not mentioned in the academic research. Having a firm warning at the beginning of the call as a welcome message could potentially deter would-be scammers. Thus, the overall call flow is shown in Figure \ref{fig:callflow}.
 
-\begin{figure}[htb]
+\begin{figure}[h]
 \centering
 	\begin{tikzpicture}[node distance=3cm]
 	    % We start by placing the blocks
@@ -163,13 +163,109 @@ When looking at classifying a call as spam, there are two cases of incorrect cla
 To prevent this, the call flow is designed to always allow a human caller to reach the user. The fallback is the goodbye message, which clearly requests a redial and restates the instructions. However, this explains all parts of the design except the voice analysis. Extracting the speech content of the call raises two points. Firstly, how exactly are the words spoken turned into a classification? And secondly, how exactly is this relayed to the user?
 
 \subsection{Voice Metric}
-If the voice analysis results do not result in any impact on the call, the results need to reach the user. The result should then be the likelihood of the call being spam. But rather than classify between the two extremes, spam and real, there is also the need for fuzzy logic, or a third option. This is the ``maybe'' option. In looking that what results a user would want, they do not need to see the calculations or the percentage likelihood. They need to know if a call is probably spam, maybe spam, or unlikely to be spam. The metric must classify the call into one of the three categories. This keeps things easy and straightforward, as Design Aim 3 states.
+If the voice analysis results do not result in any impact on the call, the results need to reach the user. The result should then be the likelihood of the call being spam. But rather than classify between the two extremes, spam and real, there is also the need for fuzzy logic, or a third option. This is the ``maybe'' option. In looking that what results a user would want, they do not need to see the calculations or the percentage likelihood. They only need to know of the risk involved in the call The metric must classify the call into one of the three categories: low risk, medium risk, and high risk. This keeps things easy and straightforward, as Design Aim 3 states.
 \\\\
-To move from the words to a metric, Tu et al. \cite{cisco} suggest using keywords. There are two lists of words that need to be made: words that are definitely in a spam call and words that might be a spam call but could also in a legitimate call. To construct these lists, the 6 types of calls as mentioned in Section \ref{sec:scams} are used. Based on their 
+To move from the words to a metric, Tu et al. \cite{cisco} suggest using keywords. The approach here was that there are two lists of words that need to be made: words that are definitely in a spam call and words that might be a spam call but could also in a legitimate call. To construct these lists, the 6 types of calls as mentioned in Section \ref{sec:scams} are used. Based on their subject matter, certain keywords were chosen through brainstorming (with the generous help of others in the lab). These were then subdivided into ``Definitely Spam'', henceforth referred to as Category A and ``Possibly Spam'', henceforth referred to as Category B. This is show in Table \ref{tbl:keywords}. The metric is made by looking at how many words from each list are detected, and their relative values. If there are no Category A or Category B words, the call is classified as unlikely to be dangerous. This is shown in Table \ref{tbl:metric}.
 
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+	\hline
+\textbf{Type of Scam} & \textbf{Category A Keywords} & \textbf{Category B Keywords} \\\hline
+Investment   & invest, invests, shares, share, &  real, market, markets, return, \\
+& property, properties, estate, estates, & hedge, interest, trust, returns\\
+& opportunity, opportunities, investment, & fund, funds, \\
+& investments, stock, stocks, equity, & \\
+& equities & \\\hline
+Pension      & pension, pensions, scheme, schemes & income, benefit, benefits, payment, \\
+& & payments, retirement \\\hline
+Computer     & Apple, Microsoft, tech, support, & infected, virus, software, windows, \\
+& computer, computers & machine \\\hline
+Bank         & account, accounts, detail, details, & bank, number, card, cards, \\
+& pin, code, codes, debit, &  miss, mister, madam, missus \\
+& credit, deposit, deposits & \\\hline
+Compensation & accident, accidents, compensation, & insurance, damages, damage \\
+& compensations, entitled, entitlement, & \\
+& entitlements, compensate, incident, & \\
+& incidents & \\\hline
+Anti-Scam    & scam, scams, anti, prevent, & fake, pay, phony, protect, \\
+& fee, fees & protection, money \\\hline
+\end{tabular}%
+}
+\caption{The list of keywords used.}
+\label{tbl:keywords}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|l|}
+\hline
+\textbf{Category A words} & \textbf{Category B words} & \textbf{Classification}     \\\hline
+0                & 0                & Safe                                                    \\
+\textgreater0    & 0                & High                                                    \\
+0                & \textgreater0    & Medium                                                  \\
+\textgreater0    & \textgreater0    & If B \textgreater A then, Medium. If A \textgreater B, High.\\\hline
+\end{tabular}
+\caption{The metric used. }
+\label{tbl:metric}
+\end{table}
 
 \section{User Interface}
-In line with the Design Aim 3, the decision was made to have to have a
+In line with the Design Aim 3, the decision was made to have to have the system display information clearly. To best display this information, a list was drawn out to clarify what types are needed.
+
+\begin{enumerate}
+	\item Online
+	\item Known Caller
+	\item Voice Analysis
+	\item Low Risk
+	\item Medium Risk
+	\item High Risk
+\end{enumerate}
+
+The three risk levels are needed, along with a generic status, and a way to notify that the caller is known user. The idea would be to have these words, in large type with appropriately coloured backgrounds visible on a screen connected to the system. The Raspberry Pi has an HDMI output, which is perfect for this purpose. The designed screens are shown in Figure \ref{fig:states}.
+
+\begin{figure}[H]
+	\captionsetup[subfigure]{position=b}
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+                \includegraphics[width=\textwidth]{pics/state1}
+                \caption{Online.}
+                \label{fig:state1}
+        \end{subfigure}
+        ~
+        \begin{subfigure}{0.45\textwidth}
+                \includegraphics[width=\textwidth]{pics/state2}
+                \caption{Known caller.}
+                \label{fig:state2}
+        \end{subfigure}
+		\\
+		\begin{subfigure}{0.45\textwidth}
+				\includegraphics[width=\textwidth]{pics/state4}
+				\caption{Voice analysis.}
+				\label{fig:state4}
+		\end{subfigure}
+		~
+		\begin{subfigure}{0.45\textwidth}
+				\includegraphics[width=\textwidth]{pics/state6}
+				\caption{Low risk.}
+				\label{fig:state6}
+		\end{subfigure}
+		\\
+		\begin{subfigure}{0.45\textwidth}
+				\includegraphics[width=\textwidth]{pics/state7}
+				\caption{Medium risk.}
+				\label{fig:state7}
+		\end{subfigure}
+		~
+		\begin{subfigure}{0.45\textwidth}
+				\includegraphics[width=\textwidth]{pics/state8}
+				\caption{High risk.}
+				\label{fig:state8}
+		\end{subfigure}
+	\caption{Screens showing information to the user.}
+	\label{fig:states}
+\end{figure}
 
 \section{Additional Components}
 \subsection{Switch}
@@ -178,15 +274,16 @@ A switch was needed to determine the start and end of the call from the user's p
 The Raspberry Pi 3 offers GPIO inputs which allow digital inputs. To ensure that this was within the tolerances, a circuit powered by the Raspberry Pi's 3.3V output was designed. In Figure \ref{fig:initial-circuit} shows the layout. When the switch is closed, the GPIO pin reads the 3.3V from rail. When it is opened, the pin reads the voltage across the resistor.
 \\\\
 The Light Emitting Diode (LED) was used both as a debugging signal, and as a check for the user to ensure that installing the switch on their phone was done correctly. The LED was generously donated by Thomas Akinola, and was rated as having a 2V drop and recommended at 10mA. Knowing this, Equation \ref{eq:circuit} calculates the ideal resistor value. However, this caused the LED to be too bright, and a greater resistor value was chosen, $300\Omega$.
-
+\vspace{-0.25cm}
 \begin{align}
 	\text{Resistor Value} &= \frac{\text{Voltage across Resistor}}{\text{Amperage needed}}\notag\\
 	&= \frac{3.3\text{V} - 2\text{V}}{10\text{mA}}\notag\\
 	&= \frac{1.3\text{V}}{10\text{mA}}\notag\\
 	&\approx 130\Omega\label{eq:circuit}
 \end{align}
+\vspace{-1cm}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{circuitikz} \draw
 		 (0, 0) -- (8, 0)
@@ -200,6 +297,7 @@ The Light Emitting Diode (LED) was used both as a debugging signal, and as a che
 	\end{circuitikz}
 	\caption{Initial switch circuit.} \label{fig:initial-circuit}
 \end{figure}
+\vspace{-0.5cm}
 
 \subsection{Emergency Bypass}
 The Obi110 suffers from a drawback in that it is powered from the mains. In a power cut, or emergency, the entire system would fail, and the phone would not be able to work. This is despite the fact that the phone lines are powered independently \cite{telephone}. Also, in an emergency, the system could be a serious liability. To prevent this, ideally, there should be an emergency bypass that can connect the phone directly to the landline. It would look like the setup in Figure \ref{fig:bypass}.
@@ -224,7 +322,5 @@ The Obi110 suffers from a drawback in that it is powered from the mains. In a po
 	\caption{Emergency Bypass Visualisation}
 	\label{fig:bypass}
 \end{figure}
-
-% \hl{There is also a particular paper on IEEE Xplore that evaluated and suggested a number of filtration algorithms, some of which I am using here. However, the paper did not attempt any of them practically, and they were more suitable to pure VoIP phones, along with not considering any of the intended audience. Combining their findings, with my analysis from a practical perspective, and knowing the more restricted audience, I will look at how my filtration flow stacks up. Their methods of evaluating forms of filtration will also be reconsidered, and I am planning on critically commenting it. All this means this chapter will be at least 5-6 pages, but may extend up to 10.}
 
 \end{document}

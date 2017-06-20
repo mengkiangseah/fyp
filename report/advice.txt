@@ -11,11 +11,12 @@ Demo? Video. Volunteering.
 Introduction
 Requirements
 
-
+Introduction - DONE
 Background - Just the Phone+SIP+Asterisk
-Design and Analysis
+Requirements - DONE
+Design and Analysis - DONE
 Implementation
 Testing
 Results
 Evaluation
-Conclusion
+Conclusion - BLANK
