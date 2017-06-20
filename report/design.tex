@@ -287,11 +287,11 @@ The Light Emitting Diode (LED) was used both as a debugging signal, and as a che
 	\centering
 	\begin{circuitikz} \draw
 		 (0, 0) -- (8, 0)
-		 (5, 0) to [R, l_=$300\Omega$] (5, 4)
-		 (1, 4) node[label={above:To GPIO}] {} -- (5, 4)
-		 (5, 6) to [led] (5, 4)
-		 (3, 6) to [push button] (3, 4)
-		 (0, 6) node[label={above:3.3V}] {} -- (8, 6)
+		 (5, 0) to [R, l_=$300\Omega$] (5, 2)
+		 (1, 2) node[label={above:To GPIO}] {} -- (5, 2)
+		 (5, 4) to [led] (5, 2)
+		 (3, 4) to [push button] (3, 2)
+		 (0, 4) node[label={above:3.3V}] {} -- (8, 4)
 		 (7, 0) node[ground]{} -- (7, 0)
 		;
 	\end{circuitikz}
@@ -304,7 +304,7 @@ The Obi110 suffers from a drawback in that it is powered from the mains. In a po
 
 \begin{figure}[htb]
 \centering
-	\begin{tikzpicture}[node distance=4cm]
+	\begin{tikzpicture}[node distance=3cm]
 	    % We start by placing the blocks
 	    \node [input, align=center] (input) {Input\\from\\Landline};
 		\node [block, align=center, right of=input] (system) {The\\System};

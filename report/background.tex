@@ -2,7 +2,7 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
-To properly understand the context of the project, background information is required. As this project was centered around UK landlines and spam call filtration, the main focus of the background was on analogue telephone lines. Additionally, having been pointed in the direction of Asterisk, a brief section on is included, as is the Session Initiation Protocol (SIP), which is a popular Voice over Internet Protocol (VoIP) that Asterisk supports. Finally, the types of scams, and the protection methods are explored, both on a consumer level, and in the context of academic research.
+To properly understand the context of the project, background information is required. There is a brief discussion of the telephone line system in the UK to provide context. Additionally, having been pointed in the direction of Asterisk, a brief section on is included, as is the Session Initiation Protocol (SIP), which is a popular Voice over Internet Protocol (VoIP) that Asterisk supports. As this project was centered around spam calls and  spam call filtration, the main focus of the background was on those two topics. They are explored, both on a consumer level, and in the context of academic research.
 
 \section{Telephone Systems}
 \subsection{Analogue}
@@ -10,11 +10,15 @@ Telephones are deceptively simple systems. Examination of a landline plug in the
 \\\\
 For a telephone in a house to work, it must interact with the exchange, which is run by the telephone service provide. When the phone is picked up, the voltage across the line changes. Older systems used this as the basis of the pulse dialing method, but the current modern way is to use DTMF, or Dual Tone multifrequency. Instead of relying on voltage changes, each key when pressed generates a two-frequency tone that the exchange is able to interpret \cite{telephone}.
 \\\\
-When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}.
-\\\\
+When the exchange has a call to send to a telephone, it transmits a AC (alternating current) signal that is interpreted as the ringing sound \cite{telephone}. \lipsum[1]
+
 \todo[inline, color=green!40]{More about telephones.}
 
-\subsection{Session Initiation Protocol and Asterisk}
+\subsection{Asterisk and Session Initiation Protocol}
+Asterisk is an open-source software that is designed for telephony. It has the ability to handle phones, call exchanges, and can be used to work with landlines. A key point is that it supports Session Initiation Protocol (SIP), which is commonly used in VoIP applications \cite{asterisk-story}. Asterisk is like a server that runs in the background and handles how all of the different components in a VoIP system interact. In an example given, it is able to answer a call, play a ``Hello World'' sound file, and hangup \cite{asterisk-more}.
+
+\lipsum[1]
+
 \todo[inline, color=green!40]{Paragraph about Asterisk. Paragraph about SIP.}
 
 \section{Phone Scams in the UK}\label{sec:scams}

@@ -6,25 +6,30 @@
 The work of Tu et al. \cite{cisco} judged the various methods in three different ways: robustness, usability, and deployability. From early on, robustness and caller usage (usability from the caller's perspective) were criteria that were considered in testing this system. However, three other criteria are added on. First, the basic functionality. Throughout the various papers in Section \ref{sec:methods}, there was no talk of actually building a working system to interface with the landlines. Secondly, there is also the user interface. This is the usability from the perspective of the user. Finally, there is the comparison with the commercial alternatives.
 
 \section{Basic Functionality}
-The phone system must function, at the bare minimum, to remove robot cold calls. This is the simplest kind of call to avoid, with a simple challenge that automatic calls are not programmed to handle, which is why it is the baseline. Additionally, this functionality must be added to that of a normal phone. This means all other things a normal landline can do must still be possible, such as making outgoing calls or dialing emergency numbers. Success in this criterion is a yes/no situation.
-\hl{MODULARISATION}
+The phone system must function, at the bare minimum, to remove robot cold calls. This is the simplest kind of call to avoid, with a simple challenge that automatic calls are not programmed to handle, which is why it is the baseline. Additionally, this functionality must be added to that of a normal phone. This means all other things a normal landline can do must still be possible, such as making outgoing calls or dialing emergency numbers. Success in this criterion is a yes/no situation. However, due the modular nature of the project, the collection of short-term goals became the test of basic functionality. These were as follows:
 
+\begin{enumerate}
+	\item RasPBX installed, internal network functioning
+	\item Obi110 configured with RasPBX, calls passing through
+	\item Calls directed to an IVR
+	\item Switch workign correctly
+	\item Audio detected and extracted
+	\item Speech-to-text and call metric working
+	\item Display system working (server and webpage)
+	\item Both call analysis functions and server function working together
+\end{enumerate}
+
+\section{Ease of Caller and User Interface}
+The usability can be tested by surveying people and getting their feelings on two things. First, the ease of a caller. How would a person feel when encountering the Welcome message and having to enter a code or button before continuing? Does this adversely affect the caller's experience, even for a legitimate reason? Secondly, the ease for the user. By removing all inputs, all there is to consider is the outputs. Are the messages clear and concise? Does the colours help with the message or do they detract and distract? The survey can be found in the Appendix \ref{survey} \todo{SURVEY REFERNCE AND INCLUDE}. Each surveyee will be shown the various screens, and will have to listen to the message before putting in their views.
 
 \section{Robustness}
-The bottom line for this is, "Does it work well?" Can the system prevent unwanted calls from getting through? There are ways to measure this. From previous modules in Machine Learning, one way is to not just at the rate at which the system is successful at filtering. There are two other kinds, the false positive and the false negative. In this situation, a false positive is a legitimate call that is erroneously flagged as a scam, while a false negative is a spam call marked as legitimate. When it comes to calls, a scam call has a small chance of being harmful, while a missed legitimate call is guaranteed to be troublesome. Hence, when looking at this, the system must understand that there are two ``levels'' of wrong. \hl{Calls and stuff?}
-
-\section{Ease of Caller}
-\hl{SURVEY}
-A highly robust way to prevent unwanted calls is for every legitimate caller to enter a pin code before continuing. Naturally, while this would prevent scammers, it does make a call quite a hassle. The ease of the caller is in contrast to the robustness of the system. It must still be easy enough for say a friend to call in, without feeling overly scrutinised by a computer.
-
-\section{User Interface}
-\hl{SURVEY}
-There must be a way for the user to interact with the system to input their own lists or blocked numbers. They must also be able to configure certain options, such as no calls from aboard, or at certain times of the day. There are a multitude of options, and all must be easily configurable to someone without technical knowledge or training. At the very most, a simple guide booklet could be required, but would have to be produced as part of this. \hl{This was done through a simple survey.}
+The bottom line for this is, "Does it work well?" Can the system prevent unwanted calls from getting through? It is difficult to test the adaptability of the robot scam callers without setting up a honeypot as \todo{The ones who use dit} did. However, the secret code, the keypress prompt, and the goodbye message are all easily checked by simply confirming the path of a call through the IVR. The part that can be tested is the voice metric.
+\\\\
+Arguably, there are two parts to the metric to be tested. The first is the testing of the voice recognition system. As it is ``outsourced'' to Bing, stressing it is not really testing the system's identification and filtration, but rather testing the quality of Bing's speech-to-text processing. To test the metric itself, the metric must be tested with actual call transcripts. This is done by transcribing Youtube videos and by using some transcriptions available. The ones that were used are found in the Appendix \todo{REF ADD TEXTS}. Those samples were sent through just the call metric function and the results collated.
+\\\\
+Unfortunately, due to the labour intensive nature of transcriptions and finding appropriate material, not as many samples were used as wanted. In fact, finding scam calls that are recorded from the beginning is extremely difficult, despite the range of \hl{cat} videos available online. Testing with normal call transcripts seems almost \hl{whimsical} since the words chosen in the metric, while applying to scam calls, are rarely used in a normal day-to-day conversations. This effectiveness of this testing is considered in the Evaluation section. 
 
 \section{Commercial Alternatives}
-There are other systems currently on the market that aim to reduce the number of unwanted calls. This system must be able to compete with these other alternatives in terms of cost, functionality, effectiveness and ease of use. Again, this criterion is very qualitative and can depend on what other services/devices are put onto the market between now and June. \hl{Compare with others.}
-
-
-the declining rates of landline usage in the UK, combined with the increased technological literacy in younger generations, the implementation’s direct usage may be less attractive in the future. However, the filtration methods and call evaluation flow may prove to be scalable and transferable to other cases, such as
+There are other systems currently on the market that aim to reduce the number of unwanted calls. As mentioned in the background section. This system must be able to compete with these other alternatives in terms of cost, functionality, effectiveness and ease of use. Additionally, there does not seem to be a commercially available system with an identical approach as was used in this project. Thus, rather than force a test in this section, the comparisions between this system and others on the market will be explored fully in the Evaluation section.
 
 \end{document}
