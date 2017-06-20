@@ -77,10 +77,14 @@ def waitCallChange(valueWaiting, wantTimeOut):
 
 # Call danger metric
 def callMetric(wordsSpoken):
-	alist = []
-	blist = []
+	alist = ["invest", "invests", "shares", "share", "property", "properties", "estate", "estates", "opportunity", "opportunities", "investment", "investments", "stock", "stocks", "equity", "equities", "pension", "pensions", "scheme", "schemes", "apple", "microsoft", "tech", "support", "computer", "computers", "account", "accounts", "detail", "details", "pin", "code", "codes", "debit", "credit", "deposit", "deposits", "accident", "accidents", "compensation", "compensations", "entitled", "entitlement", "entitlements", "compensate", "incident", "incidents", "scam", "scams", "anti", "prevent", "fee", "fees"]
+
+	blist = ["real", "market", "markets", "return", "hedge", "interest", "trust", "returns", "fund", "funds", "income", "benefit", "benefits", "payment", "payments", "retirement", "infected", "virus", "software", "windows", "machine", "bank", "number", "card", "cards", "miss", "mister", "madam", "missus", "insurance", "damages", "damage", "fake", "pay", "phony", "protect", "protection", "money"]
+
 	wordsA = [word for word in wordsSpoken.lower().split() if word in alist]
+
 	wordsB = [word for word in wordsSpoken.lower().split() if word in blist]
+
 	numA = len(wordsA)
 	numB = len(wordsB)
 
