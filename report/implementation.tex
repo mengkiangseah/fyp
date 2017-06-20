@@ -150,13 +150,40 @@ Exploring some simple Python3 options for a website yielded the \texttt{Flask} p
 	\item Error
 \end{enumerate}
 
-This was very much the same as the Design phase, except additional processing states were introduced both for debugging and to keep the user aware that the system was running. There was also the error state in the event that the metric did not function correctly, which would request the user to reboot the system. The \texttt{checkNewRecording()} function was the one in charge of setting the state of the system as it processed the data. By having the Flask server pass this value to the template, the webpage accessed at any time would be relfective of the current state of the function. To ensure that the webpage remained up to date, a simple line made the page reload every 1 second.
+This was very much the same as the Design phase, except additional processing states were introduced both for debugging and to keep the user aware that the system was running. There was also the error state in the event that the metric did not function correctly, which would request the user to reboot the system. The states not shown in the Design phase are seen in Figure \ref{fig:statesmore}.
+
+\begin{figure}[H]
+	\captionsetup[subfigure]{position=b}
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+                \includegraphics[width=\textwidth]{pics/state3}
+                \caption{While collecting the audio.}
+                \label{fig:state3}
+        \end{subfigure}
+        ~
+        \begin{subfigure}{0.45\textwidth}
+                \includegraphics[width=\textwidth]{pics/state5}
+                \caption{During the call metric function.}
+                \label{fig:state5}
+        \end{subfigure}
+		\\
+		\begin{subfigure}{0.45\textwidth}
+				\includegraphics[width=\textwidth]{pics/state9}
+				\caption{Error.}
+				\label{fig:state9}
+		\end{subfigure}
+	\caption{Screens showing information to the user.}
+	\label{fig:statesmore}
+\end{figure}
+
+The \texttt{checkNewRecording()} function was the one in charge of setting the state of the system as it processed the data. By having the Flask server pass this value to the template, the webpage accessed at any time would be relfective of the current state of the function. To ensure that the webpage remained up to date, a simple line made the page reload every 1 second.
 \\\\
 Running both the \texttt{checkNewRecording()} function and the Flask server function in the same script required some threading, with each function having its own thread. This allowed a single script to run both functions, which was easier to track, and also allowed the \texttt{checkNewRecording()} function to communicate the current state to the server. While there are considerations with threading, as the information flow was strictly one-way (function to server), there was no risk of data disruption.
+
 
 \subsection{Kiosk Mode and Boot}
 To ensure that the display only included the information, the kiosk mode of Chromium was considered. Tom Hartley of the Imperial College Robotics Society (ICRS) had experience in setting up a similar display system to manage equipment purchases in the society's lab space. Kiosk mode forces the display to fullscreen the webpage, with no address bar. Combining this with a disappearing mouse, and no peripherals bar the monitor, the user is only engaged with the material on the monitor.
 \\\\
-Writing a Bash script that runs at boot means 3 things can be done. First, the script that contains the monitoring function and the server can run automatically. Second, Chromium can be launched in Kiosk mode, and be pointed to the server. The auto page reload means the window will continue to remain updated. Third, it gives a change to set the power settings so the monitor does not sleep. All this means that the user does not need to do anything to the system at boot. 
+Writing a Bash script that runs at boot means 3 things can be done. First, the script that contains the monitoring function and the server can run automatically. Second, Chromium can be launched in Kiosk mode, and be pointed to the server. The auto page reload means the window will continue to remain updated. Third, it gives a change to set the power settings so the monitor does not sleep. All this means that the user does not need to do anything to the system at boot.
 
 \end{document}
