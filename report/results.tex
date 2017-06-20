@@ -4,23 +4,99 @@
 \begin{document}
 
 \section{Basic Functionality}
+As a reminder, the various small goals were listed in Section \ref{sec:test-basic}. They are listed here again for clarify. These were little goals that were achieved throughout the implementation. The results for each item is found in Table \ref{tbl:basic-goals}.
 
 \begin{enumerate}
 	\item RasPBX installed, internal network functioning
 	\item Obi110 configured with RasPBX, calls passing through
-	\item Calls directed to an IVR
-	\item Switch workign correctly
+	\item Calls directed to an IVR for naive filtering
+	\item Switch working correctly
 	\item Audio detected and extracted
 	\item Speech-to-text and call metric working
 	\item Display system working (server and webpage)
 	\item Both call analysis functions and server function working together
+	\item Bypass switch
 \end{enumerate}
 
+The only unsuccessful mini-goal is the bypass switch that was discussed in the Design section. This was primarily due to the time constraints of the project. The voice recognition and voice prompt interaction were given a higher priority over this feature, which is a safety fallback. The reasons for this, and the impact of this on the functionality are included the Evaluation section.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+	\hline
+\textbf{Item Number} & \textbf{Successful?}                                 \\\hline
+1           & Yes                                                    \\
+2           & Yes                                                   \\
+3           & Yes                                                 \\
+4           & Yes                                                 \\
+5           & Yes                                                 \\
+6           & Yes                                                \\
+7           & Yes                                                \\
+8           & Yes                                                \\
+9           & No  \\\hline
+\end{tabular}
+\caption{Success of the various goals. }
+\label{tbl:basic-goals}
+\end{table}
+
 \section{Robustness}
-Results of the transcription tests
+The results of the transcription tests are found in Table \ref{tbl:robust}. The various sentences that were used from Scam Call Fighters \cite{spam-calls}, along with the Youtube transcriptions were all passed through the metric, and the risk rating is shown. They various scam transcripts are referred to by a number, and their exact content is found in the repository as mentioned in Appendix \ref{appendix-repo}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+	\hline
+\textbf{Scam Number} & \textbf{Risk Level}                                 \\\hline
+1           & Medium                                                    \\
+2           & Medium                                                   \\
+3           & Medium                                                 \\
+4           & Medium                                                 \\
+5           & Medium                                                 \\
+6           & Medium                                                \\
+7           & Medium                                                \\
+8           & Low                                                \\
+9           & Medium                                                \\
+10           & Medium                                                \\
+11           & High                                                \\
+12           & Low                                                \\
+13           & Medium  \\\hline
+\end{tabular}
+\caption{Estimated risk levels of the various scam call transcripts. }
+\label{tbl:robust}
+\end{table}
 
 \section{Ease of Caller and User Interface}
-Survey results. 
+\subsection{Scores from the Questions}
+A total of 15 people were involved in this small survey. The results of their scores are as shown in Table \ref{tbl:survey}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|ccccccccccccccc|}
+	\hline
+\textbf{Question} & \multicolumn{15}{|c|}{\textbf{Score}} \\\hline
+\textbf{1} & 5 & 3.5 & 4 & 4 & 5 & 5 & 3 & 2.5 & 4 & 5 & 4 & 3 & 4 & 5 & 4 \\
+\textbf{2} & 5 & 4 & 5 & 4 & 5 & 4 & 2.5 & 3 & 5 & 4 & 5 & 3 & 4 & 5 & 4 \\
+\textbf{3} & 4 & 4 & 5 & 3 & 5 & 5 & 4 & 3.5 & 5 & 4 & 3 & 5 & 3 & 4 & 5 \\
+\textbf{4} & 5 & 5 & 4 & 4 & 5 & 5 & 2 & 4 & 5 & 5 & 5 & 5 & 4 & 4 & 4 \\
+\textbf{5} & 4 & 1 & 5 & 5 & 4 & 5 & 4 & 5 & 5 & 5 & 5 & 3 & 2 & 5 & 3 \\
+\textbf{6} & 4 & 3.5 & 3 & 2 & 3 & 3 & 5 & 5 & 5 & 4 & 2 & 5 & 3 & 1 & 4\\\hline
+\end{tabular}
+\caption{User Interface and Ease of Caller survey results}
+\label{tbl:survey}
+\end{table}
+
+\subsection{Comments}
+There were a lot of comments about the UI.
+
+Speed!
+Hurry!
+Angry!
+
+Demotiviated
+
+Some colours
+
+Not nice to speak to a machine. Might think wrong number. Colour blindness! Colour writing combination sometimes good, sometimes not. Traffic light system.
 
 
 \end{document}

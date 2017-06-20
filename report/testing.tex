@@ -5,7 +5,7 @@
 
 The work of Tu et al. \cite{cisco} judged the various methods in three different ways: robustness, usability, and deployability. From early on, robustness and caller usage (usability from the caller's perspective) were criteria that were considered in testing this system. However, three other criteria are added on. First, the basic functionality. Throughout the various papers in Section \ref{sec:methods}, there was no talk of actually building a working system to interface with the landlines. Secondly, there is also the user interface. This is the usability from the perspective of the user. Finally, there is the comparison with the commercial alternatives.
 
-\section{Basic Functionality}
+\section{Basic Functionality}\label{sec:test-basic}
 The phone system must function, at the bare minimum, to remove robot cold calls. This is the simplest kind of call to avoid, with a simple challenge that automatic calls are not programmed to handle, which is why it is the baseline. Additionally, this functionality must be added to that of a normal phone. This means all other things a normal landline can do must still be possible, such as making outgoing calls or dialing emergency numbers. Success in this criterion is a yes/no situation. However, due the modular nature of the project, the collection of short-term goals became the test of basic functionality. These were as follows:
 
 \begin{enumerate}
@@ -26,20 +26,20 @@ As there are yes-no questions, the testing of this will simply be confirming if 
 The usability can be tested by surveying people and getting their feelings on two things. First, the ease of a caller. How would a person feel when encountering the Welcome message and having to enter a code or button before continuing? Does this adversely affect the caller's experience, even for a legitimate reason? Secondly, the ease for the user. By removing all inputs, all there is to consider is the outputs. Are the messages clear and concise? Does the colours help with the message or do they detract and distract? The survey questions are included here.
 
 \begin{enumerate}
-	\item Is the information of each page clear?
-	\item Is the message easy to read?
-	\item Does the colouring add to, or take away, from the message?
-	\item Is the Welcome message clear?
-	\item Is the Goodbye message clear?
-	\item Does this discourage you from making a call?
+	\item Is the information of each page clear? 1 is unclear, 5 is very clear.
+	\item Is the message easy to read? 1 is hard to read, 5 is easy to read.
+	\item Does the colouring help with reading the message? 1 is it does not help at all, 5 is it helps a lot.
+	\item Is the Welcome message clear? 1 is unclear, 5 is very clear.
+	\item Is the Goodbye message clear? 1 is unclear, 5 is very clear.
+	\item Does this discourage you from making a call? 1 is indifferent, 5 is very discouraged from callling.
 \end{enumerate}
 
 Each person surveyed will be shown the various screens, and will have to listen to the Welcome and Goodbye messages before putting in their views.
 
 \section{Robustness}
-The bottom line for this is, "Does it work well?" Can the system prevent unwanted calls from getting through? It is difficult to test the adaptability of the robot scam callers without setting up a honeypot as \todo{The ones who use dit} did. However, the secret code, the keypress prompt, and the goodbye message are all easily checked by simply confirming the path of a call through the IVR. The part that can be tested is the voice metric.
+The bottom line for this is, "Does it work well?" Can the system prevent unwanted calls from getting through? It is difficult to test the adaptability of the robot scam callers without setting up a honeypot as Marzuoli et al. \cite{marzuoli} did. However, the secret code, the keypress prompt, and the goodbye message are all easily checked by simply confirming the path of a call through the IVR. The part that can be tested is the voice metric.
 \\\\
-Arguably, there are two parts to the metric to be tested. The first is the testing of the voice recognition system. As it is ``outsourced'' to Bing, stressing it is not really testing the system's identification and filtration, but rather testing the quality of Bing's speech-to-text processing. To test the metric itself, the metric must be tested with actual call transcripts. This is done by transcribing Youtube videos and by using some transcriptions available. The ones that were used are found in the Appendix \ref{sec:appendix-transcripts}. Those samples were sent through just the call metric function and the results collated. In addition, data from the Scam Call Fighters website \cite{spam-calls} gave a number of transcripts from scam calls collected. The testing script, like with the other code segments, are found in the repository detailed in Appendix \ref{sec:appendix-repo}. 
+Arguably, there are two parts to the metric to be tested. The first is the testing of the voice recognition system. As it is ``outsourced'' to Bing, stressing it is not really testing the system's identification and filtration, but rather testing the quality of Bing's speech-to-text processing. To test the metric itself, the metric must be tested with actual call transcripts. This is done by transcribing Youtube videos and by using some transcriptions available. The ones that were used are found in the Appendix \ref{sec:appendix-transcripts}. Those samples were sent through just the call metric function and the results collated. In addition, data from the Scam Call Fighters website \cite{spam-calls} gave a number of transcripts from scam calls collected. The testing script, like with the other code segments, are found in the repository detailed in Appendix \ref{sec:appendix-repo}.
 \\\\
 Unfortunately, due to the labour intensive nature of transcriptions and finding appropriate material, not as many samples were used as wanted. In total, only 13 calls were used. Finding scam calls that are recorded from the beginning is extremely difficult, despite the range of other videos available online. Testing with normal call transcripts was not considered since the words chosen in the metric, while applying to scam calls, are rarely used in a normal day-to-day conversations and would thus not yield any meaningful insight. This effectiveness of this testing is considered in the Evaluation section.
 
