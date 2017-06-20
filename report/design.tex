@@ -62,7 +62,7 @@ Of the various ideas found through research, as seen in section \ref{sec:methods
 \\\\
 The other ideas from Chaisamran et al. \cite{chaisa}, Wu et al. \cite{wu} and Heo et al. \cite{heo} were not considered because they were not meant for deployment on an individual level, or meant for a purely VoIP system. This was against Design Aim 1. Finally, the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl} were not considered because of three reasons. One, the clustering methods used in their systems included call-origination details, which like Caller ID is not viable. Secondly, the audio fingerprinting relied on the infrastructure used by the scammers, which included the line characteristics. In receiving the call through VoIP, the receiver's infrastructure does not introduce any additional line characteristics. But if a user is receiving the call through a landline, then the receiving line might be adding its own characteristics to the call and would affect the identification process. And three, the clustering system ran on a 6-core server with 16GB of RAM, which puts it at odds with Design Aim 2 through its size.
 \\\\
-Thus, the ideas of Tu et al. were considered. It is worth also nothing that they is no mention of the practical aspects of their ideas, as they did not implement any of their ideas. Their ideas were split into 3 broad groups: \begin{enumerate}
+Thus, the ideas of Tu et al. \cite{cisco} were considered. It is worth also nothing that they is no mention of the practical aspects of their ideas, as they did not implement any of their ideas. Their ideas were split into 3 broad groups: \begin{enumerate}
 	\item Call Request Header Analysis
 	\item Voice Interactive Screening
 	\item Caller Compliance
@@ -78,7 +78,7 @@ In the Voice Interactive Screen section, the methods all involve analysing the a
 	\item Reverse Turing test
 \end{enumerate}
 
-The first option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A reverse Turing test would be something easy for a human caller to pass, but difficult for a computer. All of them present the challenge of real-time processing of the audio \cite{cisco}.
+The first option was much like the works of Marzuoli et al. \cite{marzuoli} and Strobl et al. \cite{strobl}, which were already discarded. The speech content method looked specifically at the words spoken in the call to make a decision. The acoustic pattern analysis method involved looking at the noise, volume, and timings of the caller to determine the likelihood of a scammer. A reverse Turing test would be something that a human caller can answer quickly, but is more difficult for a computer. All of them present the challenge of real-time processing of the audio \cite{cisco}.
 \\\\
 This leaves the group of methods known as Caller Compliance, which are methods that involves callers, prior to the call, to establish their legitimacy. The methods are \cite{cisco}:
 \begin{enumerate}

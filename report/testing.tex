@@ -12,22 +12,36 @@ The phone system must function, at the bare minimum, to remove robot cold calls.
 	\item RasPBX installed, internal network functioning
 	\item Obi110 configured with RasPBX, calls passing through
 	\item Calls directed to an IVR
-	\item Switch workign correctly
+	\item Switch working correctly
 	\item Audio detected and extracted
 	\item Speech-to-text and call metric working
 	\item Display system working (server and webpage)
 	\item Both call analysis functions and server function working together
+	\item Bypass switch
 \end{enumerate}
 
+As there are yes-no questions, the testing of this will simply be confirming if those features were possible.
+
 \section{Ease of Caller and User Interface}
-The usability can be tested by surveying people and getting their feelings on two things. First, the ease of a caller. How would a person feel when encountering the Welcome message and having to enter a code or button before continuing? Does this adversely affect the caller's experience, even for a legitimate reason? Secondly, the ease for the user. By removing all inputs, all there is to consider is the outputs. Are the messages clear and concise? Does the colours help with the message or do they detract and distract? The survey can be found in the Appendix \ref{sec:appendix-survey} \todo{SURVEY REFERNCE AND INCLUDE}. Each surveyee will be shown the various screens, and will have to listen to the message before putting in their views.
+The usability can be tested by surveying people and getting their feelings on two things. First, the ease of a caller. How would a person feel when encountering the Welcome message and having to enter a code or button before continuing? Does this adversely affect the caller's experience, even for a legitimate reason? Secondly, the ease for the user. By removing all inputs, all there is to consider is the outputs. Are the messages clear and concise? Does the colours help with the message or do they detract and distract? The survey questions are included here.
+
+\begin{enumerate}
+	\item Is the information of each page clear?
+	\item Is the message easy to read?
+	\item Does the colouring add to, or take away, from the message?
+	\item Is the Welcome message clear?
+	\item Is the Goodbye message clear?
+	\item Does this discourage you from making a call?
+\end{enumerate}
+
+Each person surveyed will be shown the various screens, and will have to listen to the Welcome and Goodbye messages before putting in their views.
 
 \section{Robustness}
 The bottom line for this is, "Does it work well?" Can the system prevent unwanted calls from getting through? It is difficult to test the adaptability of the robot scam callers without setting up a honeypot as \todo{The ones who use dit} did. However, the secret code, the keypress prompt, and the goodbye message are all easily checked by simply confirming the path of a call through the IVR. The part that can be tested is the voice metric.
 \\\\
-Arguably, there are two parts to the metric to be tested. The first is the testing of the voice recognition system. As it is ``outsourced'' to Bing, stressing it is not really testing the system's identification and filtration, but rather testing the quality of Bing's speech-to-text processing. To test the metric itself, the metric must be tested with actual call transcripts. This is done by transcribing Youtube videos and by using some transcriptions available. The ones that were used are found in the Appendix \todo{REF ADD TEXTS}. Those samples were sent through just the call metric function and the results collated.
+Arguably, there are two parts to the metric to be tested. The first is the testing of the voice recognition system. As it is ``outsourced'' to Bing, stressing it is not really testing the system's identification and filtration, but rather testing the quality of Bing's speech-to-text processing. To test the metric itself, the metric must be tested with actual call transcripts. This is done by transcribing Youtube videos and by using some transcriptions available. The ones that were used are found in the Appendix \ref{sec:appendix-transcripts}. Those samples were sent through just the call metric function and the results collated. In addition, data from the Scam Call Fighters website \cite{spam-calls} gave a number of transcripts from scam calls collected. The testing script, like with the other code segments, are found in the repository detailed in Appendix \ref{sec:appendix-repo}. 
 \\\\
-Unfortunately, due to the labour intensive nature of transcriptions and finding appropriate material, not as many samples were used as wanted. In fact, finding scam calls that are recorded from the beginning is extremely difficult, despite the range of \hl{cat} videos available online. Testing with normal call transcripts seems almost \hl{whimsical} since the words chosen in the metric, while applying to scam calls, are rarely used in a normal day-to-day conversations. This effectiveness of this testing is considered in the Evaluation section.
+Unfortunately, due to the labour intensive nature of transcriptions and finding appropriate material, not as many samples were used as wanted. In total, only 13 calls were used. Finding scam calls that are recorded from the beginning is extremely difficult, despite the range of other videos available online. Testing with normal call transcripts was not considered since the words chosen in the metric, while applying to scam calls, are rarely used in a normal day-to-day conversations and would thus not yield any meaningful insight. This effectiveness of this testing is considered in the Evaluation section.
 
 \section{Commercial Alternatives}
 There are other systems currently on the market that aim to reduce the number of unwanted calls. As mentioned in the background section. This system must be able to compete with these other alternatives in terms of cost, functionality, effectiveness and ease of use. Additionally, there does not seem to be a commercially available system with an identical approach as was used in this project. Thus, rather than force a test in this section, the comparisons between this system and others on the market will be explored fully in the Evaluation section.
