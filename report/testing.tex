@@ -3,32 +3,26 @@
 
 \begin{document}
 
-\hl{This section will be adapted to fit the section of testing. How I intended/intend to test the various parts of the system, and the filtration, and the entire user experience. The analysis section detailing the evaluation of the various filtration methods will also mentioned here as it affects the way the entire system is tested. This section is expected to cover between 4-5 pages. }
+The work of Tu et al. \cite{cisco} judged the various methods in three different ways: robustness, usability, and deployability. From early on, robustness and caller usage (usability from the caller's perspective) were criteria that were considered in testing this system. However, three other criteria are added on. First, the basic functionality. Throughout the various papers in Section \ref{sec:methods}, there was no talk of actually building a working system to interface with the landlines. Secondly, there is also the user interface. This is the usability from the perspective of the user. Finally, there is the comparison with the commercial alternatives.
 
-\section{Criteria}
-The system can be evaluated in a number of ways.
-
-\subsection{Basic Functionality}
+\section{Basic Functionality}
 The phone system must function, at the bare minimum, to remove robot cold calls. This is the simplest kind of call to avoid, with a simple challenge that automatic calls are not programmed to handle, which is why it is the baseline. Additionally, this functionality must be added to that of a normal phone. This means all other things a normal landline can do must still be possible, such as making outgoing calls or dialing emergency numbers. Success in this criterion is a yes/no situation.
 \hl{MODULARISATION}
 
 
-\subsection{Robustness}
+\section{Robustness}
 The bottom line for this is, "Does it work well?" Can the system prevent unwanted calls from getting through? There are ways to measure this. From previous modules in Machine Learning, one way is to not just at the rate at which the system is successful at filtering. There are two other kinds, the false positive and the false negative. In this situation, a false positive is a legitimate call that is erroneously flagged as a scam, while a false negative is a spam call marked as legitimate. When it comes to calls, a scam call has a small chance of being harmful, while a missed legitimate call is guaranteed to be troublesome. Hence, when looking at this, the system must understand that there are two ``levels'' of wrong. \hl{Calls and stuff?}
 
-\subsection{Ease of Caller}
+\section{Ease of Caller}
 \hl{SURVEY}
 A highly robust way to prevent unwanted calls is for every legitimate caller to enter a pin code before continuing. Naturally, while this would prevent scammers, it does make a call quite a hassle. The ease of the caller is in contrast to the robustness of the system. It must still be easy enough for say a friend to call in, without feeling overly scrutinised by a computer.
 
-\subsection{User Interface}
+\section{User Interface}
 \hl{SURVEY}
 There must be a way for the user to interact with the system to input their own lists or blocked numbers. They must also be able to configure certain options, such as no calls from aboard, or at certain times of the day. There are a multitude of options, and all must be easily configurable to someone without technical knowledge or training. At the very most, a simple guide booklet could be required, but would have to be produced as part of this. \hl{This was done through a simple survey.}
 
-\subsection{Commercial Alternatives}
+\section{Commercial Alternatives}
 There are other systems currently on the market that aim to reduce the number of unwanted calls. This system must be able to compete with these other alternatives in terms of cost, functionality, effectiveness and ease of use. Again, this criterion is very qualitative and can depend on what other services/devices are put onto the market between now and June. \hl{Compare with others.}
-
-% \section{Demonstration}
-% The final demonstration for this project will not be able to involve the landline, as there are no landlines in the college. The current solution is to demonstrate the Landline - SIP Conversion independently, before using a VoIP input directly into Asterisk for the actual demo.
 
 
 the declining rates of landline usage in the UK, combined with the increased technological literacy in younger generations, the implementation’s direct usage may be less attractive in the future. However, the filtration methods and call evaluation flow may prove to be scalable and transferable to other cases, such as

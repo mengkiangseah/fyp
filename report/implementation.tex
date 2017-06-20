@@ -45,6 +45,9 @@ If the caller knows the weakly secret code (another number, such as 4 or 9), the
 \end{quote}
 
 If the reverse Turing test is passed (i.e. ``1'' is pressed), then the IVR directs the call to a Call Recording module. While the neither the caller or the user sees this, the Call Recording module, which takes in a call and redirects to an extension, has begun recording the call.
+\\\\
+All of this is seen in Figure \ref{fig:asterisk}, which shows the call flow inside the server.
+\todo{Diagram}
 
 \subsection{Voice Analysis}
 In this section, the voice analysis method is implemented. This was done primarily in Python3 for the reason that it allows rapid development, and is extremely versatile. The versatility is highly valuable because it means the different components in this system can be manipulated with a single language, which allows information to be shared more easily. Prior familiarity with the language was also taken into account.

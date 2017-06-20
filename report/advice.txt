@@ -8,14 +8,12 @@ Colour vs. black and white.
 
 Demo? Video. Volunteering.
 
-Introduction
-Requirements
-
+Acknowledgments and Abstract - Fix
 Introduction - DONE
 Background - Just the Phone+SIP+Asterisk
 Requirements - DONE
 Design and Analysis - DONE
-Implementation
+Implementation - Script, diagrams, pictures.
 Testing
 Results
 Evaluation
