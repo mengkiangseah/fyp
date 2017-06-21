@@ -19,11 +19,11 @@ This segment was done using a combination of materials from Bryan Ross \cite{bry
 \\\\
 Before looking at the configuration, Figure \ref{fig:physical} shows how the components are laid out and how they are physically connected.
 
-\begin{figure}[H]
+\begin{figure}[p]
 \centering
 \captionsetup[subfigure]{position=b}
-	\centering
 	\begin{subfigure}{\textwidth}
+		\centering
 	\begin{tikzpicture}[node distance=4cm]
 	    % We start by placing the blocks
 		\node [input, align=center] (line) {Landline};
@@ -51,7 +51,8 @@ Before looking at the configuration, Figure \ref{fig:physical} shows how the com
 \end{subfigure}
 \\
 \begin{subfigure}{\textwidth}
-	\includegraphics[width=\textwidth]{pics/meng/setup}
+	\centering
+	\includegraphics[width=0.8\textwidth]{pics/meng/setup}
 	\caption{A picture of everything.}
 	\label{fig:physical-picture}
 \end{subfigure}
@@ -67,10 +68,11 @@ Once this is done, the Asterisk server was configured through the FreePBX GUI. T
 \\\\
 At this point, all the connections to the outside are configured and set. While an additional VoIP phone was obtained from the department, the proprietary nature of the phone meant that it was not possible to use it with the open-source software that was running on the Raspberry Pi. The configuration flow inside is shown in Figure \ref{fig:asterisk-conf}.
 
-\begin{figure}[H]
+\begin{figure}[p]
 	\captionsetup[subfigure]{position=b}
         \centering
         \begin{subfigure}{\textwidth}
+			\centering
 			\begin{tikzpicture}[node distance=5cm]
 			% We start by placing the blocks
 			\node [input, align=center] (input) {Output\\to\\Landline};
@@ -95,6 +97,7 @@ At this point, all the connections to the outside are configured and set. While 
         \end{subfigure}
         \\
         \begin{subfigure}{\textwidth}
+			\centering
 			\begin{tikzpicture}[node distance=5cm]
 			    % We start by placing the blocks
 			    \node [input, align=center] (input) {Input\\from\\Landline};
@@ -138,8 +141,9 @@ If the reverse Turing test is passed (i.e. ``1'' is pressed), then the IVR direc
 \\\\
 All of this is seen in Figure \ref{fig:asterisk-callflow}, which shows the call flow inside the server.
 
-\begin{figure}[H]
+\begin{figure}[htb]
 \centering
+\resizebox{\textwidth}{!}{%
 	\begin{tikzpicture}[node distance=4cm]
 	    % We start by placing the blocks
 		\node [input, align=center] (call) {Incoming\\Call};
@@ -159,7 +163,8 @@ All of this is seen in Figure \ref{fig:asterisk-callflow}, which shows the call 
 		\draw [->] (goodbye) -- node[align=center] {} (end);
 		\draw [->] (ivr) to [bend left=90] node[align=center, above] {Secret Code} (ext);
 
-	\end{tikzpicture}
+	\end{tikzpicture}%
+	}
 	\caption{Internal Asterisk call routing setup.}
 	\label{fig:asterisk-callflow}
 \end{figure}
@@ -170,7 +175,7 @@ In this section, the voice analysis method is implemented. This was done primari
 \subsubsection{Extraction of Voice}
 The reason for the recording of the call is that it is a pre-existing feature that uses the available infrastructure to obtain the audio from the call. The addition of recording devices that need to be plugged-in to the phone worked against the Design Aims previous discussed in the Chapter \ref{chp:des}. The voice data is stored on the server, which allows for processing on the server itself. By polling the directory for new files, a Python script is able to locate the newly created file.
 
-\begin{figure}[H]
+\begin{figure}[p]
 	\captionsetup[subfigure]{position=b}
         \centering
         \begin{subfigure}{\textwidth}
@@ -192,7 +197,7 @@ It was at this point that the need for a switch was noticed. It was obvious that
 \\\\
 The switch as previous mentioned in the Design chapter was used. Conductive tape was connected to the receiver of the analogue phone, and two conductive pads were placed on the housing. When the phone was down, the tape closed the circuit, and when it was lifted off, the connection was broken. However, it was found that the voltage drop when the handset was removed was insufficient for the Pi to detect as a \texttt{LOW} value. Thus, a modification to the circuit was made by changing the $300\Omega$ resistor into 2 $150\Omega$ resistors in parallel. The switch then was made to short both the LED and one of the resistors, lowering the voltage detected by the Pi when it was open. This was found to be successful. The new circuit diagram is shown in Figure \ref{fig:newcircuit}, and Figure \ref{fig:button} contains pictures of the circuit connected to the Raspberry Pi, and the conductive tape layout on the handset.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\begin{circuitikz} \draw
 		 (0, 0) -- (8, 0)
@@ -207,8 +212,8 @@ The switch as previous mentioned in the Design chapter was used. Conductive tape
 	\end{circuitikz}
 	\caption{Modified switch circuit.} \label{fig:newcircuit}
 \end{figure}
-
-\begin{figure}[H]
+\vspace{-0.25cm}
+\begin{figure}[h]
 	\captionsetup[subfigure]{position=b}
         \centering
         \begin{subfigure}{0.47\textwidth}
@@ -237,7 +242,7 @@ The metric that was used is shown through the simple function called \texttt{cal
 \section{Total Filtration System}
 Combining all the above together gave the \texttt{checkNewRecording()} function. This infinite looping function has a flow as Figure \ref{fig:flow} shows.
 
-\begin{figure}[H]
+\begin{figure}[htb]
 \centering
 	\begin{tikzpicture}[node distance=3cm]
 	    % We start by placing the blocks
@@ -280,7 +285,7 @@ Only 14.5 seconds of data are sent to Bing for two reasons. Firstly, it was a li
 \section{Display}
 All the information from the voice analysis and reverse Turing test needs to be conveyed to the user somehow. From the Design section, the simple solution of large text on colourful backgrounds was selected. To do this, an HTML-based solution was used. Figure \ref{fig:displays} shows the final outcome.
 
-\begin{figure}[H]
+\begin{figure}[htb]
 	\captionsetup[subfigure]{position=b}
         \centering
         \begin{subfigure}{0.47\textwidth}
@@ -315,7 +320,7 @@ Exploring some simple Python3 options for a website yielded the \texttt{Flask} p
 
 This was very much the same as the Design phase, except additional processing states were introduced both for debugging and to keep the user aware that the system was running. There was also the error state in the event that the metric did not function correctly, which would request the user to reboot the system. The states not shown in the Design phase are seen in Figure \ref{fig:statesmore}.
 
-\begin{figure}[H]
+\begin{figure}[htb]
 	\captionsetup[subfigure]{position=b}
         \centering
         \begin{subfigure}{0.45\textwidth}

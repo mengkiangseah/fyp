@@ -33,7 +33,7 @@ The connections inside a VoIP system that Asterisk would manipulate are all thro
 \\\\
 While a router could be used, the Raspberry Pi can be configured to perform as an Dynamic Host Configuration Protocol server \cite{pi-dhcp}. This reduces the total amount of hardware, as it then doubles as the Asterisk server and manages the network. And to allow additional connections, mostly for debugging and analysis, a switch allows multiple devices to Figure \ref{fig:connections} illustrates the overall setup.
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \centering
 	\begin{tikzpicture}[node distance=4cm]
 	    % We start by placing the blocks
@@ -128,7 +128,7 @@ Option 3, the reverse Turing test, is ideal for identifying the Robotic Callers.
 \\\\
 As a compromise, speech content recognition was ultimately chosen as it offers the ease of developping a metric from the words detected. However, this does mean the user has to engage with the caller in the case of any human caller. There is also an additional method not mentioned in the academic research. Having a firm warning at the beginning of the call as a welcome message could potentially deter would-be scammers. Thus, the overall call flow is shown in Figure \ref{fig:callflow}.
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \centering
 	\begin{tikzpicture}[node distance=3cm]
 	    % We start by placing the blocks
@@ -169,7 +169,7 @@ If the voice analysis results do not result in any impact on the call, the resul
 \\\\
 To move from the words to a metric, Tu et al. \cite{cisco} suggest using keywords. The approach here was that there are two lists of words that need to be made: words that are definitely in a spam call and words that might be a spam call but could also in a legitimate call. To construct these lists, the 6 types of calls as mentioned in Section \ref{sec:scams} are used. Based on their subject matter, certain keywords were chosen through brainstorming (with the generous help of others in the lab). These were then subdivided into ``Definitely Spam'', henceforth referred to as Category A and ``Possibly Spam'', henceforth referred to as Category B. This is show in Table \ref{tbl:keywords}. The metric is made by looking at how many words from each list are detected, and their relative values. If there are no Category A or Category B words, the call is classified as unlikely to be dangerous. This is shown in Table \ref{tbl:metric}.
 
-\begin{table}[h]
+\begin{table}[htb]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|}
@@ -199,7 +199,7 @@ Anti-Scam    & scam, scams, anti, prevent, & fake, pay, phony, protect, \\
 \label{tbl:keywords}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[htb]
 \centering
 \begin{tabular}{|c|c|l|}
 \hline
@@ -225,9 +225,9 @@ In line with the Design Aim 3, the decision was made to have to have the system 
 	\item High Risk
 \end{enumerate}
 
-The three risk levels are needed, along with a generic status, and a way to notify that the caller is known user. The idea would be to have these words, in large type with appropriately coloured backgrounds visible on a screen connected to the system. The Raspberry Pi has an HDMI output, which is perfect for this purpose. The designed screens are shown in Figure \ref{fig:states}. The traffic light scheme (green, orange, red) was used as it is a recognisable colour scheme that fits well to the 3 potential risk ratings of a call. 
+The three risk levels are needed, along with a generic status, and a way to notify that the caller is known user. The idea would be to have these words, in large type with appropriately coloured backgrounds visible on a screen connected to the system. The Raspberry Pi has an HDMI output, which is perfect for this purpose. The designed screens are shown in Figure \ref{fig:states}. The traffic light scheme (green, orange, red) was used as it is a recognisable colour scheme that fits well to the 3 potential risk ratings of a call.
 
-\begin{figure}[H]
+\begin{figure}[htb]
 	\captionsetup[subfigure]{position=b}
         \centering
         \begin{subfigure}{0.45\textwidth}
@@ -285,7 +285,7 @@ The Light Emitting Diode (LED) was used both as a debugging signal, and as a che
 \end{align}
 \vspace{-1cm}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 	\centering
 	\begin{circuitikz} \draw
 		 (0, 0) -- (8, 0)
