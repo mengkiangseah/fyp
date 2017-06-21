@@ -4,7 +4,7 @@
 \begin{document}
 There are a number of areas to evaluate in this project. First, there is the examination of the success of the deliverables. Next, from the wide choice in identification and filtration methods, is the critique of the methods used. The type of testing performed and the analysis of the results offer more insight into the success of the identification and filtration methods. All these are considered in looking possible improvements to this project, and finally, there is a discussion of any other factors to keep in mind.
 \\\\
-The purpose of this section is to reflect on how well the project's objectives were achieved. As part of that, the ``aims'' in this project were tested as mentioned in Section \ref{sec:goals} and analysed in Section \ref{sec:basic-eval}, but there is also the consideration of the Design Aims that were raised at the start of Chap \ref{chp:des}. For reference, they are repeated here again.
+The purpose of this section is to reflect on how well the project's objectives were achieved. As part of that, the ``aims'' in this project were tested as mentioned in Section \ref{sec:goals} and analysed in Section \ref{sec:basic-eval}, but there is also the consideration of the Design Aims that were raised at the start of Chapter \ref{chp:des}. For reference, they are repeated here again.
 
 \begin{enumerate}
 	\item Fits into existing setups
@@ -13,24 +13,64 @@ The purpose of this section is to reflect on how well the project's objectives w
 	\item Not too difficult for a genuine caller to get through
 \end{enumerate}
 
-\section{Achievement of Basic Functionality}\label{sec:basic-eval}
+\section{Achievement of Basic Functionality}
+Of all the mini-goals attempted, all were successful bar one: the emergency bypass. This was due to the time it took to get the other components. The order of the mini-goals as listed in Section \ref{sec:goals} was in the order that they would be attempted. This was because the philosophy in this project was to prioritise the production of any kind of working implementation, with the core functionality (calling in and out, unhindered) being the first step. This was because the reverse Turing test through the prompt was something that was almost certain to work, and therefore a base implementation would allow for, in the worst-case scenario, a naive method on which to fallback.
+\\\\
+The main difficulty in the implementation was primarily in combining all the components together. With the help of the hobbyist websites, it was not difficult to configure the Obi110 and the FreePBX, but getting both to work correctly took some experimentation. The original guides were written before updates to the system, which meant that some of the configuration parameters needed to be empirically derived. While Asterisk and FreePBX themselves are no stranger to voice prompts, prerecorded messages and voice recording, having them operate while extracting the audio proved more complicated. Additionally, an interesting challenge was finding a landline on which to test this system. A request to the landlord of a private residence was needed to obtain an active phone number.
+\\\\
+The speech-to-text, call metric, and display presented their own challenges. The API was
 
-Of all the mini-goals attempted, all were successful bar one: the emergency bypass.
+\section{Testing Methodology}
+\subsection{Academic Testing Methods}
+The testing of the various methods was based around the three criteria used in the work of Tu et al. \cite{cisco}. This was split into the three categories, usability, robustness, deployability. Under each of those categories, they had 6 criteria, each either completely satisfied, partially satisfied, or not satisfied. They are shown in Table
 
+\subsection{Implemented Testing Method}
 
-\section{Testing}
-The testing of the various methods was based around the three criteria used in the work of Tu et al. \cite{cisco}. This was split into the
+\section{Effectiveness of Identification and Filtration Methods Used}
 
-\section{Effectiveness of Methods used and Not used}
+The one downside about the pre-generated lists is that they are limited to the types of calls that they are designed for. Trying to create a dictionary of words that exist in all calls is challenge. And with the type of scam calls varying with time, the lists will have trouble recognising the scam calls in vogue.
 
-
-\section{Improvements}
+\section{Improvements on Implementation and Method}
 
 \section{Other Considerations}
-
 \subsection{Cost}
 The overall cost of this system cannot be exorbitant. The trouble with this estimation is that the raw cost of materials in this project is not the average cost, were such a system to be commercialised. There are economies of scale, partnerships, and the cost of development in the prototype as opposed to the cost of labour in a marketable version. This is in contrast to fixed raw material costs, for example, which are not a concern here.
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|r|}
+		\hline
+		\textbf{Component} 							& \textbf{Price}    								\\\hline
+		Raspberry Pi 3 Model B        				& $\pounds 33.96$   								\\
+		Transcend 8 GB MicroSD Card 				& $\pounds 25.60$   								\\
+		D-Link 5 Port Fast Ethernet Switch 			& $\pounds 15.62$   								\\
+		ObiHai Obi110           					& $\pounds 60.00$      								\\
+		Handset Button Circuitry    				& $\approx \pounds 1.00$ 							\\\hline
+		\multicolumn{1}{|r|}{\textbf{Total}}  & \multicolumn{1}{|l|}{$\pounds 136.18$}  	\\\hline
+	\end{tabular}
+	\caption{Prices of the various components.}
+	\label{tbl:costs}
+\end{table}
+
+Looking at the components that made it to the final system, their individual price, and total cost is found in Table \ref{tbl:costs}. Note that the phone is left out, as the system itself is designed fit into existing landline setups.
+This is quite high compared to other commercially available methods, particularly BT's \textit{BT 8600 Advanced Call Blocker} which retails for $\pounds 59.99$ \cite{bt-block}. This also does not include the price of a monitor, which would have to be included with it.
+
+\subsection{Adaptations for Visability}
+
+The output of information to the user is purely done visually. This make it difficult for anyone who is visually-impaired to use. This is particularly true for some of the colour schemes, as although the colour choices were designed to emphasis the information, someone colourblind would either not be able to benefit from it, or would have problems reading the text. And the size of the monitor needs to be considered. It must be large enough that reading from it is not impaired, but small enough that it will fit near where the phone installed.
+
+\section{Comparison to other Solutions}
+\subsection{Commercially Available}
+The commercially available solutions explored in the background in Chapter \ref{chp:bac} mostly revolved around a white and blacklist system. This was quite successful, but as has been mentioned, is not guaranteed on a landline. From the other methods explored, none are currently using voice analysis. In this sense, the comparison is therefore between list-based methods, and voice-analysis based methods.
 \\\\
+Those methods were not compared previously because they all need some kind of Caller ID, which is not a guarantee on landlines. However, a list-based method is only as good as the lists kept, and with the constantly changing nature of the scammers, this means it needs constant updates. There is the possibility of having individual lists that are maintained by the user, but this requires their involvement, which may not always be desirable. Additionally, the services offered are s 
+
+\subsection{Non-technical Approach}
+The main purpose of this system is to reduce the encounter rate of nuisance and fraudulent calls. In the case of the later, the goal is to either reduce the rate of encountering calls, or to warn the user of such a call. However, a non-technical approach should also be considered. By reaching out and informing users of the dangers of scam calls, and how to recognise them, then the financial risk is lessened.
+
+\subsection{Telephone Service Providers}
+While techniques from the academic side of the background research yielded several methods for use on communication infrastructures, there is no discussion of whether phone companies actively monitor their lines for illegitimate use. If a known number from somewhere in the country is constantly sending out spam calls, a phone company might consider taking action. While the scammers are no doubt using multiple numbers, temporary numbers, or VoIP numbers, there is also the legal considerations of denying or monitoring calls.
+
 Language
 No emergency
 Easy?
@@ -41,18 +81,11 @@ Not fully isolated
 Randomise
 Varying scams in vogue
 
-Their methods: robustness test all theoretical, usability, deployabilty
-
-the declining rates of landline usage in the UK, combined with the increased technological literacy in younger generations, the implementation’s direct usage may be less attractive in the future. However, the filtration methods and call evaluation flow may prove to be scalable and transferable to other cases, such as
-
 Alternatives?
 
 Design Aims
 
-Cost I guess
 Testing methods - lack of huge data
-
-Declining rates of landline usage?
 
 vs. Simply speaking to old people? Outreach? A non-STEM apraoch to the prblem????
 
