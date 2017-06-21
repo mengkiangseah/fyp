@@ -17,10 +17,8 @@ The purpose of this section is to reflect on how well the project's objectives w
 Of all the mini-goals attempted, all were successful bar one: the emergency bypass. This was due to the time it took to get the other components. The order of the mini-goals as listed in Section \ref{sec:goals} was in the order that they would be attempted. This was because the philosophy in this project was to prioritise the production of any kind of working implementation, with the core functionality (calling in and out, unhindered) being the first step. This was because the reverse Turing test through the prompt was something that was almost certain to work, and therefore a base implementation would allow for, in the worst-case scenario, a naive method on which to fallback.
 \\\\
 The main difficulty in the implementation was primarily in combining all the components together. With the help of the hobbyist websites, it was not difficult to configure the Obi110 and the FreePBX, but getting both to work correctly took some experimentation. The original guides were written before updates to the system, which meant that some of the configuration parameters needed to be empirically derived. While Asterisk and FreePBX themselves are no stranger to voice prompts, prerecorded messages and voice recording, having them operate while extracting the audio proved more complicated. Additionally, an interesting challenge was finding a landline on which to test this system. A request to the landlord of a private residence was needed to obtain an active phone number.
-\\\\
-The speech-to-text, call metric, and display presented their own challenges. The API was
 
-\section{Testing Methodology}
+\section{Analysis of Testing Methodology}
 \subsection{Academic Testing Methods}
 The testing of the various methods was based around the three criteria used in the work of Tu et al. \cite{cisco}. This was split into the three categories, usability, robustness, deployability. Under each of those categories, they had 6 criteria, each either completely satisfied, partially satisfied, or not satisfied. They are shown in Table \ref{tbl:methods} \cite{cisco}.
 
@@ -43,24 +41,49 @@ The testing of the various methods was based around the three criteria used in t
 \end{table}
 
 One thing to note in their paper \cite{cisco} is that they made no attempts at implementing any of those proposed methods, and evaluated them theorectically. As such, the Deployability criteria that they use However, not every criteria is relevant to this project, for example the VoIP criteria for Usability. Additionally, the first two Caller ID ones in Robustness are not necessary as the system was designed from the beginning to not incorporate any form of Caller ID, which makes it satisfy the third criteria completely.
-
+\\\\
+The use of the criteria system in the three categories 
 
 \subsection{Implemented Testing Method}
 
+
 \section{Effectiveness of Identification \& Filtration Methods Used}
+
+
+\hrulefill
+\\\\
+
+Easy?
+
+Voice Metric
+
+Design Aims
+
+Testing methods - lack of huge data
+
+Design choices
+
+The speech-to-text, call metric, and display presented their own challenges. The API was
+
 
 The one downside about the pre-generated lists is that they are limited to the types of calls that they are designed for. Trying to create a dictionary of words that exist in all calls is challenge. And with the type of scam calls varying with time, the lists will have trouble recognising the scam calls in vogue.
 
 \section{Improvements on Implementation and Method}
-There are a number of improvements of the implementation and method. This does not include the emergency bypass idea, as it goes without saying that implementing it would be
+There are a number of improvements of the implementation and method. This does not include the emergency bypass idea, as it goes without saying that implementing it would be an improvement over not implementing it.
 
-The first thing is the the original identification method involved recognising the speech in the audio. However, in the implementation, this was done through an online service, the Bing Cloud Speech-to-Text service. This goes directly against Design Aim 2, which is the self-contained goal. The reason for th
+\subsection{Speech Content Analysis}
+The first thing is the the original identification method involved recognising the speech in the audio. However, in the implementation, this was done through an online service, the Bing Cloud Speech-to-Text service. This goes directly against Design Aim 2, which is the self-contained goal. The reason for this was that prior experience showed the unreliability of onboard speech processing. Additionally, small devices like the Raspberry Pi 3 have limited computational power compared to larger desktops. As speech recognition can improve with more resources, a realistic aim would be to move to an offline speech recognition platform with a more substantial computing device.
 
-Running the speech recognition on the system itself will be more challenge
+\subsection{Secret Code and Reverse Turing Test}
+The secret keypress to bypass the prompt is only a single key. An ideal code would be slightly longer. While this would be more difficult to remember, it does offer the protection against an unknown caller bypassing the voice analysis. While not every unknown caller is dangerous, a dangerous caller that is thought to be safe can be made even more dangerous. And to improve the reverse Turing test, the number to be pressed could benefit from increasing to multiple digits. This must be done carefully to avoid frustrating the caller. It can also be randomised, which does not increase the difficulty for a human caller, but makes it substantially more unlikely for a robotic caller to be configure to handle.
 
-The use of the switch was an unfortunate development in the project. The original goal was to have two connections into the system only: the phone line and the phone. However, through the implementation of extracting audio from the Asterisk recording system, some kind of method to detect the start of the call was needed. On the negative side, this does mean an added layer of complexity for the installation process, it is a relatively simple step. A button can be premade to be installed directly onto any phone. However, this could be tricky for cordles
+\subsection{Call Start Detection}
+The use of the switch was an unfortunate development in the project. The original goal was to have two connections into the system only: the phone line and the phone. However, through the implementation of extracting audio from the Asterisk recording system, some kind of method to detect the start of the call was needed. On the negative side, this does mean an added layer of complexity for the installation process, it is a relatively simple step. A button can be pre-made to be installed directly onto any phone. However, this would still be tricky for cordless phone. In fact, if the system is to work on both a corded and cordless phone, then the idea of using a matched filter to detect the end the ringing cycles is the solution. While this does require more processing power, if a larger computer is used for the speech recognition, then this does not require anything else.
 
 \section{Other Considerations}
+\subsection{User Input}
+A lot of user-input based solutions were ignored because it was against Design Aim 3, which was to keep from introducing input, as it makes the system more difficult. However, if considerable care were taken, an input method with absolutely maximum simplicity could be designed, and then the Design Aim 3 would no longer need to be used.
+
 \subsection{Cost}
 The overall cost of this system cannot be exorbitant. The trouble with this estimation is that the raw cost of materials in this project is not the average cost, were such a system to be commercialised. There are economies of scale, partnerships, and the cost of development in the prototype as opposed to the cost of labour in a marketable version. This is in contrast to fixed raw material costs, for example, which are not a concern here.
 
@@ -99,25 +122,5 @@ The main purpose of this system is to reduce the encounter rate of nuisance and 
 \subsection{Telephone Service Providers}
 While techniques from the academic side of the background research yielded several methods for use on communication infrastructures, there is no discussion of whether phone companies actively monitor their lines for illegitimate use. If a known number from somewhere in the country is constantly sending out spam calls, a phone company might consider taking action. While the scammers are no doubt using multiple numbers, temporary numbers, or VoIP numbers, there is also the legal considerations of denying or monitoring calls.
 
-\hrulefill
-\\\\
-
-Easy?
-
-Did it work?
-
-Improvements
-
-Voice Metric
-
-Not fully isolated
-
-Randomise
-
-Design Aims
-
-Testing methods - lack of huge data
-
-Design choices
 
 \end{document}
