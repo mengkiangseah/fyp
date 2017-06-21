@@ -302,22 +302,22 @@ The Light Emitting Diode (LED) was used both as a debugging signal, and as a che
 \vspace{-0.5cm}
 
 \subsection{Emergency Bypass}
-The Obi110 suffers from a drawback in that it is powered from the mains. In a power cut, or emergency, the entire system would fail, and the phone would not be able to work. This is despite the fact that the phone lines are powered independently \cite{telephone}. Also, in an emergency, the system could be a serious liability. To prevent this, ideally, there should be an emergency bypass that can connect the phone directly to the landline. It would look like the setup in Figure \ref{fig:bypass}.
+The Obi110 suffers from a drawback in that it is powered from the mains. In a power cut, or emergency, the entire system would fail, and the phone would not be able to work. This is despite the fact that the phone lines are powered independently \cite{telephone}. Also, in an emergency, the system could be a serious liability. To prevent this, ideally, there should be an emergency bypass that can connect the phone directly to the landline. It would look like the setup in Figure \ref{fig:bypass}. This allows the bypass to reroute the line directly to the phone. This would have to be a physical relay, sensing the mains power, so that it can automatically reroute the phone. 
 
 \begin{figure}[htb]
 \centering
 	\begin{tikzpicture}[node distance=3cm]
 	    % We start by placing the blocks
 	    \node [input, align=center] (input) {Input\\from\\Landline};
-		\node [block, align=center, right of=input] (system) {The\\System};
-		\node [output, align=center, right of=system] (output) {To\\Phone};
-		\node [block, align=center, below of=system] (bypass) {Override\\Bypass};
+		\node [block, align=center, right of=input] (bypass) {Override\\Bypass};
+		\node [block, align=center, right of=bypass] (system) {The\\System};
+		\node [output, align=center, below of=system] (output) {To\\Phone};
 
 	    % Once the nodes are placed, connecting them is easy.
-	    \draw [draw,->] (input) -- node[align=center, name=in] {} (system);
-	    \draw [->] (system) -- node[align=center, name=out]  {} (output);
-		\draw [->] (input) |- node[align=center] {} (bypass);
-		\draw [->] (bypass) -| node[align=center] {} (output);
+	    \draw [draw,->] (input) -- node[align=center, name=in] {} (bypass);
+	    \draw [->] (bypass) -- node[align=center, name=out]  {} (system);
+		\draw [->] (system) -- node[align=center] {} (output);
+		\draw [->] (bypass) |- node[align=center] {} (output);
 
 	\end{tikzpicture}
 	\caption{Emergency Bypass Visualisation}

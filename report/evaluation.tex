@@ -22,15 +22,43 @@ The speech-to-text, call metric, and display presented their own challenges. The
 
 \section{Testing Methodology}
 \subsection{Academic Testing Methods}
-The testing of the various methods was based around the three criteria used in the work of Tu et al. \cite{cisco}. This was split into the three categories, usability, robustness, deployability. Under each of those categories, they had 6 criteria, each either completely satisfied, partially satisfied, or not satisfied. They are shown in Table
+The testing of the various methods was based around the three criteria used in the work of Tu et al. \cite{cisco}. This was split into the three categories, usability, robustness, deployability. Under each of those categories, they had 6 criteria, each either completely satisfied, partially satisfied, or not satisfied. They are shown in Table \ref{tbl:methods} \cite{cisco}.
+
+\begin{table}[htb]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Usability} & \textbf{Deployability} & \textbf{Robustness}\\\hline
+		Not disturbing the user & Does not need infrastructure changes & Resistant to random Caller IDs\\
+		Scalability for the user & No external connections needed & Resistant to impersonating known Caller IDs \\
+		Easy for the caller & Low resource requirements & Works without Caller ID\\
+		Little delay to the caller & Low maintenance & Resistant to a scammer using multiple lines\\
+		Works for VoIP & Cost & Works against the caller using a machine re-dialer\\
+		Works for unknown callers & & Works on varying audio content\\\hline
+	\end{tabular}%
+	}
+	\caption{The different evaluation methods used by Tu et al. \cite{cisco}}
+	\label{tbl:methods}
+\end{table}
+
+One thing to note in their paper \cite{cisco} is that they made no attempts at implementing any of those proposed methods, and evaluated them theorectically. As such, the Deployability criteria that they use However, not every criteria is relevant to this project, for example the VoIP criteria for Usability. Additionally, the first two Caller ID ones in Robustness are not necessary as the system was designed from the beginning to not incorporate any form of Caller ID, which makes it satisfy the third criteria completely.
+
 
 \subsection{Implemented Testing Method}
 
-\section{Effectiveness of Identification and Filtration Methods Used}
+\section{Effectiveness of Identification \& Filtration Methods Used}
 
 The one downside about the pre-generated lists is that they are limited to the types of calls that they are designed for. Trying to create a dictionary of words that exist in all calls is challenge. And with the type of scam calls varying with time, the lists will have trouble recognising the scam calls in vogue.
 
 \section{Improvements on Implementation and Method}
+There are a number of improvements of the implementation and method. This does not include the emergency bypass idea, as it goes without saying that implementing it would be
+
+The first thing is the the original identification method involved recognising the speech in the audio. However, in the implementation, this was done through an online service, the Bing Cloud Speech-to-Text service. This goes directly against Design Aim 2, which is the self-contained goal. The reason for th
+
+Running the speech recognition on the system itself will be more challenge
+
+The use of the switch was an unfortunate development in the project. The original goal was to have two connections into the system only: the phone line and the phone. However, through the implementation of extracting audio from the Asterisk recording system, some kind of method to detect the start of the call was needed. On the negative side, this does mean an added layer of complexity for the installation process, it is a relatively simple step. A button can be premade to be installed directly onto any phone. However, this could be tricky for cordles
 
 \section{Other Considerations}
 \subsection{Cost}
@@ -52,18 +80,18 @@ The overall cost of this system cannot be exorbitant. The trouble with this esti
 	\label{tbl:costs}
 \end{table}
 
-Looking at the components that made it to the final system, their individual price, and total cost is found in Table \ref{tbl:costs}. Note that the phone is left out, as the system itself is designed fit into existing landline setups.
-This is quite high compared to other commercially available methods, particularly BT's \textit{BT 8600 Advanced Call Blocker} which retails for $\pounds 59.99$ \cite{bt-block}. This also does not include the price of a monitor, which would have to be included with it.
+Looking at the components that made it to the final system, their individual price, and total cost is found in Table \ref{tbl:costs}. Note that the phone is left out, as the system itself is designed fit into existing landline setups. This is quite high compared to other commercially available methods, particularly BT's \textit{BT 8600 Advanced Call Blocker} which retails for $\pounds 59.99$ \cite{bt-block}. This also does not include the price of a monitor, which would have to be included with it.
 
-\subsection{Adaptations for Visability}
-
+\subsection{Adaptations for Visibility}
 The output of information to the user is purely done visually. This make it difficult for anyone who is visually-impaired to use. This is particularly true for some of the colour schemes, as although the colour choices were designed to emphasis the information, someone colourblind would either not be able to benefit from it, or would have problems reading the text. And the size of the monitor needs to be considered. It must be large enough that reading from it is not impaired, but small enough that it will fit near where the phone installed.
 
 \section{Comparison to other Solutions}
 \subsection{Commercially Available}
 The commercially available solutions explored in the background in Chapter \ref{chp:bac} mostly revolved around a white and blacklist system. This was quite successful, but as has been mentioned, is not guaranteed on a landline. From the other methods explored, none are currently using voice analysis. In this sense, the comparison is therefore between list-based methods, and voice-analysis based methods.
 \\\\
-Those methods were not compared previously because they all need some kind of Caller ID, which is not a guarantee on landlines. However, a list-based method is only as good as the lists kept, and with the constantly changing nature of the scammers, this means it needs constant updates. There is the possibility of having individual lists that are maintained by the user, but this requires their involvement, which may not always be desirable. Additionally, the services offered are s 
+Those methods were not compared previously because they all need some kind of Caller ID, which is not a guarantee on landlines. However, a list-based method is only as good as the lists kept, and with the constantly changing nature of the scammers, this means it needs constant updates. And because the list only adds a known scammer onto the blacklist, then every scammer will get through at least once to someone somewhere.
+\\\\
+There is the possibility of having individual lists that are maintained by the user, but this requires their involvement, which may not always be desirable. If the lists are managed by a company, then the services offered are subscription based, meaning they present a constant cost.
 
 \subsection{Non-technical Approach}
 The main purpose of this system is to reduce the encounter rate of nuisance and fraudulent calls. In the case of the later, the goal is to either reduce the rate of encountering calls, or to warn the user of such a call. However, a non-technical approach should also be considered. By reaching out and informing users of the dangers of scam calls, and how to recognise them, then the financial risk is lessened.
@@ -71,27 +99,25 @@ The main purpose of this system is to reduce the encounter rate of nuisance and 
 \subsection{Telephone Service Providers}
 While techniques from the academic side of the background research yielded several methods for use on communication infrastructures, there is no discussion of whether phone companies actively monitor their lines for illegitimate use. If a known number from somewhere in the country is constantly sending out spam calls, a phone company might consider taking action. While the scammers are no doubt using multiple numbers, temporary numbers, or VoIP numbers, there is also the legal considerations of denying or monitoring calls.
 
-Language
-No emergency
-Easy?
-Did it work?
-Improvements
-Voice Metric
-Not fully isolated
-Randomise
-Varying scams in vogue
+\hrulefill
+\\\\
 
-Alternatives?
+Easy?
+
+Did it work?
+
+Improvements
+
+Voice Metric
+
+Not fully isolated
+
+Randomise
 
 Design Aims
 
 Testing methods - lack of huge data
 
-vs. Simply speaking to old people? Outreach? A non-STEM apraoch to the prblem????
-
-
-Testing methods themselves evaluated
-
-\hl{This section assesses how well the objectives were achieved. This means looking at what was achieved, and comparing that to the requirements captured in the previous chapter. I will discuss why certain things were achieved, or why failures happened. I will also discuss how improvements could have been made with certain elements, or if the design choices were ultimately successful and why/why not. I expect this to take between 3-4 pages.}
+Design choices
 
 \end{document}
