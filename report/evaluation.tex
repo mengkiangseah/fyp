@@ -32,7 +32,7 @@ The testing of the various methods was based around the three criteria used in t
 		Scalability for the user & No external connections needed & Resistant to impersonating known Caller IDs \\
 		Easy for the caller & Low resource requirements & Works without Caller ID\\
 		Little delay to the caller & Low maintenance & Resistant to a scammer using multiple lines\\
-		Works for VoIP & Cost & Works against the caller using a machine re-dialer\\
+		Works for VoIP & Low cost & Works against the caller using a machine re-dialer\\
 		Works for unknown callers & & Works on varying audio content\\\hline
 	\end{tabular}%
 	}
@@ -40,15 +40,26 @@ The testing of the various methods was based around the three criteria used in t
 	\label{tbl:methods}
 \end{table}
 
-One thing to note in their paper \cite{cisco} is that they made no attempts at implementing any of those proposed methods, and evaluated them theorectically. As such, the Deployability criteria that they use However, not every criteria is relevant to this project, for example the VoIP criteria for Usability. Additionally, the first two Caller ID ones in Robustness are not necessary as the system was designed from the beginning to not incorporate any form of Caller ID, which makes it satisfy the third criteria completely.
+One thing to note in their paper \cite{cisco} is that they made no attempts at implementing any of those proposed methods, and evaluated them theoretically. As such, the Deployability criteria that they use However, not every criteria is relevant to this project, for example the VoIP criteria for Usability. Additionally, the first two Caller ID ones in Robustness are not necessary as the system was designed from the beginning to not incorporate any form of Caller ID, which makes it satisfy the third criteria completely.
 \\\\
-The use of the criteria system in the three categories
+The use of the criteria system in the three categories is very quantised process, with every method receiving a score in each. This makes it difficult to compare, as there is no obvious way to aggregate the results. Considering each method in the context of each criteria is not productive, as it leads to a normal comparison. However, as the testing performed by this
 
 \subsection{Implemented Testing Method}
+The fact that this project had a physical implementation changed the way it could be assessed as there is a way to display actual performance. That being said, there is a considerable difference in the way this was done. The three categories of evaluation can be turned into three forms of testing. The deployability becomes a discussion of the complexities, the usability is a survey of the experience of callers and users, and the robustness was tested through the use of the metric.
+\\\\
+The trouble with the
 
 
 \section{Effectiveness of Identification \& Filtration Methods Used}
+\subsection{Analysis of Results}
+\subsection{Comparison with Other Methods}
+Given that most of the other methods were evaluated using the criteria from Tu et al. \cite{cisco}, it makes sense to compare this system's combination of a deterrent message, reverse Turing test, weakly secret code, and audio content analysis.
 
+
+\subsubsection{Advantages}
+\subsubsection{Disadvantages}
+
+Comparison of the various methods that rely on Caller ID with those used in this system is difficult because this system was designed specifically to avoid using Caller ID. This poses an interesting ch
 
 \hrulefill
 \\\\
@@ -65,7 +76,6 @@ Design choices
 
 The speech-to-text, call metric, and display presented their own challenges. The API was
 
-
 The one downside about the pre-generated lists is that they are limited to the types of calls that they are designed for. Trying to create a dictionary of words that exist in all calls is challenge. And with the type of scam calls varying with time, the lists will have trouble recognising the scam calls in vogue.
 
 \section{Improvements on Implementation and Method}
@@ -81,6 +91,10 @@ The secret keypress to bypass the prompt is only a single key. An ideal code wou
 The use of the switch was an unfortunate development in the project. The original goal was to have two connections into the system only: the phone line and the phone. However, through the implementation of extracting audio from the Asterisk recording system, some kind of method to detect the start of the call was needed. On the negative side, this does mean an added layer of complexity for the installation process, it is a relatively simple step. A button can be pre-made to be installed directly onto any phone. However, this would still be tricky for cordless phone. In fact, if the system is to work on both a corded and cordless phone, then the idea of using a matched filter to detect the end the ringing cycles is the solution. While this does require more processing power, if a larger computer is used for the speech recognition, then this does not require anything else.
 
 \section{Other Considerations}
+
+\subsection{Data Security and Privacy}
+Another reason for the Design Aim of creating a purely self-contained system is because the issue of data privacy is getting bigger and bigger. Transmitting any kind of information to a third-party requires a lot of security to ensure that it cannot be intercepted in transit, and that it cannot be stolen. Not sending anything avoids this problem. However, performing the analysis of the voice means that there is some information stored from the caller. Knowing that recorded calls have a disclaimer at the beginning, it means that keeping anything on a personal device will need to be safe and secure. Even if all data is scrubbed after each call, at the point of analysis, the audio content needs to exist somewhere.
+
 \subsection{User Input}
 A lot of user-input based solutions were ignored because it was against Design Aim 3, which was to keep from introducing input, as it makes the system more difficult. However, if considerable care were taken, an input method with absolutely maximum simplicity could be designed, and then the Design Aim 3 would no longer need to be used.
 
@@ -108,7 +122,7 @@ Looking at the components that made it to the final system, their individual pri
 \subsection{Adaptations for Visibility}
 The output of information to the user is purely done visually. This make it difficult for anyone who is visually-impaired to use. This is particularly true for some of the colour schemes, as although the colour choices were designed to emphasis the information, someone colourblind would either not be able to benefit from it, or would have problems reading the text. And the size of the monitor needs to be considered. It must be large enough that reading from it is not impaired, but small enough that it will fit near where the phone installed.
 
-\section{Comparison to other Solutions}
+\section{Comparison to Alternatives}
 \subsection{Commercially Available}
 The commercially available solutions explored in the background in Chapter \ref{chp:bac} mostly revolved around a white and blacklist system. This was quite successful, but as has been mentioned, is not guaranteed on a landline. From the other methods explored, none are currently using voice analysis. In this sense, the comparison is therefore between list-based methods, and voice-analysis based methods.
 \\\\
