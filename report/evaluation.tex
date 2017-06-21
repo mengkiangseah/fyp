@@ -4,7 +4,7 @@
 \begin{document}
 There are a number of areas to evaluate in this project. First, there is the examination of the success of the deliverables. Next, from the wide choice in identification and filtration methods, is the critique of the methods used. The type of testing performed and the analysis of the results offer more insight into the success of the identification and filtration methods. All these are considered in looking possible improvements to this project, and finally, there is a discussion of any other factors to keep in mind.
 \\\\
-The purpose of this section is to reflect on how well the project's objectives were achieved. As part of that, the ``aims'' in this project were tested as mentioned in Section \ref{sec:goals} and analysed in Section \ref{sec:basic-eval}, but there is also the consideration of the Design Aims that were raised at the start of Chapter \ref{chp:des}. For reference, they are repeated here again.
+The purpose of this section is to reflect on how well the project's objectives were achieved. As part of that, the ``aims'' in this project were tested as mentioned in Section \ref{sec:goals} and analysed in Section \ref{sec:eval-basic}, but there is also the consideration of the Design Aims that were raised at the start of Chapter \ref{chp:des}. For reference, they are repeated here again.
 
 \begin{enumerate}
 	\item Fits into existing setups
@@ -13,7 +13,7 @@ The purpose of this section is to reflect on how well the project's objectives w
 	\item Not too difficult for a genuine caller to get through
 \end{enumerate}
 
-\section{Achievement of Basic Functionality}
+\section{Achievement of Basic Functionality}\label{sec:eval-basic}
 Of all the mini-goals attempted, all were successful bar one: the emergency bypass. This was due to the time it took to get the other components. The order of the mini-goals as listed in Section \ref{sec:goals} was in the order that they would be attempted. This was because the philosophy in this project was to prioritise the production of any kind of working implementation, with the core functionality (calling in and out, unhindered) being the first step. This was because the reverse Turing test through the prompt was something that was almost certain to work, and therefore a base implementation would allow for, in the worst-case scenario, a naive method on which to fallback.
 \\\\
 The main difficulty in the implementation was primarily in combining all the components together. With the help of the hobbyist websites, it was not difficult to configure the Obi110 and the FreePBX, but getting both to work correctly took some experimentation. The original guides were written before updates to the system, which meant that some of the configuration parameters needed to be empirically derived. While Asterisk and FreePBX themselves are no stranger to voice prompts, prerecorded messages and voice recording, having them operate while extracting the audio proved more complicated. Additionally, an interesting challenge was finding a landline on which to test this system. A request to the landlord of a private residence was needed to obtain an active phone number.
@@ -42,7 +42,7 @@ The testing of the various methods was based around the three criteria used in t
 
 One thing to note in their paper \cite{cisco} is that they made no attempts at implementing any of those proposed methods, and evaluated them theorectically. As such, the Deployability criteria that they use However, not every criteria is relevant to this project, for example the VoIP criteria for Usability. Additionally, the first two Caller ID ones in Robustness are not necessary as the system was designed from the beginning to not incorporate any form of Caller ID, which makes it satisfy the third criteria completely.
 \\\\
-The use of the criteria system in the three categories 
+The use of the criteria system in the three categories
 
 \subsection{Implemented Testing Method}
 
