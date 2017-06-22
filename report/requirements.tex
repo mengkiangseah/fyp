@@ -3,7 +3,7 @@
 
 \begin{document}
 
-With the open ended nature of this project, it was essential to first define the goals and objectives. These objectives were shaped the way the design of the project took place. This in turn influenced the implementation. As the requirements were determined at the beginning and guided the entire project, the remained relatively unchanged throughout.
+With the open ended nature of this project, it was essential to first define the goals and objectives. These objectives shaped the way the design of the project took place. This in turn influenced the implementation. As the requirements were determined at the beginning and guided the entire project, the remained relatively unchanged throughout.
 
 \section{Intended Audience}
 As discussed in Chapter \ref{chp:bac}, the inconvenience of scam and spam calls can affect anyone with a landline. In a survey conducted by Microsoft, almost 70\% of United Kingdom (UK) respondents reported encountering scam calls \cite{microsoft-survey}. However, other non-spam calls are also a nuisance. Taking those into account, such as marketing cold calls, the actual proportion of the population impacted by such calls is certainly higher.
@@ -13,17 +13,17 @@ However, certain segments of the population are more susceptible than others. Th
 With the intended audience in mind, this means that the project must be easy to setup and use. But upon closer inspection, that objective is actually applicable to any consumer demographic! A complicated and troublesome product is never desirable. In other words, this project must be suitable for someone without a rigorous technical background.
 
 \section{Setup}
-The project specifically is aimed at landlines because that is the most commonly used form of home telephone. The use of Voice over Internet Protocol (VoIP) phones has not yet gain serious traction in UK. Statistics show that for the 65.1 million people in the UK \cite{ons}, there are still 25.6 million landlines \cite{ofcom}. Additionally, taking into account that this is aimed at the elderly, it makes more sense.
+The project specifically is aimed at landlines because that is the most commonly used form of home telephone. The use of Voice over Internet Protocol (VoIP) phones has not yet gained serious traction in UK. Statistics show that for the 65.1 million people in the UK \cite{ons}, there are still 25.6 million landlines \cite{ofcom}. Additionally, taking into account that this is aimed at the elderly, it makes more sense.
 \\\\
 Thus, the objective is to have something that will plug into the conventional telephone socket on one end, and the standard telephone on the other. Combining this with the intended audience, the setup must therefore be able to work with the UK standards of telephony. The exact way this was done is therefore in the Design and Implementation Sections.
 
 \section{Implementation}
-The implementation plan was guided by the idea that a piece of software known as Asterisk could be used. Asterisk is like a private branch exchange, or PBX. In simpler terms, it can act as a switch board, by answering, redirecting, and managing calls. This open-source software runs on Linux, and offers a range of options \cite{asterisk-story}. However, for this to work the aims of the setup, the implementation also has objectives.
+The implementation plan was guided by the idea that a piece of software known as Asterisk could be used. Asterisk is like a private branch exchange, or PBX. In simpler terms, it can act as a switch board, by answering, redirecting, and managing calls. This open-source software runs on Linux, and offers a range of options \cite{asterisk-story}. However, for this to work with the aims of the setup, the implementation also has objectives.
 
 \subsection{Connections}
 Asterisk accepts and redirects calls, and one of its many input and output formats is the Session Initiation Protocol (SIP) \cite{sip} which was discussed in the Chapter \ref{chp:bac}. This means that there needs to be a way to convert the calls from the landline into an SIP stream. Thus, there will need to be a form of landline-SIP adapting connection at the input.
 \\\\
-Another point to consider is that this gives the project the advantage of being adaptable to VoIP in the case that the user does indeed use a VOIP system. As VOIP becomes more common, the system can be modifed by simply bypassing the adapter without the need for additional hardware.
+Another point to consider is that this gives the project the advantage of being adaptable to VoIP in the case that the user does indeed use a VoIP system. As VoIP becomes more common, the system can be modifed by simply bypassing the adapter without the need for additional hardware.
 \\\\
 On the output, there are two options. If a normal landline phone is used, then the SIP needs to be converted back into an analogue signal. This can be done with devices known as Analog Telephone Adapters (ATAs) \cite{ata}. However, the alternative would be to use a VoIP phone directly, as the SIP format is the current standard for VoIP phones. It benefits from not needing a conversion step, but will require an additional phone. Both are viable options.
 

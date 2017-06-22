@@ -42,41 +42,53 @@ The testing of the various methods was based around the three criteria used in t
 
 One thing to note in their paper \cite{cisco} is that they made no attempts at implementing any of those proposed methods, and evaluated them theoretically. As such, the Deployability criteria that they use However, not every criteria is relevant to this project, for example the VoIP criteria for Usability. Additionally, the first two Caller ID ones in Robustness are not necessary as the system was designed from the beginning to not incorporate any form of Caller ID, which makes it satisfy the third criteria completely.
 \\\\
-The use of the criteria system in the three categories is very quantised process, with every method receiving a score in each. This makes it difficult to compare, as there is no obvious way to aggregate the results. Considering each method in the context of each criteria is not productive, as it leads to a normal comparison. However, as the testing performed by this
+The use of the criteria system in the three categories is very quantised process, with every method receiving a score in each. This makes it difficult to compare, as there is no obvious way to aggregate the results. Considering each method in the context of each criteria is not productive, as it leads to a normal comparison. However, it offers a clear way to compare the methods employed with those proposed in the paper \cite{cisco}.
 
 \subsection{Implemented Testing Method}
 The fact that this project had a physical implementation changed the way it could be assessed as there is a way to display actual performance. That being said, there is a considerable difference in the way this was done. The three categories of evaluation can be turned into three forms of testing. The deployability becomes a discussion of the complexities, the usability is a survey of the experience of callers and users, and the robustness was tested through the use of the metric.
 \\\\
-The trouble with the
-
+There are two downsides to the methods. Testing data was limited in that the call metric was tested using the call transcripts. While this does allow it to be tested at higher speeds, it remains difficult to find call transcripts of spammers. Most people who encounter them are not keen on recording them, and there exists no database to analyse. Setting up a VoIP honeypot as in the work of Marzuoli et al. \cite{marzuoli} could have been done, but the time requirements (over 12 months) and the team and server setup mean that it would have been very challenging. Particularly as the testing phase was done after the research, design, and implementation.
 
 \section{Effectiveness of Identification \& Filtration Methods Used}
 \subsection{Analysis of Results}
-\subsection{Comparison with Other Methods}
-Given that most of the other methods were evaluated using the criteria from Tu et al. \cite{cisco}, it makes sense to compare this system's combination of a deterrent message, reverse Turing test, weakly secret code, and audio content analysis.
+The test results from the call metric and the survey are considered here. Looking back at Figure \ref{fig:survey}, the results for each question are skewed to the right, suggesting a positive answer to each question. A look at the mean values in Table \ref{tbl:mean} confirms this, as the scores are around 4, with the exception Question 6, which has a lower mean score of 3.5. This means that the display messages are clear, easy to read, and benefit from the colour choice. The Welcome and Goodbye messages are clear understandable but hearing the message discourages people from calling again. This is quite an interesting case as suggests that while a caller is entirely aware of what is going on, the trouble of a keypress or the feeling of dealing with a computer is perhaps a stronger deciding factor.
+\\\\
+The results of the call metric test in Table \ref{tbl:robust} show very few cases (only 2) of \texttt{LOW} risk calculated. This is correct, as the calls used were all scam calls, and this means an accuracy of $\approx 85\%$ in determining any kind of scam. However, ideally there should be more calls marked \texttt{HIGH}. If the thresholds of each risk level could be visualised, it means that the tolerance for \texttt{LOW} risk is well set. However, the distinction between \texttt{HIGH} and \texttt{MEDIUM} needs to be improved.
 
+\subsection{Comparison with Other Methods}
+Given that most of the other methods were evaluated using the criteria from Tu et al. \cite{cisco}, it makes sense to compare this system's combination of a deterrent message, reverse Turing test, weakly secret code, and audio content analysis. This is seen in Table \ref{tbl:compare}. For visibility, the same Table \ref{tbl:methods} is used, with a colour coded system. Red is not satisfied, orange is partially satisfied, and green is fully satisfied.
+
+\begin{table}[htb]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Usability} & \textbf{Deployability} & \textbf{Robustness}\\\hline
+		\cellcolor{green!25}Not disturbing the user & \cellcolor{green!25}Does not need infrastructure changes & \cellcolor{green!25}Resistant to random Caller IDs\\
+		\cellcolor{green!25}Scalability for the user & \cellcolor{orange!25}No external connections needed & \cellcolor{green!25}Resistant to impersonating known Caller IDs \\
+		\cellcolor{orange!25}Easy for the caller & \cellcolor{green!25}Low resource requirements & \cellcolor{green!25}Works without Caller ID\\
+		\cellcolor{orange!25}Little delay to the caller & \cellcolor{green!25}Low maintenance & \cellcolor{green!25}Resistant to a scammer using multiple lines\\
+		\cellcolor{green!25}Works for VoIP & \cellcolor{orange!25}Low cost & \cellcolor{orange!25}Works against the caller using a machine re-dialer\\
+		\cellcolor{green!25}Works for unknown callers & \cellcolor{orange!25}& \cellcolor{green!25}Works on varying audio content\\\hline
+	\end{tabular}%
+	}
+	\caption{The different evaluation methods used by Tu et al. \cite{cisco} applied to this system.}
+	\label{tbl:compare}
+\end{table}
+
+There are several points to note. First, there are no red cells. This means that it satisfies everything at least on some level. This unlike any of the other methods suggested in the work of Tu et al. \cite{cisco}. However, this is not unexpected, as it is a combination of various methods, all of which were designed not to overlap. In other words, the combination is better than any single method, according to this evaluation strategy.
 
 \subsubsection{Advantages}
-\subsubsection{Disadvantages}
-
-Comparison of the various methods that rely on Caller ID with those used in this system is difficult because this system was designed specifically to avoid using Caller ID. This poses an interesting ch
-
-\hrulefill
+The main advantage that this system has over the other methods is the unlike the purely theoretical suggestions, this system was actually implemented. There is good in refining and improving on theory, but if those methods are not made available or possible, then in a practical sense they have lesser value. It is also easy to setup, requiring a connection to the phone and the phone line, apart from power. From the call metric, assuming an most accurate voice transcription, the metric performs decently. Its standalone nature and minimal interaction required make it attractive to those unfamiliar with technology. Additionally, with random keypress generation messages, it is extremely robust against robotic callers.
 \\\\
+Additionally, as it was designed specifically to not require Caller ID, it means that if it were redesigned to include it, a great deal more options open up, which could improve the identification process further.
 
-Easy?
-
-Voice Metric
-
-Design Aims
-
-Testing methods - lack of huge data
-
-Design choices
-
-The speech-to-text, call metric, and display presented their own challenges. The API was
-
-The one downside about the pre-generated lists is that they are limited to the types of calls that they are designed for. Trying to create a dictionary of words that exist in all calls is challenge. And with the type of scam calls varying with time, the lists will have trouble recognising the scam calls in vogue.
+\subsubsection{Disadvantages}
+In evaluating the model itself, there are two issues. First, from the survey, it is clear that chaining several methods into the system has caused most callers to feel that it takes too long to reach the user. So despite whatever success it may face, the callers are not happy. Removing one or more steps is difficult as each brought its own distinct advantage to the system. The voice analysis brought versatility, while the prompts provided a strong anti-robot call barrier. While Design Aim 4 was to make it less difficult for a genuine caller to get through compared to a fraudulent caller, it seems that overall it is too trouble for legitimate callers.
+\\\\
+In the call metric, the one downside about the pre-generated lists is that they are limited to the types of calls that they are designed for. Trying to create a dictionary of words that exist in all calls is challenge. And with new types of scam calls appearing all the time, the lists will have trouble recognising the scam calls in vogue. Furthermore, as large companies rise and fall, and current events
+\\\\
+The system is also always on, just like the phone. However, unlike a phone, which is drawing power from the phone line, this system will consume more power. Even taking into account ways to reduce the size of the setup, with its constant operation, power consumption can be a problem.
 
 \section{Improvements on Implementation and Method}
 There are a number of improvements of the implementation and method. This does not include the emergency bypass idea, as it goes without saying that implementing it would be an improvement over not implementing it.
@@ -135,6 +147,5 @@ The main purpose of this system is to reduce the encounter rate of nuisance and 
 
 \subsection{Telephone Service Providers}
 While techniques from the academic side of the background research yielded several methods for use on communication infrastructures, there is no discussion of whether phone companies actively monitor their lines for illegitimate use. If a known number from somewhere in the country is constantly sending out spam calls, a phone company might consider taking action. While the scammers are no doubt using multiple numbers, temporary numbers, or VoIP numbers, there is also the legal considerations of denying or monitoring calls.
-
 
 \end{document}

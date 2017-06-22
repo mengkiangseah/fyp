@@ -25,7 +25,7 @@
 \newtheorem*{aims*}{Design Aims}
 
 % For highlighting and for subfiles
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{soul}
 \usepackage{subfiles}
 
@@ -102,7 +102,7 @@
 	    Project Title: & \textbf{An Intelligent Telephone Interceptor for UK Landlines}\\[12pt]
 	    Student: & \textbf{Meng Kiang Seah} \\[12pt]
 	    CID: & \textbf{00699092} \\[12pt]
-	    Course: & \textbf{EEE4} \\[12pt]
+	    Course: & \textbf{EEE4T} \\[12pt]
 	    Project Supervisor: & \textbf{Dr. Thomas J. W. Clarke} \\[12pt]
 	    Second Marker: & \textbf{Dr. Jesus Rodriguez Manzano} \\
     \end{tabular}
@@ -129,7 +129,7 @@ This project was focused on creating a system that would intercept landline call
 \\\\
 The system was designed to allow easy connection to an existing landline phone setup. To allow filtering and analysis with a computer, conversion from the analogue signals to a digital stream, and vice-versa was done by integrating commercially available products with free open-source software.
 \\\\
-A filtration method and flow were designed to remove cold calls, while running voice analysis on unknown callers to determine the likelihood of an illegitimate call. It sets up a challenge upon receiving a call to remove robot calls, separating unknown callers into three categories with voice analysis, and requesting unresponsive callers to redial. The system status was relayed through a simple colour-coded user interface.
+A filtration method and flow were designed to remove cold calls, while running voice analysis on unknown callers to determine the likelihood of an illegitimate call. It sets up a challenge upon receiving a call to remove robot cold calls, separating unknown callers into three categories with voice analysis, and requesting unresponsive callers to redial. Known callers would have a secret code to bypass the system. The system status was relayed through a simple colour-coded user interface.
 \\\\
 Overall, the setup showed its feasibility and functionality, while taking into account the limitations of an audience less familiar with technology for interfacing and setup.
 \end{abstract}
