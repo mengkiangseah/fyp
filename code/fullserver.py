@@ -85,11 +85,16 @@ def callMetric(wordsSpoken):
 	blist = ["real", "market", "markets", "return", "hedge", "interest", "trust", "returns", "fund", "funds", "income", "benefit", "benefits", "payment", "payments", "retirement", "infected", "virus", "software", "windows", "machine", "bank", "number", "card", "cards", "miss", "mister", "madam", "missus", "insurance", "damages", "damage", "fake", "pay", "phony", "protect", "protection", "money"]
 
 	wordsA = [word for word in wordsSpoken.lower().split() if word in alist]
+	print(wordsA)
 
 	wordsB = [word for word in wordsSpoken.lower().split() if word in blist]
+	print(wordsB)
 
 	numA = len(wordsA)
 	numB = len(wordsB)
+
+	print(numA)
+	print(numB)
 
 	# No keywords, no risk.
 	if numA == 0 and numB == 0:
